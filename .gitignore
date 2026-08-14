@@ -1,0 +1,22 @@
+# Dependency Directories
+node_modules/
+jspm_packages/
+web_modules/
+
+# Local Environment Configurations (Security Secrets)
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Local Database Files
+leads_db.json
+
+# IDE Configurations & OS Temp Files
+.agents/
+.gemini/
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

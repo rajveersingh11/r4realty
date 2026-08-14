@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Explore verified residential, commercial, and plot investments in Noida. Direct developer pricing, RERA registered projects, and local consulting expertise.">
+  <title>Property Catalog — R4Realty Noida</title>
+  
+  <!-- CSS Stylesheets -->
+  <link rel="stylesheet" href="../css/style.css">
+  
+  <!-- FontAwesome Icons for UI -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+  <!-- STICKY HEADER -->
+  <header>
+    <div class="container">
+      <div class="nav-wrapper">
+        <a href="../index.html" class="logo">
+          <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="1" y="1" width="38" height="38" stroke="var(--ink)" stroke-width="1.5"/>
+            <path d="M8 30V16L20 8L32 16V30" stroke="var(--ink)" stroke-width="1.5"/>
+            <rect x="16" y="21" width="8" height="9" stroke="var(--accent)" stroke-width="1.5"/>
+          </svg>
+          <div class="logo-text">
+            <div class="name">R4Realty</div>
+            <div class="sub">Noida &middot; Property Consultancy</div>
+          </div>
+        </a>
+        
+        <ul class="nav-links" id="navLinks">
+          <li><a href="../index.html">Home</a></li>
+          <li><a href="index.html" class="active">All Projects</a></li>
+          <li><a href="gygy-mentis.html">GYGY Mentis</a></li>
+          <li><a href="../index.html#contact">Contact</a></li>
+          <li><a href="#" class="open-consultation-btn" style="color: var(--accent); font-weight: 600;"><i class="far fa-calendar-check"></i> Consult</a></li>
+        </ul>
+        
+        <div style="display: flex; gap: 10px; align-items: center;">
+          <a href="tel:+917838416570" class="cta-button secondary"><i class="fas fa-phone-alt"></i> Call</a>
+          <button class="hamburger" id="hamburgerMenu"><i class="fas fa-bars"></i></button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="container">
+
+    <!-- BREADCRUMB -->
+    <div class="project-breadcrumb">
+      <a href="../index.html">Home</a>
+      <span>&bull;</span>
+      <span>Projects Catalog</span>
+    </div>
+
+    <!-- TITLE AREA -->
+    <div class="titleblock" style="margin-bottom: 30px;">
+      <div class="tb-body" style="padding: 30px 24px;">
+        <div class="eyebrow">Property Database</div>
+        <h1 style="font-size: 38px;">Noida Project Listings</h1>
+        <p class="lede">Browse verified projects in high-growth zones of Noida. Each listing is direct-from-developer with no brokerage fee, and complete details are ready for export.</p>
+      </div>
+    </div>
+
+    <!-- FILTER BAR -->
+    <div class="spec-sheet" style="margin-bottom: 30px; padding: 18px 24px;">
+      <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
+        <!-- Search -->
+        <div style="flex-grow: 1; min-width: 250px; position: relative;">
+          <input type="text" id="projectSearch" class="form-input" placeholder="Search by name, sector or keywords..." style="border-bottom: 1.5px solid var(--ink); padding: 8px 10px 8px 30px;">
+          <i class="fas fa-search" style="position: absolute; left: 8px; top: 12px; color: var(--muted); font-size: 13px;"></i>
+        </div>
+        <!-- Filter Buttons -->
+        <div style="display: flex; gap: 8px; flex-wrap: wrap;" id="filterBadges">
+          <button class="cta-button" data-filter="all" style="padding: 6px 12px; font-size: 11px; font-family: var(--font-mono);">All</button>
+          <button class="cta-button secondary" data-filter="residential" style="padding: 6px 12px; font-size: 11px; font-family: var(--font-mono);">Residential</button>
+          <button class="cta-button secondary" data-filter="commercial" style="padding: 6px 12px; font-size: 11px; font-family: var(--font-mono);">Commercial</button>
+          <button class="cta-button secondary" data-filter="plots" style="padding: 6px 12px; font-size: 11px; font-family: var(--font-mono);">Plots</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- PROJECTS GRID -->
+    <div class="grid-3" id="projectsCatalog">
+      
+      <!-- Project 1: GYGY Mentis -->
+      <div class="project-card" data-category="commercial" data-keywords="gygy mentis sector 140 commercial office food court returns">
+        <div class="project-img-container">
+          <div class="project-img-placeholder">
+            <i class="fas fa-building"></i>
+            <span>GYGY MENTIS &bull; SECTOR 140</span>
+          </div>
+          <div class="project-tag">Commercial</div>
+          <div class="project-status">1% Monthly Return</div>
+        </div>
+        <div class="project-card-content">
+          <div class="project-location"><i class="fas fa-map-marker-alt"></i> Sector 140, Noida Expressway</div>
+          <h3>GYGY Mentis — Food Court</h3>
+          <p class="project-excerpt">Premium 200 sq.ft food court kiosk on launch discount. Offers a 50:50 payment plan with a 1% monthly assured return and 9-year lease guarantee.</p>
+          <div class="project-specs">
+            <div class="spec-info">
+              <span class="spec-label">Total Value</span>
+              <span class="spec-val price">₹ 50 Lakh</span>
+            </div>
+            <div class="spec-info">
+              <span class="spec-label">Possession</span>
+              <span class="spec-val">Dec 2027</span>
+            </div>
+          </div>
+          <a href="gygy-mentis.html" class="cta-button" style="text-align: center; justify-content: center;">View Details &rarr;</a>
+        </div>
+      </div>
+
+      <!-- Project 2: Mall of Expressway -->
+      <div class="project-card" data-category="commercial" data-keywords="sikka mall of expressway pari chowk commercial d-mart pre-leased returns 0% gst">
+        <div class="project-img-container">
+          <div class="project-img-placeholder">
+            <i class="fas fa-shopping-cart"></i>
+            <span>EXPRESSWAY MALL &bull; PARI CHOWK</span>
+          </div>
+          <div class="project-tag">Commercial</div>
+          <div class="project-status">Pre-Leased (D-Mart)</div>
+        </div>
+        <div class="project-card-content">
+          <div class="project-location"><i class="fas fa-map-marker-alt"></i> Pari Chowk, Noida-Greater Noida Expressway</div>
+          <h3>Mall of Expressway</h3>
+          <p class="project-excerpt">Exclusive pre-leased commercial units at Pari Chowk with D-Mart anchor lease, 2% pre-possession monthly returns, and OC/CC received.</p>
+          <div class="project-specs">
+            <div class="spec-info">
+              <span class="spec-label">Total Value</span>
+              <span class="spec-val price">₹ 32 Lakh</span>
+            </div>
+            <div class="spec-info">
+              <span class="spec-label">GST Status</span>
+              <span class="spec-val">0% GST Applicable</span>
+            </div>
+          </div>
+          <a href="mall-of-expressway.html" class="cta-button" style="text-align: center; justify-content: center;">View Details &rarr;</a>
+        </div>
+      </div>
+
+      <!-- Project 3: ACE Terra -->
+      <div class="project-card" data-category="residential" data-keywords="ace terra sector 150 residential flats apartments 3bhk 4bhk luxury forest">
+        <div class="project-img-container">
+          <div class="project-img-placeholder">
+            <i class="fas fa-home"></i>
+            <span>ACE TERRA &bull; SECTOR 150</span>
+          </div>
+          <div class="project-tag">Residential</div>
+          <div class="project-status">Gated Forest Theme</div>
+        </div>
+        <div class="project-card-content">
+          <div class="project-location"><i class="fas fa-map-marker-alt"></i> Sector 150, Noida</div>
+          <h3>ACE Terra</h3>
+          <p class="project-excerpt">Ultra-luxurious, low-density residential towers nestled in a dense forest-theme garden, offering premium 3BHK & 4BHK spaces.</p>
+          <div class="project-specs">
+            <div class="spec-info">
+              <span class="spec-label">Investment</span>
+              <span class="spec-val price">₹ 1.45 Cr +</span>
+            </div>
+            <div class="spec-info">
+              <span class="spec-label">Possession</span>
+              <span class="spec-val">June 2028</span>
+            </div>
+          </div>
+          <a href="template.html?project=aceterra" class="cta-button secondary" style="text-align: center; justify-content: center;">View Details &rarr;</a>
+        </div>
+      </div>
+
+      <!-- Project 4: Sector 151 Farmlands -->
+      <div class="project-card" data-category="plots" data-keywords="noida sector 151 farmlands township community farms registry gated security plots">
+        <div class="project-img-container">
+          <div class="project-img-placeholder" style="background: linear-gradient(135deg, #2e7d32 0%, #1b5e20 100%); color: var(--white);">
+            <i class="fas fa-tree" style="color: var(--accent-soft);"></i>
+            <span>FARMLANDS &bull; SECTOR 151</span>
+          </div>
+          <div class="project-tag">Plots</div>
+          <div class="project-status">Gated Farm Township</div>
+        </div>
+        <div class="project-card-content">
+          <div class="project-location"><i class="fas fa-map-marker-alt"></i> Sector 151, Noida Expressway</div>
+          <h3>Sector 151 Farmland Township</h3>
+          <p class="project-excerpt">Established 12-year-old 300-acre community farming project. Features gated security, 4-acre clubhouse, metro connectivity, and immediate registry/mutation.</p>
+          <div class="project-specs">
+            <div class="spec-info">
+              <span class="spec-label">Investment</span>
+              <span class="spec-val price">₹ 85.00 Lakh +</span>
+            </div>
+            <div class="spec-info">
+              <span class="spec-label">Plot Sizes</span>
+              <span class="spec-val">1206 - 4032 Sq Yd</span>
+            </div>
+          </div>
+          <a href="sector-151-farmlands.html" class="cta-button" style="text-align: center; justify-content: center;">View Details &rarr;</a>
+        </div>
+      </div>
+
+      <!-- Project 5: Vedic City Goa -->
+      <div class="project-card" data-category="plots" data-keywords="vedic city goa plots villa residential farmhouse mopa airport nh-66 patradevi toll">
+        <div class="project-img-container">
+          <div class="project-img-placeholder" style="background: linear-gradient(135deg, #2e7d32 0%, #1b5e20 100%); color: var(--white);">
+            <i class="fas fa-leaf" style="color: var(--accent-soft);"></i>
+            <span>VEDIC CITY &bull; NORTH GOA</span>
+          </div>
+          <div class="project-tag">Plots</div>
+          <div class="project-status">Pre-Launch Offer</div>
+        </div>
+        <div class="project-card-content">
+          <div class="project-location"><i class="fas fa-map-marker-alt"></i> NH-66, North Goa (Mopa Corridor)</div>
+          <h3>Vedic City North Goa</h3>
+          <p class="project-excerpt">Premium plotting en-route to Mopa Airport. Features Graama villa plots, Anandam residential plots, and Praana farmhouse communities.</p>
+          <div class="project-specs">
+            <div class="spec-info">
+              <span class="spec-label">Investment</span>
+              <span class="spec-val price">₹ 56.40 Lakh - 3.24 Cr</span>
+            </div>
+            <div class="spec-info">
+              <span class="spec-label">Plot Sizes</span>
+              <span class="spec-val">240 - 1380 Sq Yd</span>
+            </div>
+          </div>
+          <a href="vedic-city-goa.html" class="cta-button" style="text-align: center; justify-content: center;">View Details &rarr;</a>
+        </div>
+      </div>
+
+      <!-- Project 6: Bhutani Belfair -->
+      <div class="project-card" data-category="residential" data-keywords="bhutani belfair sector 150 residential flats low-rise luxury apartments 3bhk 4bhk">
+        <div class="project-img-container">
+          <div class="project-img-placeholder">
+            <i class="fas fa-home"></i>
+            <span>BELFAIR &bull; SECTOR 150</span>
+          </div>
+          <div class="project-tag">Residential</div>
+          <div class="project-status">Luxury Low-Rise</div>
+        </div>
+        <div class="project-card-content">
+          <div class="project-location"><i class="fas fa-map-marker-alt"></i> Sector-150, Noida Expressway</div>
+          <h3>Bhutani Belfair</h3>
+          <p class="project-excerpt">Exclusive luxury low-rise residences in Sector-150 Noida. 3 &amp; 4 BHK premium spacious apartments featuring a flexible 30:70 payment structure.</p>
+          <div class="project-specs">
+            <div class="spec-info">
+              <span class="spec-label">Investment</span>
+              <span class="spec-val price">₹ 4.56 Cr - 6.26 Cr</span>
+            </div>
+            <div class="spec-info">
+              <span class="spec-label">Sizes</span>
+              <span class="spec-val">2280 - 3130 Sq Ft</span>
+            </div>
+          </div>
+          <a href="bhutani-belfair.html" class="cta-button" style="text-align: center; justify-content: center;">View Details &rarr;</a>
+        </div>
+      </div>
+
+      <!-- Project 7: Sunrise City -->
+      <div class="project-card" data-category="plots" data-keywords="sunrise city greater noida plots villas freehold affordable housing galgotias university nims">
+        <div class="project-img-container">
+          <div class="project-img-placeholder" style="background: linear-gradient(135deg, #f57f17 0%, #e65100 100%); color: var(--white);">
+            <i class="fas fa-sun" style="color: var(--accent-soft);"></i>
+            <span>SUNRISE CITY &bull; GR. NOIDA</span>
+          </div>
+          <div class="project-tag">Plots</div>
+          <div class="project-status">Freehold Allotments</div>
+        </div>
+        <div class="project-card-content">
+          <div class="project-location"><i class="fas fa-map-marker-alt"></i> Behind Galgotias Uni, Greater Noida</div>
+          <h3>Sunrise City</h3>
+          <p class="project-excerpt">Premium freehold plots and luxury villas situated directly behind Galgotias University. 25+ acre gated community with 30ft roads, high student rental yields.</p>
+          <div class="project-specs">
+            <div class="spec-info">
+              <span class="spec-label">Investment</span>
+              <span class="spec-val price">₹ 18.25 Lakh - 73.00 Lakh</span>
+            </div>
+            <div class="spec-info">
+              <span class="spec-label">Plot Sizes</span>
+              <span class="spec-val">50 - 200 Sq Yd</span>
+            </div>
+          </div>
+          <a href="sunrise-city.html" class="cta-button" style="text-align: center; justify-content: center;">View Details &rarr;</a>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- DIRECT CONTACT STRIP -->
+    <div class="contact-strip" id="contact" style="margin-top: 40px;">
+      <div>
+        <div class="ctitle">Looking for off-market listings?</div>
+        <div class="csub">Contact Rajveer Singh to query exclusive plots and commercial spaces in Noida.</div>
+      </div>
+      <div class="contact-links">
+        <a class="wa" href="https://wa.me/917838416570" target="_blank"><i class="fab fa-whatsapp"></i> WhatsApp Chat →</a>
+        <a href="tel:+917838416570"><i class="fas fa-phone-alt"></i> Call Now →</a>
+      </div>
+    </div>
+
+    <!-- Collapsible FAQ Accordion Section -->
+    <section class="faq-section">
+      <div class="sec-head">
+        <h2>Frequently Asked Questions</h2>
+        <span class="label">Legal &amp; Financial FAQs</span>
+      </div>
+      <div style="margin-top: 20px;">
+        <div class="faq-item">
+          <div class="faq-question">
+            <span>Are the properties listed on R4Realty RERA-approved?</span>
+            <i class="fas fa-chevron-down"></i>
+          </div>
+          <div class="faq-answer">
+            <p>Yes. R4Realty only lists properties that are verified and registered with their respective state portals (Uttar Pradesh RERA or Goa RERA). The individual RERA numbers (such as UPRERAPRJ251909 for GYGY Mentis) are listed transparently on each project page.</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-question">
+            <span>Do I need to pay brokerage fees to R4Realty?</span>
+            <i class="fas fa-chevron-down"></i>
+          </div>
+          <div class="faq-answer">
+            <p>No. R4Realty works directly under builder developer authorizations (Sikka Group, Bhutani, Ebrix Developers). We guarantee direct developer inventory allocation and pre-launch prices with zero brokerage charges for buyers.</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-question">
+            <span>How does the pre-leased monthly return guarantee work?</span>
+            <i class="fas fa-chevron-down"></i>
+          </div>
+          <div class="faq-answer">
+            <p>In commercial projects like Sikka Mall of Expressway and GYGY Mentis, developers offer a pre-possession monthly assured return (e.g. 1% monthly or 2% pre-leased returns) to secure cash flow for investors. Post-possession, the units are leased to retail chains or brand outlets with long-term lock-in lease agreements.</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-question">
+            <span>What are the plot configurations in Vedic City Goa?</span>
+            <i class="fas fa-chevron-down"></i>
+          </div>
+          <div class="faq-answer">
+            <p>Vedic City North Goa offers three premium plot configurations: Graama (RERA villa plots starting at 300 gaj), Anandam (pre-launch residential plots starting at 240 gaj), and Praana (exclusive gated farmhouse plots starting at 1380 gaj). All configurations feature RERA approvals and registry.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FOOTER WITH HIDDEN ACCESS -->
+    <!-- FOOTER SECTION -->
+    <footer style="margin-top: 60px; border-top: var(--border-thick); padding-top: 30px; background: var(--white); border: var(--border-thick); padding: 30px 24px 20px;">
+      <div class="grid-2" style="margin-bottom: 24px; border-bottom: var(--border-thin); padding-bottom: 24px;">
+        <!-- Profile Column -->
+        <div>
+          <h4 style="font-size: 15px; margin-bottom: 10px; color: var(--ink); font-family: var(--font-mono); letter-spacing: 0.1em;">CONSULTANT PROFILE</h4>
+          <p style="font-size: 12.5px; line-height: 1.6; color: var(--ink-soft);"><strong>Rajveer Singh</strong><br>Principal Property Consultant &amp; Portfolio Strategist.<br>Noida Expressway &amp; Goa Regional Investment Advisory.</p>
+        </div>
+        <!-- Legal & Quick Links Column -->
+        <div>
+          <h4 style="font-size: 15px; margin-bottom: 10px; color: var(--ink); font-family: var(--font-mono); letter-spacing: 0.1em;">LEGAL &amp; ADVISORY</h4>
+          <p style="font-size: 12px; line-height: 1.5; color: var(--muted); margin-bottom: 12px;">All listed projects conform strictly to their respective state UPRERA / Goa RERA specifications. We provide direct builder allocations with 100% brokerage-free transparency.</p>
+          <div style="display: flex; gap: 16px; font-family: var(--font-mono); font-size: 11px;">
+            <a href="#" class="open-about-btn" style="color: var(--accent);"><i class="fas fa-info-circle"></i> About Us</a>
+            <a href="#" class="open-privacy-btn" style="color: var(--accent);"><i class="fas fa-user-shield"></i> Privacy Policy</a>
+            <a href="#" class="open-consultation-btn" style="color: var(--accent);"><i class="far fa-calendar-check"></i> Book Call</a>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Footer Bottom Bar -->
+      <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+        <div style="font-family: var(--font-mono); font-size: 11px; color: var(--muted);">R4REALTY — NOIDA / NCR — RESIDENTIAL · COMMERCIAL · PLOTS</div>
+        <div style="display: flex; gap: 14px; align-items: center; font-family: var(--font-mono); font-size: 11px;" class="footer-socials">
+          <a href="https://www.linkedin.com/in/rajveer-singh-403a5824a" target="_blank" style="color: var(--muted);"><i class="fab fa-linkedin"></i> LinkedIn</a>
+          <a href="https://www.instagram.com/_rajveersinghshekhawat" target="_blank" style="color: var(--muted);"><i class="fab fa-instagram"></i> Instagram</a>
+        </div>
+        <div style="display: flex; align-items: center; gap: 6px; font-family: var(--font-mono); font-size: 11px;">
+          <span>&copy; 2026</span>
+          <button class="admin-lock-btn" id="admin-dashboard-trigger" title="Admin Database Panel"><i class="fas fa-lock"></i></button>
+        </div>
+      </div>
+    </footer>
+
+  </div>
+
+  <!-- JavaScript scripts -->
+  <script src="../js/app.js"></script>
+  <script>
+    // Live Search and Filter Logic
+    const searchInput = document.getElementById('projectSearch');
+    const filterButtons = document.querySelectorAll('#filterBadges button');
+    const projectCards = document.querySelectorAll('#projectsCatalog .project-card');
+
+    let currentFilter = 'all';
+    let searchQuery = '';
+
+    function filterProjects() {
+      projectCards.forEach(card => {
+        const category = card.getAttribute('data-category');
+        const keywords = card.getAttribute('data-keywords').toLowerCase();
+        
+        const matchesFilter = (currentFilter === 'all' || category === currentFilter);
+        const matchesSearch = keywords.includes(searchQuery);
+
+        if (matchesFilter && matchesSearch) {
+          card.style.display = 'flex';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+
+    // Search input listener
+    searchInput.addEventListener('input', (e) => {
+      searchQuery = e.target.value.toLowerCase();
+      filterProjects();
+    });
+
+    // Filter button listener
+    filterButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        filterButtons.forEach(b => {
+          b.classList.remove('cta-button');
+          b.classList.add('secondary');
+        });
+        btn.classList.remove('secondary');
+        btn.classList.add('cta-button');
+        
+        currentFilter = btn.getAttribute('data-filter');
+        filterProjects();
+      });
+    });
+  </script>
+</body>
+</html>
+
+
+
+
+
+
