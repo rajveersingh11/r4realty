@@ -380,17 +380,10 @@ function initLeadDashboard() {
     })
     .catch(err => {
       if (err.message === 'Unauthorized') return;
-      
-      // Fallback: If server is offline (failed fetch), compare locally
-      console.warn('Authentication server offline. Checking local PIN fallback.', err.message);
-      if (pass === 'r4realty@123') {
-        activeAdminPin = pass;
-        loginScreen.style.display = 'none';
-        dashboardContent.style.display = 'block';
-        refreshLeadsTable();
-      } else {
-        showToast('Access Denied', 'Invalid administrator security pin.', 'error');
-      }
+
+      // Server unreachable or other error — do NOT accept a local fallback PIN
+      console.warn('Authentication server unreachable. Admin actions are disabled until the server is reachable.', err.message);
+      showToast('Server Unavailable', 'Authentication server unreachable. Admin actions are temporarily disabled.', 'error');
     });
   });
 
@@ -400,7 +393,31 @@ function initLeadDashboard() {
 
   // Export Leads to CSV
   exportBtn.addEventListener('click', () => {
-    exportLeadsToCSV();
+    // Try server-side export first (preferred)
+    if (activeAdminPin) {
+      const url = '/api/leads/export';
+      fetch(url, { headers: { 'X-Admin-Pin': activeAdminPin } })
+        .then(res => {
+          if (!res.ok) throw new Error('Export failed');
+          return res.blob();
+        })
+        .then(blob => {
+          const link = document.createElement('a');
+          link.href = URL.createObjectURL(blob);
+          link.download = `R4Realty_Leads_${new Date().toISOString().slice(0,10)}.csv`;
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+          showToast('Export Successful', 'Leads downloaded successfully as CSV.', 'success');
+        })
+        .catch(err => {
+          console.warn('Server export failed, falling back to local CSV export.', err.message);
+          exportLeadsToCSV();
+        });
+    } else {
+      // If not authenticated, fall back to client-side export from localStorage
+      exportLeadsToCSV();
+    }
   });
 
   // Clear Database
@@ -739,16 +756,16 @@ function initPrivacyModal() {
           <button class="close-modal-btn" id="close-privacy-modal">&times;</button>
         </div>
         <div class="modal-body" style="font-family: var(--font-body); font-size: 13px; line-height: 1.6; color: var(--ink-soft);">
-          <p style="margin-bottom: 12px;">At R4Realty, we value the confidentiality of our clients and site visitors. This Privacy Policy describes how we collect, store, and protect your personal information.</p>
+          <p style="margin-bottom: 12px;">At R4Realty, we value the confidentiality of our clients and site visitors. This Privacy Policy describes how we collect, store, and protect your persona[...]</p>
           
           <h4 style="font-size: 14px; margin-top: 16px; margin-bottom: 6px; color: var(--ink); font-family: var(--font-heading);">1. Data Collection</h4>
-          <p style="margin-bottom: 12px;">We only collect name, phone number, email address, and specific property requirements when you voluntarily submit them through our inquiry and consultation booking forms.</p>
+          <p style="margin-bottom: 12px;">We only collect name, phone number, email address, and specific property requirements when you voluntarily submit them through our inquiry and consultati[...]</p>
           
           <h4 style="font-size: 14px; margin-top: 16px; margin-bottom: 6px; color: var(--ink); font-family: var(--font-heading);">2. Data Storage &amp; Safety</h4>
-          <p style="margin-bottom: 12px;">All submitted information is processed through server-side request verification and securely stored in our offline file database (leads_db.json) or localized MySQL schemas. We implement headers authorization to protect your records from unauthorized scraping.</p>
+          <p style="margin-bottom: 12px;">All submitted information is processed through server-side request verification and securely stored in our offline file database (leads_db.json) or local[...]</p>
           
           <h4 style="font-size: 14px; margin-top: 16px; margin-bottom: 6px; color: var(--ink); font-family: var(--font-heading);">3. Third-Party Sharing</h4>
-          <p style="margin-bottom: 12px;">R4Realty never sells, rents, or shares your personal contact credentials with third-party brokers or advertisers. We redirect form submissions to WhatsApp solely to establish direct communication between you and Rajveer Singh.</p>
+          <p style="margin-bottom: 12px;">R4Realty never sells, rents, or shares your personal contact credentials with third-party brokers or advertisers. We redirect form submissions to WhatsAp[...]</p>
           
           <h4 style="font-size: 14px; margin-top: 16px; margin-bottom: 6px; color: var(--ink); font-family: var(--font-heading);">4. Your Rights</h4>
           <p style="margin-bottom: 12px;">You can request to view, edit, or permanently erase your lead entry logs from our local database at any time by calling or messaging us directly.</p>
@@ -798,17 +815,17 @@ function initAboutModal() {
           <button class="close-modal-btn" id="close-about-modal">&times;</button>
         </div>
         <div class="modal-body" style="font-family: var(--font-body); font-size: 13px; line-height: 1.6; color: var(--ink-soft);">
-          <p style="margin-bottom: 12px;"><strong>R4Realty</strong> is a premier property consultancy founded and led by <strong>Rajveer Singh</strong>. We represent institutional-grade commercial spaces, luxury low-density housing, and secure freehold plotting developments in high-appreciation micro-markets.</p>
+          <p style="margin-bottom: 12px;"><strong>R4Realty</strong> is a premier property consultancy founded and led by <strong>Rajveer Singh</strong>. We represent institutional-grade commercia[...]</p>
           
           <h4 style="font-size: 14px; margin-top: 16px; margin-bottom: 6px; color: var(--ink); font-family: var(--font-heading);">Our Core Verticals</h4>
           <ul style="margin-bottom: 12px; padding-left: 18px; list-style-type: square;">
-            <li style="margin-bottom: 4px;"><strong>High-Yield Commercial</strong>: Pre-leased assets (like Mall of Expressway &amp; GYGY Mentis) offering up to 11% rental returns with long-term lock-ins.</li>
+            <li style="margin-bottom: 4px;"><strong>High-Yield Commercial</strong>: Pre-leased assets (like Mall of Expressway &amp; GYGY Mentis) offering up to 11% rental returns with long-term [...]</li>
             <li style="margin-bottom: 4px;"><strong>Premium Residential</strong>: Low-rise, low-density residences in Sector-150 Noida focusing on green living and high privacy.</li>
             <li style="margin-bottom: 4px;"><strong>Appreciating Land Plots</strong>: RERA-approved township plots in Goa (Vedic City) and Greater Noida freehold locations.</li>
           </ul>
           
           <h4 style="font-size: 14px; margin-top: 16px; margin-bottom: 6px; color: var(--ink); font-family: var(--font-heading);">Why Invest Through Us?</h4>
-          <p style="margin-bottom: 12px;">We do not charge brokerage to our buyers. By working directly with developer builders (Sikka Group, Bhutani, Ebrix Developers), we guarantee direct developer inventory allocation, authentic pre-launch prices, and end-to-end registry paperwork assistance.</p>
+          <p style="margin-bottom: 12px;">We do not charge brokerage to our buyers. By working directly with developer builders (Sikka Group, Bhutani, Ebrix Developers), we guarantee direct devel[...]</p>
           
           <p style="margin-top: 20px; font-size: 11.5px; color: var(--muted); font-family: var(--font-mono);">R4Realty Noida &bull; RERA Verified Portfolios</p>
         </div>
@@ -856,7 +873,7 @@ function initTheme() {
   const btnWrapper = document.querySelector('header .nav-wrapper div[style*="display: flex"]');
   if (btnWrapper) {
     const toggleHTML = `
-      <button class="theme-toggle-btn" id="themeToggle" title="Toggle Theme" style="background: none; border: var(--border-thin); color: var(--ink); width: 34px; height: 34px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all var(--transition-fast); margin-right: 4px; font-size: 13px; border-radius: var(--radius); outline: none;">
+      <button class="theme-toggle-btn" id="themeToggle" title="Toggle Theme" style="background: none; border: var(--border-thin); color: var(--ink); width: 34px; height: 34px; display: flex; alig[...]>
         <i class="fas ${isDark ? 'fa-sun' : 'fa-moon'}"></i>
       </button>
     `;
@@ -1004,4 +1021,3 @@ function initProximityMap() {
     });
   });
 }
-
