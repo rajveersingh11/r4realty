@@ -1,0 +1,42 @@
+name: Update sitemap & OG images
+on:
+  push:
+    branches:
+      - main
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: true
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+      - name: Install dependencies
+        run: npm install
+      - name: Generate OG PNGs
+        run: npm run generate-og-pngs
+      - name: Build sitemap
+        run: npm run build-sitemap
+      - name: Commit sitemap and OG images
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add sitemap.xml || true
+          git add assets/og/*.png || true
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "chore(sitemap): update sitemap.xml and OG images" || true
+            git push origin HEAD:main
+          fi
+      - name: Ping Google
+        run: |
+          curl -sS "http://www.google.com/ping?sitemap=https://r4realty.in/sitemap.xml" || true
+      - name: Ping Bing
+        run: |
+          curl -sS "https://www.bing.com/ping?sitemap=https://r4realty.in/sitemap.xml" || true
