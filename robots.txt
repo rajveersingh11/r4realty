@@ -2,4 +2,4 @@ User-agent: *
 Disallow:
 
 # Sitemap location
-Sitemap: /sitemap.xml
+Sitemap: https://r4realty.in/sitemap.xml

@@ -1,32 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>/</loc>
+    <loc>https://r4realty.in/</loc>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>/projects/</loc>
+    <loc>https://r4realty.in/projects/</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>/projects/gygy-mentis.html</loc>
+    <loc>https://r4realty.in/projects/gygy-mentis.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>/projects/mall-of-expressway.html</loc>
+    <loc>https://r4realty.in/projects/mall-of-expressway.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>/projects/sector-151-farmlands.html</loc>
+    <loc>https://r4realty.in/projects/sector-151-farmlands.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>/projects/vedic-city-goa.html</loc>
+    <loc>https://r4realty.in/projects/vedic-city-goa.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
