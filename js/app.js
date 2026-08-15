@@ -18,6 +18,9 @@ document.addEventListener('DOMContentLoaded', () => {
   initAboutModal();
   initFaqAccordion();
   initProximityMap();
+  initHomepageFeatures();
+  initCatalogSearch();
+  initProjectSpecificFeatures();
 });
 
 /* ==========================================================================
@@ -1023,4 +1026,458 @@ function initProximityMap() {
       tooltip.style.opacity = '0';
     });
   });
+}
+
+/* ==========================================================================
+   13. Homepage Specific Event Listeners (Eliminates Inline Script Blocks)
+   ========================================================================== */
+function initHomepageFeatures() {
+  const cards = document.querySelectorAll('.type-card');
+  const hiddenType = document.getElementById('hiddenProjectType');
+  
+  if (cards.length > 0) {
+    cards.forEach(card => {
+      card.addEventListener('click', () => {
+        cards.forEach(c => c.classList.remove('active'));
+        card.classList.add('active');
+        const selectedVal = card.getAttribute('data-type');
+        if (hiddenType) {
+          hiddenType.value = selectedVal + " Search Inquiry";
+        }
+      });
+    });
+  }
+
+  const mainForm = document.getElementById('mainLeadForm');
+  if (mainForm) {
+    mainForm.addEventListener('submit', (e) => {
+      const name = document.getElementById('fname').value.trim();
+      const phone = document.getElementById('fphone').value.trim();
+      const email = document.getElementById('femail').value.trim();
+      const budget = document.getElementById('fbudget').value;
+      const extraMsg = document.getElementById('fsector').value.trim();
+      const selectedTypeElement = document.querySelector('.type-card.active');
+      const selectedType = selectedTypeElement ? selectedTypeElement.getAttribute('data-type') : 'Commercial/Residential';
+
+      let text = `Hi Rajveer, I found R4Realty online.%0A%0A`;
+      text += `*Name:* ${encodeURIComponent(name)}%0A`;
+      text += `*Phone:* ${encodeURIComponent(phone)}%0A`;
+      if (email) text += `*Email:* ${encodeURIComponent(email)}%0A`;
+      text += `*Looking for:* ${encodeURIComponent(selectedType)}%0A`;
+      if (budget) text += `*Budget:* ${encodeURIComponent(budget)}%0A`;
+      if (extraMsg) text += `*Details:* ${encodeURIComponent(extraMsg)}%0A`;
+
+      setTimeout(() => {
+        window.open(`https://wa.me/917838416570?text=${text}`, '_blank');
+      }, 100);
+    });
+  }
+}
+
+/* ==========================================================================
+   14. Project Catalog Live Search & Filter (Eliminates Inline Script Blocks)
+   ========================================================================== */
+function initCatalogSearch() {
+  const searchInput = document.getElementById('projectSearch');
+  const filterButtons = document.querySelectorAll('#filterBadges button');
+  const projectCards = document.querySelectorAll('#projectsCatalog .project-card');
+
+  if (!searchInput || projectCards.length === 0) return;
+
+  let currentFilter = 'all';
+  let searchQuery = '';
+
+  function filterProjects() {
+    projectCards.forEach(card => {
+      const category = card.getAttribute('data-category');
+      const keywords = card.getAttribute('data-keywords') ? card.getAttribute('data-keywords').toLowerCase() : '';
+      
+      const matchesFilter = (currentFilter === 'all' || category === currentFilter);
+      const matchesSearch = keywords.includes(searchQuery);
+
+      if (matchesFilter && matchesSearch) {
+        card.style.display = 'flex';
+      } else {
+        card.style.display = 'none';
+      }
+    });
+  }
+
+  searchInput.addEventListener('input', (e) => {
+    searchQuery = e.target.value.toLowerCase();
+    filterProjects();
+  });
+
+  filterButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      filterButtons.forEach(b => {
+        b.classList.remove('cta-button');
+        b.classList.add('secondary');
+      });
+      btn.classList.remove('secondary');
+      btn.classList.add('cta-button');
+      
+      currentFilter = btn.getAttribute('data-filter');
+      filterProjects();
+    });
+  });
+}
+
+/* ==========================================================================
+   15. Project Specific Calculators and Form Submissions (No Inline Scripts)
+   ========================================================================== */
+function initProjectSpecificFeatures() {
+  // 1. Bhutani Belfair
+  const belfairSelect = document.getElementById('belfair-type-select');
+  const belfairCost = document.getElementById('belfair-total-cost');
+  const belfairBooking = document.getElementById('belfair-booking-val');
+  const belfairPossession = document.getElementById('belfair-possession-val');
+  const belfairForm = document.getElementById('belfairLeadForm');
+
+  if (belfairSelect && belfairCost) {
+    const calculateBelfair = () => {
+      const size = parseInt(belfairSelect.value);
+      const rate = 20000;
+      const totalCost = size * rate;
+      const booking = totalCost * 0.30;
+      const possession = totalCost * 0.70;
+      belfairCost.textContent = `₹ ${(totalCost / 10000000).toFixed(3)} Cr`;
+      belfairBooking.textContent = `₹ ${(booking / 10000000).toFixed(3)} Cr`;
+      belfairPossession.textContent = `₹ ${(possession / 10000000).toFixed(3)} Cr`;
+    };
+    belfairSelect.addEventListener('change', calculateBelfair);
+    calculateBelfair();
+  }
+  if (belfairForm) {
+    belfairForm.addEventListener('submit', (e) => {
+      const name = document.getElementById('bname_f').value.trim();
+      const phone = document.getElementById('bphone_f').value.trim();
+      const email = document.getElementById('bemail_f').value.trim();
+      const selectedOption = document.getElementById('btype').value;
+      const extraMsg = document.getElementById('bmsg_f').value.trim();
+      let text = `Hi Rajveer, I'm interested in Bhutani Belfair Sector-150 Noida.%0A%0A`;
+      text += `*Project:* Bhutani Belfair (Low-Rise Luxury)%0A`;
+      text += `*Size Selected:* ${encodeURIComponent(selectedOption)}%0A`;
+      text += `*Name:* ${encodeURIComponent(name)}%0A`;
+      text += `*Phone:* ${encodeURIComponent(phone)}%0A`;
+      if (email) text += `*Email:* ${encodeURIComponent(email)}%0A`;
+      if (extraMsg) text += `*Details:* ${encodeURIComponent(extraMsg)}%0A`;
+      text += `Please send the floor layout plans and book a private site visit.`;
+      setTimeout(() => {
+        window.open(`https://wa.me/917838416570?text=${text}`, '_blank');
+      }, 100);
+    });
+  }
+
+  // 2. GYGY Mentis
+  const gygyForm = document.getElementById('gygyLeadForm');
+  if (gygyForm) {
+    gygyForm.addEventListener('submit', (e) => {
+      const name = document.getElementById('gname').value.trim();
+      const phone = document.getElementById('gphone').value.trim();
+      const email = document.getElementById('gemail').value.trim();
+      const userMsg = document.getElementById('gmsg').value.trim();
+      let text = `Hi Rajveer, I'm interested in the GYGY Mentis Food Court unit.%0A%0A`;
+      text += `*Project:* GYGY Mentis, Sector 140, Noida Expressway%0A`;
+      text += `*Unit:* Food Court, 200 sq.ft%0A`;
+      text += `*Price:* Rs 25,000/sq.ft (Rs 50,00,000 total)%0A`;
+      text += `*Name:* ${encodeURIComponent(name)}%0A`;
+      text += `*Phone:* ${encodeURIComponent(phone)}%0A`;
+      if (email) text += `*Email:* ${encodeURIComponent(email)}%0A`;
+      if (userMsg) text += `*Details:* ${encodeURIComponent(userMsg)}%0A`;
+      setTimeout(() => {
+        window.open(`https://wa.me/917838416570?text=${text}`, '_blank');
+      }, 100);
+    });
+  }
+
+  // 3. Mall of Expressway
+  const mallSlider = document.getElementById('mall-size-slider');
+  const mallSizeVal = document.getElementById('mall-size-val');
+  const mallCostVal = document.getElementById('mall-total-cost');
+  const mallBookingVal = document.getElementById('mall-booking-val');
+  const mallAssuredVal = document.getElementById('mall-assured-val');
+  const mallRentVal = document.getElementById('mall-rent-val');
+  const mallForm = document.getElementById('mallLeadForm');
+
+  if (mallSlider && mallSizeVal) {
+    const calculateYield = () => {
+      const size = parseInt(mallSlider.value);
+      mallSizeVal.textContent = size.toLocaleString();
+      const bsp = 32000;
+      const totalCost = size * bsp;
+      const booking = totalCost * 0.5;
+      const monthlyAssured = booking * 0.02;
+      const dmartRent = size * 175;
+      if (totalCost >= 10000000) {
+        mallCostVal.textContent = `₹ ${(totalCost / 10000000).toFixed(2)} Cr`;
+      } else {
+        mallCostVal.textContent = `₹ ${(totalCost / 100000).toFixed(2)} Lakh`;
+      }
+      mallBookingVal.textContent = `₹ ${Math.round(booking).toLocaleString('en-IN')}`;
+      mallAssuredVal.textContent = `₹ ${Math.round(monthlyAssured).toLocaleString('en-IN')} / mo`;
+      mallRentVal.textContent = `₹ ${Math.round(dmartRent).toLocaleString('en-IN')} / mo`;
+    };
+    mallSlider.addEventListener('input', calculateYield);
+    calculateYield();
+  }
+  if (mallForm) {
+    mallForm.addEventListener('submit', (e) => {
+      const name = document.getElementById('mname').value.trim();
+      const phone = document.getElementById('mphone').value.trim();
+      const email = document.getElementById('memail').value.trim();
+      const userMsg = document.getElementById('mmsg').value.trim();
+      let text = `Hi Rajveer, I'm interested in Sikka Mall of Expressway pre-leased commercial unit.%0A%0A`;
+      text += `*Project:* Sikka Mall of Expressway, Pari Chowk%0A`;
+      text += `*Unit:* Pre-Leased Unit (Min. 100 sq.ft)%0A`;
+      text += `*Price:* ₹32,000/sq.ft (₹32,00,000 total)%0A`;
+      text += `*Name:* ${encodeURIComponent(name)}%0A`;
+      text += `*Phone:* ${encodeURIComponent(phone)}%0A`;
+      if (email) text += `*Email:* ${encodeURIComponent(email)}%0A`;
+      if (userMsg) text += `*Details:* ${encodeURIComponent(userMsg)}%0A`;
+      text += `Please share DMart lease terms and booking details.`;
+      setTimeout(() => {
+        window.open(`https://wa.me/917838416570?text=${text}`, '_blank');
+      }, 100);
+    });
+  }
+
+  // 4. Sector 151 Farmlands
+  const farmSlider = document.getElementById('farm-size-slider');
+  const farmSizeVal = document.getElementById('farm-size-val');
+  const farmCostVal = document.getElementById('farm-total-cost');
+  const farmBookingVal = document.getElementById('farm-booking-val');
+  const farmAgreementVal = document.getElementById('farm-agreement-val');
+  const farmRegistrationVal = document.getElementById('farm-registration-val');
+  const farmForm = document.getElementById('farmLeadForm');
+
+  if (farmSlider && farmSizeVal) {
+    const calculateFarms = () => {
+      const size = parseInt(farmSlider.value);
+      farmSizeVal.textContent = size.toLocaleString();
+      const rate = 8500;
+      const totalCost = size * rate;
+      const booking = totalCost * 0.10;
+      const agreement = totalCost * 0.40;
+      const registration = totalCost * 0.50;
+      if (totalCost >= 10000000) {
+        farmCostVal.textContent = `₹ ${(totalCost / 10000000).toFixed(2)} Cr`;
+      } else {
+        farmCostVal.textContent = `₹ ${(totalCost / 100000).toFixed(2)} Lakh`;
+      }
+      farmBookingVal.textContent = `₹ ${Math.round(booking).toLocaleString('en-IN')}`;
+      farmAgreementVal.textContent = `₹ ${Math.round(agreement).toLocaleString('en-IN')}`;
+      farmRegistrationVal.textContent = `₹ ${Math.round(registration).toLocaleString('en-IN')}`;
+    };
+    farmSlider.addEventListener('input', calculateFarms);
+    calculateFarms();
+  }
+  if (farmForm) {
+    farmForm.addEventListener('submit', (e) => {
+      const name = document.getElementById('fname_f').value.trim();
+      const phone = document.getElementById('fphone_f').value.trim();
+      const email = document.getElementById('femail_f').value.trim();
+      const userMsg = document.getElementById('fmsg_f').value.trim();
+      let text = `Hi Rajveer, I'm interested in the Noida Sector 151 Farmland Township.%0A%0A`;
+      text += `*Project:* Noida Sector 151 Farmland plots%0A`;
+      text += `*Size Selected:* ${encodeURIComponent(farmSlider.value)} sq. yards%0A`;
+      text += `*Name:* ${encodeURIComponent(name)}%0A`;
+      text += `*Phone:* ${encodeURIComponent(phone)}%0A`;
+      if (email) text += `*Email:* ${encodeURIComponent(email)}%0A`;
+      if (userMsg) text += `*Details:* ${encodeURIComponent(userMsg)}%0A`;
+      text += `Please share the master plan layout and site visit schedule.`;
+      setTimeout(() => {
+        window.open(`https://wa.me/917838416570?text=${text}`, '_blank');
+      }, 100);
+    });
+  }
+
+  // 5. Sunrise City
+  const sunriseSlider = document.getElementById('sunrise-size-slider');
+  const sunriseSizeVal = document.getElementById('sunrise-size-val');
+  const sunriseCostVal = document.getElementById('sunrise-total-cost');
+  const sunriseBalanceVal = document.getElementById('sunrise-balance-val');
+  const sunriseForm = document.getElementById('sunriseLeadForm');
+
+  if (sunriseSlider && sunriseSizeVal) {
+    const calculateSunrise = () => {
+      const size = parseInt(sunriseSlider.value);
+      sunriseSizeVal.textContent = size.toLocaleString();
+      const rate = 36500;
+      const totalCost = size * rate;
+      const appFee = 51000;
+      const balance = totalCost - appFee;
+      if (totalCost >= 10000000) {
+        sunriseCostVal.textContent = `₹ ${(totalCost / 10000000).toFixed(2)} Cr`;
+      } else {
+        sunriseCostVal.textContent = `₹ ${(totalCost / 100000).toFixed(2)} Lakh`;
+      }
+      if (balance > 0) {
+        if (balance >= 10000000) {
+          sunriseBalanceVal.textContent = `₹ ${(balance / 10000000).toFixed(2)} Cr`;
+        } else {
+          sunriseBalanceVal.textContent = `₹ ${(balance / 100000).toFixed(2)} Lakh`;
+        }
+      } else {
+        sunriseBalanceVal.textContent = `₹ 0`;
+      }
+    };
+    sunriseSlider.addEventListener('input', calculateSunrise);
+    calculateSunrise();
+  }
+  if (sunriseForm) {
+    sunriseForm.addEventListener('submit', (e) => {
+      const name = document.getElementById('sname_f').value.trim();
+      const phone = document.getElementById('sphone_f').value.trim();
+      const email = document.getElementById('semail_f').value.trim();
+      const selectedOption = document.getElementById('stype').value;
+      const extraMsg = document.getElementById('smsg_f').value.trim();
+      let text = `Hi Rajveer, I'm interested in Sunrise City Greater Noida.%0A%0A`;
+      text += `*Project:* Sunrise City (Behind Galgotias Uni)%0A`;
+      text += `*Size Selected:* ${encodeURIComponent(selectedOption)}%0A`;
+      text += `*Name:* ${encodeURIComponent(name)}%0A`;
+      text += `*Phone:* ${encodeURIComponent(phone)}%0A`;
+      if (email) text += `*Email:* ${encodeURIComponent(email)}%0A`;
+      if (extraMsg) text += `*Details:* ${encodeURIComponent(extraMsg)}%0A`;
+      text += `Please send the Phase 1 & 2 layouts and application guidelines.`;
+      setTimeout(() => {
+        window.open(`https://wa.me/917838416570?text=${text}`, '_blank');
+      }, 100);
+    });
+  }
+
+  // 6. Vedic City Goa
+  const goaSelect = document.getElementById('goa-type-select');
+  const goaSlider = document.getElementById('goa-size-slider');
+  const goaSizeVal = document.getElementById('goa-size-val');
+  const goaRateVal = document.getElementById('goa-rate-val');
+  const goaCostVal = document.getElementById('goa-total-cost');
+  const goaBookingVal = document.getElementById('goa-booking-val');
+  const goaAgreementVal = document.getElementById('goa-agreement-val');
+  const goaForm = document.getElementById('goaLeadForm');
+
+  if (goaSlider && goaSelect) {
+    const calculatePlots = () => {
+      const size = parseInt(goaSlider.value);
+      goaSizeVal.textContent = size.toLocaleString();
+      const type = goaSelect.value;
+      let rate = 23500;
+      if (type === 'graama') {
+        rate = 34500;
+      } else if (type === 'anandam') {
+        rate = 23500;
+      } else if (type === 'praana') {
+        rate = 23500;
+      }
+      goaRateVal.textContent = `₹ ${rate.toLocaleString()}/sq yd`;
+      const totalCost = size * rate;
+      const reservation = totalCost * 0.10;
+      const agreement = totalCost * 0.30;
+      if (totalCost >= 10000000) {
+        goaCostVal.textContent = `₹ ${(totalCost / 10000000).toFixed(2)} Cr`;
+      } else {
+        goaCostVal.textContent = `₹ ${(totalCost / 100000).toFixed(2)} Lakh`;
+      }
+      goaBookingVal.textContent = `₹ ${Math.round(reservation).toLocaleString('en-IN')}`;
+      goaAgreementVal.textContent = `₹ ${Math.round(agreement).toLocaleString('en-IN')}`;
+    };
+
+    goaSelect.addEventListener('change', () => {
+      const val = goaSelect.value;
+      if (val === 'graama') {
+        goaSlider.min = 200;
+        goaSlider.max = 800;
+        goaSlider.value = 300;
+      } else if (val === 'anandam') {
+        goaSlider.min = 150;
+        goaSlider.max = 600;
+        goaSlider.value = 240;
+      } else if (val === 'praana') {
+        goaSlider.min = 500;
+        goaSlider.max = 3000;
+        goaSlider.value = 1380;
+      }
+      calculatePlots();
+    });
+
+    goaSlider.addEventListener('input', calculatePlots);
+    calculatePlots();
+  }
+  if (goaForm) {
+    goaForm.addEventListener('submit', (e) => {
+      const name = document.getElementById('vname').value.trim();
+      const phone = document.getElementById('vphone').value.trim();
+      const email = document.getElementById('vemail').value.trim();
+      const selectedPlot = document.getElementById('vtype').value;
+      const extraMsg = document.getElementById('vmsg').value.trim();
+      let text = `Hi Rajveer, I'm interested in Vedic City North Goa.%0A%0A`;
+      text += `*Project:* Vedic City Goa (NH-66)%0A`;
+      text += `*Plot Choice:* ${encodeURIComponent(selectedPlot)}%0A`;
+      text += `*Name:* ${encodeURIComponent(name)}%0A`;
+      text += `*Phone:* ${encodeURIComponent(phone)}%0A`;
+      if (email) text += `*Email:* ${encodeURIComponent(email)}%0A`;
+      if (extraMsg) text += `*Details:* ${encodeURIComponent(extraMsg)}%0A`;
+      text += `Please send the plot layout maps and booking formalities.`;
+      setTimeout(() => {
+        window.open(`https://wa.me/917838416570?text=${text}`, '_blank');
+      }, 100);
+    });
+  }
+
+  // 7. Template Page
+  const typeSelect = document.getElementById('calc-type-select');
+  const templateSlider = document.getElementById('calc-size-slider');
+  const templateSizeVal = document.getElementById('calc-size-val');
+  const templateCostVal = document.getElementById('calc-total-cost');
+  const templateBookingVal = document.getElementById('calc-booking-milestone');
+  const templateRentVal = document.getElementById('calc-monthly-rent');
+  const templateForm = document.getElementById('templateProjectInquiryForm');
+
+  if (templateSlider && typeSelect) {
+    const calculateTemplateCosts = () => {
+      const size = parseInt(templateSlider.value);
+      templateSizeVal.textContent = size.toLocaleString();
+      const type = typeSelect.value;
+      let rate = 8000;
+      let rentalRateSqFt = 22;
+      if (type === 'optionA') {
+        rate = 8500;
+        rentalRateSqFt = 24;
+      } else if (type === 'optionB') {
+        rate = 7800;
+        rentalRateSqFt = 20;
+      }
+      const totalCost = size * rate;
+      const bookingAmount = totalCost * 0.10;
+      const monthlyRent = size * rentalRateSqFt;
+      if (totalCost >= 10000000) {
+        templateCostVal.textContent = `₹ ${(totalCost / 10000000).toFixed(2)} Cr`;
+      } else {
+        templateCostVal.textContent = `₹ ${(totalCost / 100000).toFixed(2)} Lakh`;
+      }
+      templateBookingVal.textContent = `₹ ${Math.round(bookingAmount).toLocaleString('en-IN')}`;
+      templateRentVal.textContent = `₹ ${Math.round(monthlyRent).toLocaleString('en-IN')} /mo`;
+    };
+    typeSelect.addEventListener('change', calculateTemplateCosts);
+    templateSlider.addEventListener('input', calculateTemplateCosts);
+    calculateTemplateCosts();
+  }
+  if (templateForm) {
+    templateForm.addEventListener('submit', (e) => {
+      const name = document.getElementById('tpname').value.trim();
+      const phone = document.getElementById('tpphone').value.trim();
+      const email = document.getElementById('tpemail').value.trim();
+      const unit = document.getElementById('tpmsg').value;
+      const projectName = document.getElementById('projectTrackingName').value;
+      let text = `Hi Rajveer, I found your property listing online for: ${projectName}.%0A%0A`;
+      text += `*Name:* ${encodeURIComponent(name)}%0A`;
+      text += `*Phone:* ${encodeURIComponent(phone)}%0A`;
+      if (email) text += `*Email:* ${encodeURIComponent(email)}%0A`;
+      text += `*Preferred Unit:* ${encodeURIComponent(unit)}%0A`;
+      text += `Please send the digital brochure and location pricing sheet.`;
+      setTimeout(() => {
+        window.open(`https://wa.me/917838416570?text=${text}`, '_blank');
+      }, 100);
+    });
+  }
 }
