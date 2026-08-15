@@ -25,10 +25,14 @@
   <meta name="twitter:image" content="https://r4realty.in/assets/og/farmlands-1200x630.png">
 
   <!-- CSS Stylesheets -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
   <link rel="stylesheet" href="/css/style.css">
   
   <!-- FontAwesome Icons for UI -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" media="print" onload="this.media='all'">
+  <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"></noscript>
 
   <!-- Structured data: Product / Offer -->
   <script type="application/ld+json">
@@ -79,7 +83,7 @@
         
         <div style="display: flex; gap: 10px; align-items: center;">
           <a href="tel:+917838416570" class="cta-button secondary"><i class="fas fa-phone-alt"></i> Call</a>
-          <button class="hamburger" id="hamburgerMenu"><i class="fas fa-bars"></i></button>
+          <button class="hamburger" id="hamburgerMenu" aria-label="Toggle Navigation Menu"><i class="fas fa-bars"></i></button>
         </div>
       </div>
     </div>
@@ -351,75 +355,15 @@
         </div>
         <div style="display: flex; align-items: center; gap: 6px; font-family: var(--font-mono); font-size: 11px;">
           <span>&copy; 2026</span>
-          <button class="admin-lock-btn" id="admin-dashboard-trigger" title="Admin Database Panel"><i class="fas fa-lock"></i></button>
+          <button class="admin-lock-btn" id="admin-dashboard-trigger" title="Admin Database Panel" aria-label="Open Admin Dashboard"><i class="fas fa-lock"></i></button>
         </div>
       </div>
     </footer>
   </div>
 
   <!-- JavaScript scripts -->
-  <script src="/js/app.js"></script>
-  <script>
-    // Farmland calculation logic
-    const sizeSlider = document.getElementById('farm-size-slider');
-    const sizeVal = document.getElementById('farm-size-val');
-    const costVal = document.getElementById('farm-total-cost');
-    const bookingVal = document.getElementById('farm-booking-val');
-    const agreementVal = document.getElementById('farm-agreement-val');
-    const registrationVal = document.getElementById('farm-registration-val');
+  <script src="/js/app.js" defer></script>
 
-    function calculateFarms() {
-      if(!sizeSlider) return;
-
-      const size = parseInt(sizeSlider.value);
-      sizeVal.textContent = size.toLocaleString();
-
-      const rate = 8500;
-      const totalCost = size * rate;
-
-      const booking = totalCost * 0.10;
-      const agreement = totalCost * 0.40;
-      const registration = totalCost * 0.50;
-
-      // Render Cost
-      if (totalCost >= 10000000) {
-        costVal.textContent = `₹ ${(totalCost / 10000000).toFixed(2)} Cr`;
-      } else {
-        costVal.textContent = `₹ ${(totalCost / 100000).toFixed(2)} Lakh`;
-      }
-
-      bookingVal.textContent = `₹ ${Math.round(booking).toLocaleString('en-IN')}`;
-      agreementVal.textContent = `₹ ${Math.round(agreement).toLocaleString('en-IN')}`;
-      registrationVal.textContent = `₹ ${Math.round(registration).toLocaleString('en-IN')}`;
-    }
-
-    sizeSlider.addEventListener('input', calculateFarms);
-    calculateFarms();
-
-    // Lead Form WhatsApp redirection
-    const farmForm = document.getElementById('farmLeadForm');
-    if (farmForm) {
-      farmForm.addEventListener('submit', (e) => {
-        const name = document.getElementById('fname_f').value.trim();
-        const phone = document.getElementById('fphone_f').value.trim();
-        const email = document.getElementById('femail_f').value.trim();
-        const userMsg = document.getElementById('fmsg_f').value.trim();
-
-        let text = `Hi Rajveer, I'm interested in the Noida Sector 151 Farmland Township.%0A%0A`;
-        text += `*Project:* Noida Sector 151 Farmland plots%0A`;
-        text += `*Size Selected:* ${encodeURIComponent(sizeSlider.value)} sq. yards%0A`;
-        text += `*Name:* ${encodeURIComponent(name)}%0A`;
-        text += `*Phone:* ${encodeURIComponent(phone)}%0A`;
-        if (email) text += `*Email:* ${encodeURIComponent(email)}%0A`;
-        if (userMsg) text += `*Details:* ${encodeURIComponent(userMsg)}%0A`;
-        text += `Please share the master plan layout and site visit schedule.`;
-
-        setTimeout(() => {
-          window.open(`https://wa.me/917838416570?text=${text}`, '_blank');
-        }, 100);
-      });
-    }
-  </script>
 </body>
 </html>
 
