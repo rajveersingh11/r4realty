@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: r4realty-web
+    env: node
+    region: oregon            # change region to one near your users if needed
+    branch: secure/admin-pin-rate-limit
+    plan: starter             # change to free/starter/standard as needed
+    buildCommand: "npm install"
+    startCommand: "npm start"
+    envVars:
+      - key: NODE_ENV
+        value: production
+    # Do NOT put secrets here. Set ADMIN_PIN and any DB secrets in Render's dashboard under Environment > Secrets.
+    healthCheckPath: "/"
+    instanceCount: 1
+    instanceType: "starter"
+    autoDeploy: true
