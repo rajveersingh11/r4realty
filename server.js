@@ -4,12 +4,24 @@ const path = require('path');
 const fs = require('fs/promises');
 require('dotenv').config();
 
+// Security / rate-limiting and headers
+const rateLimit = require('express-rate-limit');
+const helmet = require('helmet');
+
 const app = express();
 const PORT = process.env.PORT || 3000;
 const LEADS_FILE = path.join(__dirname, 'leads_db.json');
-const ADMIN_PIN = process.env.ADMIN_PIN || 'admin123';
+
+// ADMIN_PIN must be provided via environment for admin endpoints to work
+const ADMIN_PIN = process.env.ADMIN_PIN;
+if (!ADMIN_PIN) {
+  console.error('FATAL: ADMIN_PIN environment variable is not set. Admin endpoints are disabled for security.');
+  console.error('Set ADMIN_PIN in your environment (e.g., export ADMIN_PIN="<strong-secret>") and restart the server.');
+  process.exit(1);
+}
 
 // Middleware
+app.use(helmet());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -33,9 +45,9 @@ let pool = null;
 // Security Authorization Middleware
 function authorizeAdmin(req, res, next) {
   const clientPin = req.headers['x-admin-pin'];
-  if (clientPin !== ADMIN_PIN) {
-    console.warn(`Unauthorized access attempt from IP: ${req.ip}`);
-    return res.status(401).json({ error: 'Unauthorized: Invalid Admin PIN.' });
+  if (!clientPin || clientPin !== ADMIN_PIN) {
+    console.warn(`Unauthorized admin attempt from IP ${req.ip} at ${new Date().toISOString()}`);
+    return res.status(401).json({ error: 'Unauthorized' });
   }
   next();
 }
@@ -101,10 +113,27 @@ async function initDatabase() {
   }
 }
 
+// Rate limiter for admin-sensitive routes
+const adminLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 20, // limit each IP to 20 requests per windowMs
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: 'Too many requests, please try again later.' }
+});
+
+// Rate limiter for public lead submissions (basic anti-spam)
+const publicLimiter = rateLimit({
+  windowMs: 1 * 60 * 1000, // 1 minute
+  max: 30, // max 30 submissions per IP per minute
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
 // REST API Routes
 
 // 1. Create a lead (MySQL + JSON fallback - Open endpoint for submissions)
-app.post('/api/leads', async (req, res) => {
+app.post('/api/leads', publicLimiter, async (req, res) => {
   const { id, name, phone, email, project, message, timestamp, status } = req.body;
   
   if (!name || !phone) {
@@ -165,32 +194,63 @@ app.post('/api/leads', async (req, res) => {
   }
 });
 
-// 2. Fetch all leads (Protected - Admin pin header required)
-app.get('/api/leads', authorizeAdmin, async (req, res) => {
-  // Try reading from MySQL if pool is active
+// Helper: fetch all leads, preferring MySQL
+async function fetchAllLeads() {
   if (pool) {
     try {
       const [rows] = await pool.query('SELECT * FROM leads ORDER BY timestamp DESC');
-      console.log('Leads fetched from MySQL.');
-      return res.status(200).json(rows);
+      return rows;
     } catch (error) {
-      console.warn('MySQL fetch failed, reading from server JSON file instead:', error.message);
+      console.warn('MySQL fetch failed, falling back to file:', error.message);
     }
   }
+  return await readLeadsFromFile();
+}
 
-  // Fallback: Read from JSON file database
+// 2. Fetch all leads (Protected - Admin pin header required)
+app.get('/api/leads', adminLimiter, authorizeAdmin, async (req, res) => {
   try {
-    const fileLeads = await readLeadsFromFile();
-    console.log('Leads fetched from local JSON file.');
-    res.status(200).json(fileLeads);
+    const rows = await fetchAllLeads();
+    res.status(200).json(rows);
   } catch (err) {
-    console.error('Failed to read leads from database:', err.message);
+    console.error('Failed to fetch leads:', err.message);
     res.status(500).json({ error: 'Failed to read database records.' });
   }
 });
 
+// 2b. Export leads as CSV (Protected)
+app.get('/api/leads/export', adminLimiter, authorizeAdmin, async (req, res) => {
+  try {
+    const leads = await fetchAllLeads();
+
+    res.setHeader('Content-Type', 'text/csv');
+    res.setHeader('Content-Disposition', `attachment; filename="r4realty_leads_${new Date().toISOString().slice(0,10)}.csv"`);
+
+    // CSV header
+    res.write('Date & Time,Name,Phone,Email,Project,Message,Status\n');
+
+    leads.forEach(lead => {
+      const row = [
+        `"${(lead.timestamp || '').toString().replace(/"/g, '""')}"`,
+        `"${(lead.name || '').toString().replace(/"/g, '""')}"`,
+        `"${(lead.phone || '').toString().replace(/"/g, '""')}"`,
+        `"${(lead.email || '').toString().replace(/"/g, '""')}"`,
+        `"${(lead.project || '').toString().replace(/"/g, '""')}"`,
+        `"${(lead.message || '').toString().replace(/"/g, '""')}"`,
+        `"${(lead.status || 'New').toString().replace(/"/g, '""')}"`
+      ];
+      res.write(row.join(',') + '\n');
+    });
+
+    res.end();
+  } catch (err) {
+    console.error('Failed to export leads as CSV:', err.message);
+    res.status(500).json({ error: 'Failed to export leads.' });
+  }
+});
+
 // 3. Clear database (Protected - Admin pin header required)
-app.delete('/api/leads', authorizeAdmin, async (req, res) => {
+app.delete('/api/leads', adminLimiter, authorizeAdmin, async (req, res) => {
   // Clear MySQL if pool is active
   if (pool) {
     try {
