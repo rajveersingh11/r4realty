@@ -2,14 +2,15 @@ const fs = require('fs');
 const path = require('path');
 
 const domain = 'https://r4realty.in';
-const pages = ['/', '/projects/'];
+const pages = ['/', '/projects'];
 
 const projectsDir = path.join(__dirname, '..', 'projects');
 if (fs.existsSync(projectsDir)) {
   const files = fs.readdirSync(projectsDir);
   files.forEach(f => {
-    if (f.endsWith('.html')) {
-      pages.push('/projects/' + f);
+    if (f.endsWith('.html') && f !== 'index.html' && f !== 'template.html') {
+      const cleanName = f.replace('.html', '');
+      pages.push('/projects/' + cleanName);
     }
   });
 }

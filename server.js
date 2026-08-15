@@ -25,6 +25,26 @@ app.use(helmet());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// Clean URLs / SEO routing for projects catalog and sub-pages
+const projectPages = [
+  'bhutani-belfair',
+  'gygy-mentis',
+  'mall-of-expressway',
+  'sector-151-farmlands',
+  'sunrise-city',
+  'vedic-city-goa'
+];
+
+app.get(['/projects', '/projects/'], (req, res) => {
+  res.sendFile(path.join(__dirname, 'projects', 'index.html'));
+});
+
+projectPages.forEach(project => {
+  app.get([`/projects/${project}`, `/${project}`], (req, res) => {
+    res.sendFile(path.join(__dirname, 'projects', `${project}.html`));
+  });
+});
+
 // Serve static assets from root directory
 app.use(express.static(__dirname));
 

@@ -2,32 +2,34 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://r4realty.in/</loc>
-    <changefreq>weekly</changefreq>
-    <priority>1.0</priority>
+    <lastmod>2026-08-15T14:20:06.065Z</lastmod>
   </url>
   <url>
-    <loc>https://r4realty.in/projects/</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
+    <loc>https://r4realty.in/projects</loc>
+    <lastmod>2026-08-15T14:20:06.073Z</lastmod>
   </url>
   <url>
-    <loc>https://r4realty.in/projects/gygy-mentis.html</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <loc>https://r4realty.in/projects/bhutani-belfair</loc>
+    <lastmod>2026-08-15T14:20:06.073Z</lastmod>
   </url>
   <url>
-    <loc>https://r4realty.in/projects/mall-of-expressway.html</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <loc>https://r4realty.in/projects/gygy-mentis</loc>
+    <lastmod>2026-08-15T14:20:06.073Z</lastmod>
   </url>
   <url>
-    <loc>https://r4realty.in/projects/sector-151-farmlands.html</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
+    <loc>https://r4realty.in/projects/mall-of-expressway</loc>
+    <lastmod>2026-08-15T14:20:06.073Z</lastmod>
   </url>
   <url>
-    <loc>https://r4realty.in/projects/vedic-city-goa.html</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
+    <loc>https://r4realty.in/projects/sector-151-farmlands</loc>
+    <lastmod>2026-08-15T14:20:06.073Z</lastmod>
+  </url>
+  <url>
+    <loc>https://r4realty.in/projects/sunrise-city</loc>
+    <lastmod>2026-08-15T14:20:06.073Z</lastmod>
+  </url>
+  <url>
+    <loc>https://r4realty.in/projects/vedic-city-goa</loc>
+    <lastmod>2026-08-15T14:20:06.073Z</lastmod>
   </url>
 </urlset>
