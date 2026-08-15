@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 
 const domain = 'https://r4realty.in';
-const pages = ['/', '/projects'];
+const pages = ['/', '/projects', '/blog'];
 
 const projectsDir = path.join(__dirname, '..', 'projects');
 if (fs.existsSync(projectsDir)) {
@@ -11,6 +11,17 @@ if (fs.existsSync(projectsDir)) {
     if (f.endsWith('.html') && f !== 'index.html' && f !== 'template.html') {
       const cleanName = f.replace('.html', '');
       pages.push('/projects/' + cleanName);
+    }
+  });
+}
+
+const blogDir = path.join(__dirname, '..', 'blog');
+if (fs.existsSync(blogDir)) {
+  const files = fs.readdirSync(blogDir);
+  files.forEach(f => {
+    if (f.endsWith('.html') && f !== 'index.html') {
+      const cleanName = f.replace('.html', '');
+      pages.push('/blog/' + cleanName);
     }
   });
 }

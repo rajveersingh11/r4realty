@@ -45,6 +45,19 @@ projectPages.forEach(project => {
   });
 });
 
+// Clean URLs / SEO routing for blog posts
+app.get(['/blog', '/blog/'], (req, res) => {
+  res.sendFile(path.join(__dirname, 'blog', 'index.html'));
+});
+
+app.get(['/blog/noida-expressway-commercial-real-estate-guide-2026', '/blog/noida-expressway-commercial-real-estate-guide-2026/'], (req, res) => {
+  res.sendFile(path.join(__dirname, 'blog', 'noida-expressway-commercial-real-estate-guide-2026.html'));
+});
+
+app.get(['/blog/delhi-ncr-real-estate-trends-2026', '/blog/delhi-ncr-real-estate-trends-2026/'], (req, res) => {
+  res.sendFile(path.join(__dirname, 'blog', 'delhi-ncr-real-estate-trends-2026.html'));
+});
+
 // Serve static assets from root directory
 app.use(express.static(__dirname));
 
