@@ -1,17 +1,24 @@
 # R4Realty - Noida Property Consultancy
 
-R4Realty is a premium real estate advisory portal for property investments in Noida, Greater Noida, and Goa, led by Rajveer Singh. This file serves as a guide for AI agents and LLMs to understand the site's structure, available properties, and investment guides.
+R4Realty is a premium real estate advisory portal for property investments in Noida, Greater Noida, and Goa, led by Rajveer Singh. 
+Govt. of India MSME / Udyam Registration: UDYAM-RJ-11-0089088.
+
+This file serves as a guide for AI agents and LLMs to understand the site's structure, available properties, and investment guides.
 
 ## Main Navigation
 
 - [Home](https://r4realty.in/) - Main landing page with contact forms and location mapping.
 - [All Projects](https://r4realty.in/projects) - Catalog of residential, commercial, and plot projects.
+- [Noida Projects](https://r4realty.in/projects/noida) - Verified Noida & Noida Expressway properties.
+- [Greater Noida Projects](https://r4realty.in/projects/greater-noida) - Verified Greater Noida & Pari Chowk properties.
+- [Goa Projects](https://r4realty.in/projects/goa) - North Goa luxury plotting & villa estates.
 - [Blog & Guides](https://r4realty.in/blog) - Authoritative real estate guides and market reports.
 
 ## Projects
 
 - [GYGY Mentis](https://r4realty.in/projects/gygy-mentis) - Commercial IT park & food court in Sector 140, Noida.
 - [Mall of Expressway](https://r4realty.in/projects/mall-of-expressway) - Pre-leased commercial retail units in Pari Chowk, Greater Noida.
+- [Ace Terra](https://r4realty.in/projects/ace-terra) - Forest-themed luxury 3 & 4 BHK residences in Sector 150, Noida.
 - [Vedic City Goa](https://r4realty.in/projects/vedic-city-goa) - Premium villa and farmhouse plots in North Goa.
 - [Bhutani Belfair](https://r4realty.in/projects/bhutani-belfair) - Low-density luxury residential flats in Sector 150, Noida.
 - [Sector 151 Farmlands](https://r4realty.in/projects/sector-151-farmlands) - Gated farmhouse plot community in Sector 151, Noida.
@@ -21,3 +28,15 @@ R4Realty is a premium real estate advisory portal for property investments in No
 
 - [Noida Expressway Commercial Investment Guide 2026](https://r4realty.in/blog/noida-expressway-commercial-real-estate-guide-2026) - RERA compliance and growth corridors.
 - [Delhi-NCR Real Estate Market Trends 2026](https://r4realty.in/blog/delhi-ncr-real-estate-trends-2026) - Comprehensive infrastructure-driven growth report.
+
+## Focus Market — Greater Noida Freehold Corridors
+High-appreciation RERA-approved land parcels within expanding industrial, educational, and logistics hubs along the Eastern Peripheral and Yamuna Expressways, delivering attractive capital gains and strong rental yields.
+
+## The R4Realty Investment Framework
+┌────────────────────────────────────────────────────────┐
+│ 1. Legal Due Diligence: 100% RERA verified registry     │
+│ 2. Direct Pricing: Builder pre-launch, 0% brokerage    │
+│ 3. Growth Corridors: Expressway & Metro nexus          │
+│ 4. Yield Optimization: Pre-leased assets & land parcels│
+└────────────────────────────────────────────────────────┘
+
