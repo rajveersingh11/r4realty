@@ -21,6 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initHomepageFeatures();
   initCatalogSearch();
   initProjectSpecificFeatures();
+  initChatbot();
 });
 
 /* ==========================================================================
@@ -815,25 +816,167 @@ function initPrivacyModal() {
 function initAboutModal() {
   const modalHTML = `
     <div class="modal-backdrop" id="about-modal">
-      <div class="modal-content" style="max-width: 500px;">
+      <div class="modal-content" style="max-width: 820px;">
         <div class="modal-header">
-          <h3><i class="fas fa-info-circle"></i> About R4Realty</h3>
+          <div>
+            <h3 style="margin: 0; font-size: 17px;"><i class="fas fa-building" style="color: var(--accent);"></i> About R4Realty</h3>
+            <div style="font-family: var(--font-mono); font-size: 11px; color: var(--accent); margin-top: 2px;">Redefining Real Estate Advisory Through Precision, Integrity, and Institutional Rigor</div>
+          </div>
           <button class="close-modal-btn" id="close-about-modal">&times;</button>
         </div>
         <div class="modal-body" style="font-family: var(--font-body); font-size: 13px; line-height: 1.6; color: var(--ink-soft);">
-          <p style="margin-bottom: 12px;"><strong>R4Realty</strong> is a premier property consultancy founded and led by <strong>Rajveer Singh</strong>. We represent institutional-grade commercia[...]</p>
           
-          <h4 style="font-size: 14px; margin-top: 16px; margin-bottom: 6px; color: var(--ink); font-family: var(--font-heading);">Our Core Verticals</h4>
-          <ul style="margin-bottom: 12px; padding-left: 18px; list-style-type: square;">
-            <li style="margin-bottom: 4px;"><strong>High-Yield Commercial</strong>: Pre-leased assets (like Mall of Expressway &amp; GYGY Mentis) offering up to 11% rental returns with long-term [...]</li>
-            <li style="margin-bottom: 4px;"><strong>Premium Residential</strong>: Low-rise, low-density residences in Sector-150 Noida focusing on green living and high privacy.</li>
-            <li style="margin-bottom: 4px;"><strong>Appreciating Land Plots</strong>: RERA-approved township plots in Goa (Vedic City) and Greater Noida freehold locations.</li>
-          </ul>
+          <p style="margin-bottom: 12px; font-size: 13.5px;"><strong>R4Realty</strong> is a forward-thinking property consultancy and strategic advisory firm headquartered in North India. Founded and spearheaded by <strong>Rajveer Singh</strong>, R4Realty bridges the gap between sophisticated real estate investors, luxury homebuyers, and Tier-1 institutional developers.</p>
           
-          <h4 style="font-size: 14px; margin-top: 16px; margin-bottom: 6px; color: var(--ink); font-family: var(--font-heading);">Why Invest Through Us?</h4>
-          <p style="margin-bottom: 12px;">We do not charge brokerage to our buyers. By working directly with developer builders (Sikka Group, Bhutani, Ebrix Developers), we guarantee direct devel[...]</p>
+          <p style="margin-bottom: 16px;">Built on a foundation of zero-brokerage transparency, data-backed portfolio curation, and uncompromising legal due diligence, we provide end-to-end consultancy for institutional-grade commercial spaces, low-density luxury residential developments, and high-yield strategic land acquisitions.</p>
           
-          <p style="margin-top: 20px; font-size: 11.5px; color: var(--muted); font-family: var(--font-mono);">R4Realty Noida &bull; RERA Verified Portfolios</p>
+          <h4 style="font-size: 14px; margin-top: 18px; margin-bottom: 10px; color: var(--ink); font-family: var(--font-heading); text-transform: uppercase; letter-spacing: 0.05em;"><i class="fas fa-compass" style="color: var(--accent);"></i> Our Philosophy: Direct Institutional Access, Zero Friction</h4>
+          
+          <div class="philosophy-grid" style="margin: 12px 0 20px;">
+            <div class="philosophy-card" style="padding: 14px 12px;">
+              <div class="ph-icon" style="font-size: 18px; margin-bottom: 8px;"><i class="fas fa-hand-holding-usd"></i></div>
+              <h4 style="font-size: 13px; margin-bottom: 6px;">Zero Brokerage for Buyers</h4>
+              <p style="font-size: 12px;">We charge no brokerage or advisory commission to our investors and homebuyers. Our revenue models are aligned directly with master developer partnerships, ensuring clients retain 100% of their purchasing power.</p>
+            </div>
+            <div class="philosophy-card" style="padding: 14px 12px;">
+              <div class="ph-icon" style="font-size: 18px; margin-bottom: 8px;"><i class="fas fa-file-contract"></i></div>
+              <h4 style="font-size: 13px; margin-bottom: 6px;">Direct Inventory Allocation</h4>
+              <p style="font-size: 12px;">Holding authorized representation agreements with leading builders—including Bhutani Infra, Sikka Group, and Ebrix Developers—we secure direct-from-developer pricing, exclusive pre-launch allocations, and preferential inventory before public listing.</p>
+            </div>
+            <div class="philosophy-card" style="padding: 14px 12px;">
+              <div class="ph-icon" style="font-size: 18px; margin-bottom: 8px;"><i class="fas fa-shield-check"></i></div>
+              <h4 style="font-size: 13px; margin-bottom: 6px;">100% Verified Due Diligence</h4>
+              <p style="font-size: 12px;">Every asset in our portfolio undergoes exhaustive legal title checks, financial structure audits, and strict statutory compliance under UP RERA, Goa RERA, and local planning authorities.</p>
+            </div>
+          </div>
+
+          <h4 style="font-size: 14px; margin-top: 20px; margin-bottom: 10px; color: var(--ink); font-family: var(--font-heading); text-transform: uppercase; letter-spacing: 0.05em;"><i class="fas fa-layer-group" style="color: var(--accent);"></i> Our Strategic Investment Verticals</h4>
+          
+          <div class="verticals-grid" style="margin: 12px 0 20px;">
+            <div class="vertical-card" style="padding: 16px 14px;">
+              <div class="v-num">01 / COMMERCIAL</div>
+              <h4 style="font-size: 14px; margin-bottom: 8px;">High-Yield Pre-Leased Commercial Assets</h4>
+              <p class="v-desc" style="font-size: 12px; margin-bottom: 10px;">Commercial real estate remains the premier engine for passive wealth creation when supported by strong tenant profiles, long lock-in agreements, and robust catchment fundamentals.</p>
+              <div class="vertical-subbox">
+                <strong>Strategy &amp; Flagships:</strong>
+                <ul>
+                  <li>Gross rental yields up to 11% with structured lease escalations &amp; long lock-ins.</li>
+                  <li><strong>GYGY Mentis (Sec 140A Noida Exp):</strong> High-density IT/retail corporate catchment.</li>
+                  <li><strong>Sikka Mall of Expressway:</strong> Transit hub near Pari Chowk with pre-leased retail stability.</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="vertical-card" style="padding: 16px 14px;">
+              <div class="v-num">02 / RESIDENTIAL</div>
+              <h4 style="font-size: 14px; margin-bottom: 8px;">Low-Density Premium Residential Living</h4>
+              <p class="v-desc" style="font-size: 12px; margin-bottom: 10px;">Urban living requires a balance between seamless business connectivity and personal sanctuary. We curate residential properties focused on biophilic design, privacy, and long-term asset value.</p>
+              <div class="vertical-subbox">
+                <strong>Focus Corridor — Sector-150 Noida:</strong>
+                <ul>
+                  <li>Recognized as the "Green Lung of Noida" with 80% green-cover mandate &amp; sports-centric master planning.</li>
+                  <li>Direct links to Noida Expressway, Yamuna Expressway &amp; Jewar Airport.</li>
+                  <li>Low-rise configurations, elevated privacy &amp; capital appreciation.</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="vertical-card" style="padding: 16px 14px;">
+              <div class="v-num">03 / PLOTS &amp; LAND</div>
+              <h4 style="font-size: 14px; margin-bottom: 8px;">Appreciating Strategic Land &amp; Township Plots</h4>
+              <p class="v-desc" style="font-size: 12px; margin-bottom: 10px;">Land ownership offers unmatched long-term wealth compounding and total control over layout, architecture, and lifestyle along emerging infrastructure corridors.</p>
+              <div class="vertical-subbox">
+                <strong>Key Growth Corridors:</strong>
+                <ul>
+                  <li><strong>North Goa (Vedic City):</strong> Near MOPA Airport &amp; NH-66 corridor. Master-planned RERA wellness plots (Graama &amp; Soma) for custom villas &amp; holiday rentals.</li>
+                  <li><strong>Greater Noida Freehold Corridors:</strong> RERA-approved parcels along Eastern Peripheral &amp; Yamuna Expressways.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div class="framework-container" style="padding: 18px; margin: 16px 0;">
+            <div class="framework-banner" style="font-size: 12px;">THE R4REALTY ADVISORY CYCLE</div>
+            <div class="framework-cycle-grid">
+              <div class="framework-col" style="padding: 12px;">
+                <h5>1. Curation</h5>
+                <ul>
+                  <li>Macro Research</li>
+                  <li>Yield Modeling</li>
+                  <li>Developer Audit</li>
+                </ul>
+              </div>
+              <div class="framework-col" style="padding: 12px;">
+                <h5>2. Diligence</h5>
+                <ul>
+                  <li>Title Search</li>
+                  <li>RERA Compliance</li>
+                  <li>Rental Escalation</li>
+                </ul>
+              </div>
+              <div class="framework-col" style="padding: 12px;">
+                <h5>3. Execution</h5>
+                <ul>
+                  <li>Direct Allocation</li>
+                  <li>Zero Brokerage</li>
+                  <li>Post-Sales &amp; Leasing</li>
+                </ul>
+              </div>
+            </div>
+            
+            <div class="framework-details-grid">
+              <div class="framework-detail-item">
+                <h6>Macroeconomic Micro-Targeting</h6>
+                <p>We do not sell open catalogs. Every project is selected using traffic flow analytics, infrastructure pipelines (metro extensions, expressways, airports), and demographic absorption rates.</p>
+              </div>
+              <div class="framework-detail-item">
+                <h6>Tenant &amp; Cash Flow Verification</h6>
+                <p>For commercial assets, our financial modeling verifies tenant creditworthiness, weighted average unexpired lease terms (WAULT), and realistic net yield projections rather than inflated developer estimates.</p>
+              </div>
+              <div class="framework-detail-item">
+                <h6>Turnkey Acquisition Support</h6>
+                <p>From initial site inspection and inventory reservation to documentation, registration, and post-possession leasing support, we handle the entire transaction lifecycle.</p>
+              </div>
+            </div>
+          </div>
+
+          <h4 style="font-size: 14px; margin-top: 20px; margin-bottom: 8px; color: var(--ink); font-family: var(--font-heading); text-transform: uppercase; letter-spacing: 0.05em;"><i class="fas fa-certificate" style="color: var(--accent);"></i> Institutional Credibility &amp; Compliance</h4>
+          <table class="compliance-table">
+            <thead>
+              <tr>
+                <th>Parameter</th>
+                <th>Registration &amp; Verification</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Enterprise Registration</td>
+                <td>Ministry of MSME / Government of India (UDYAM-RJ-11-0089088)</td>
+              </tr>
+              <tr>
+                <td>Regulatory Compliance</td>
+                <td>UP RERA &amp; Goa RERA Verified Portfolios</td>
+              </tr>
+              <tr>
+                <td>Developer Partnerships</td>
+                <td>Authorized Direct Channel Partner (Bhutani Infra, Sikka Group, Ebrix Developers)</td>
+              </tr>
+              <tr>
+                <td>Business Model</td>
+                <td>100% Direct Developer Allocation (Zero Brokerage for Buyers)</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="quote-box">
+            <h4 style="font-size: 14px; margin-bottom: 8px; color: var(--ink); font-family: var(--font-heading); text-transform: uppercase;"><i class="fas fa-quote-left" style="color: var(--accent);"></i> Leadership &amp; Vision</h4>
+            <p style="font-size: 12.5px; line-height: 1.6; margin-bottom: 10px; color: var(--ink-soft);">Under the leadership of founder <strong>Rajveer Singh</strong>, R4Realty was established to transform real estate from a speculative, opaque marketplace into an analytical, investor-first wealth discipline.</p>
+            <blockquote>"Real estate wealth is not created by chasing market momentum; it is created by identifying infrastructure inflection points early, securing institutional-grade inventory at fair valuation, and holding fundamentally sound, income-generating assets."</blockquote>
+            <div class="author">— Rajveer Singh, Founder &amp; Managing Director</div>
+          </div>
+
+          <p style="font-size: 12.5px; line-height: 1.6; color: var(--ink-soft); margin-top: 12px;">Whether you are an individual investor seeking double-digit monthly rental cash flows, a family looking for a private green home in Sector-150 Noida, or an NRI portfolio manager acquiring high-appreciation land in North Goa, R4Realty provides the strategic clarity and direct developer access required to grow your real estate footprint with complete peace of mind.</p>
+
         </div>
       </div>
     </div>
@@ -872,39 +1015,74 @@ function initAboutModal() {
 function initTheme() {
   const savedTheme = localStorage.getItem('r4realty_theme');
   const isDark = savedTheme === 'dark';
+  
   if (isDark) {
     document.body.classList.add('dark-theme');
+  } else {
+    document.body.classList.remove('dark-theme');
   }
 
-  const btnWrapper = document.querySelector('header .nav-wrapper div[style*="display: flex"]');
-  if (btnWrapper) {
-    const toggleHTML = `
-      <button class="theme-toggle-btn" id="themeToggle" title="Toggle Theme" style="background: none; border: var(--border-thin); color: var(--ink); width: 34px; height: 34px; display: flex; alig[...]>
-        <i class="fas ${isDark ? 'fa-sun' : 'fa-moon'}"></i>
-      </button>
-    `;
-    btnWrapper.insertAdjacentHTML('afterbegin', toggleHTML);
+  // Find container for header action buttons across all page variants
+  const btnWrapper = document.querySelector('header .nav-wrapper div[style*="display: flex"]') ||
+                     document.querySelector('header .nav-wrapper .nav-actions') ||
+                     document.querySelector('header .nav-wrapper');
+
+  let themeToggle = document.getElementById('themeToggle');
+  
+  if (!themeToggle && btnWrapper) {
+    const currentIsDark = document.body.classList.contains('dark-theme');
+    const toggleBtn = document.createElement('button');
+    toggleBtn.className = 'theme-toggle-btn';
+    toggleBtn.id = 'themeToggle';
+    toggleBtn.type = 'button';
+    toggleBtn.setAttribute('title', currentIsDark ? 'Switch to Light Mode' : 'Switch to Dark Mode');
+    toggleBtn.setAttribute('aria-label', currentIsDark ? 'Switch to Light Mode' : 'Switch to Dark Mode');
+    toggleBtn.innerHTML = `<i class="fas ${currentIsDark ? 'fa-sun' : 'fa-moon'}"></i>`;
+    
+    if (btnWrapper.classList.contains('nav-wrapper')) {
+      btnWrapper.appendChild(toggleBtn);
+    } else {
+      btnWrapper.insertBefore(toggleBtn, btnWrapper.firstChild);
+    }
+    themeToggle = toggleBtn;
   }
 
-  const themeToggle = document.getElementById('themeToggle');
-  if (themeToggle) {
-    themeToggle.addEventListener('click', () => {
-      const body = document.body;
-      body.classList.toggle('dark-theme');
-      
+  function syncThemeState(dark) {
+    if (dark) {
+      document.body.classList.add('dark-theme');
+      localStorage.setItem('r4realty_theme', 'dark');
+    } else {
+      document.body.classList.remove('dark-theme');
+      localStorage.setItem('r4realty_theme', 'light');
+    }
+
+    if (themeToggle) {
       const icon = themeToggle.querySelector('i');
-      if (body.classList.contains('dark-theme')) {
-        localStorage.setItem('r4realty_theme', 'dark');
-        icon.classList.remove('fa-moon');
-        icon.classList.add('fa-sun');
-        showToast('Dark Mode', 'Dark blueprint theme activated.', 'success');
-      } else {
-        localStorage.setItem('r4realty_theme', 'light');
-        icon.classList.remove('fa-sun');
-        icon.classList.add('fa-moon');
-        showToast('Light Mode', 'Light drafting-sheet theme activated.', 'success');
+      if (icon) {
+        icon.className = dark ? 'fas fa-sun' : 'fas fa-moon';
       }
-    });
+      themeToggle.setAttribute('title', dark ? 'Switch to Light Mode' : 'Switch to Dark Mode');
+      themeToggle.setAttribute('aria-label', dark ? 'Switch to Light Mode' : 'Switch to Dark Mode');
+    }
+  }
+
+  if (themeToggle) {
+    // Ensure icon and attributes match initial state
+    syncThemeState(document.body.classList.contains('dark-theme'));
+
+    themeToggle.onclick = (e) => {
+      e.preventDefault();
+      const willBeDark = !document.body.classList.contains('dark-theme');
+      syncThemeState(willBeDark);
+      
+      if (typeof showToast === 'function') {
+        showToast(
+          willBeDark ? 'Dark Mode' : 'Light Mode',
+          willBeDark ? 'Dark blueprint theme activated.' : 'Light drafting-sheet theme activated.',
+          'success'
+        );
+      }
+    };
   }
 }
 
@@ -1079,23 +1257,27 @@ function initHomepageFeatures() {
    ========================================================================== */
 function initCatalogSearch() {
   const searchInput = document.getElementById('projectSearch');
-  const filterButtons = document.querySelectorAll('#filterBadges button');
-  const projectCards = document.querySelectorAll('#projectsCatalog .project-card');
+  const filterButtons = document.querySelectorAll('#filterBadges button, #filterBadges .type-pill');
+  const cityButtons = document.querySelectorAll('.city-nav-bar .city-pill');
+  const projectCards = document.querySelectorAll('#projectsCatalog .mockup-project-card, #projectsCatalog .project-card');
 
   if (!searchInput || projectCards.length === 0) return;
 
-  let currentFilter = 'all';
+  let currentTypeFilter = 'all';
+  let currentCityFilter = 'all';
   let searchQuery = '';
 
   function filterProjects() {
     projectCards.forEach(card => {
       const category = card.getAttribute('data-category');
+      const city = card.getAttribute('data-city');
       const keywords = card.getAttribute('data-keywords') ? card.getAttribute('data-keywords').toLowerCase() : '';
       
-      const matchesFilter = (currentFilter === 'all' || category === currentFilter);
-      const matchesSearch = keywords.includes(searchQuery);
+      const matchesType = (currentTypeFilter === 'all' || category === currentTypeFilter);
+      const matchesCity = (currentCityFilter === 'all' || city === currentCityFilter);
+      const matchesSearch = !searchQuery || keywords.includes(searchQuery);
 
-      if (matchesFilter && matchesSearch) {
+      if (matchesType && matchesCity && matchesSearch) {
         card.style.display = 'flex';
       } else {
         card.style.display = 'none';
@@ -1104,22 +1286,33 @@ function initCatalogSearch() {
   }
 
   searchInput.addEventListener('input', (e) => {
-    searchQuery = e.target.value.toLowerCase();
+    searchQuery = e.target.value.toLowerCase().trim();
     filterProjects();
   });
 
   filterButtons.forEach(btn => {
-    btn.addEventListener('click', () => {
-      filterButtons.forEach(b => {
-        b.classList.remove('cta-button');
-        b.classList.add('secondary');
-      });
-      btn.classList.remove('secondary');
-      btn.classList.add('cta-button');
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      filterButtons.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
       
-      currentFilter = btn.getAttribute('data-filter');
+      currentTypeFilter = btn.getAttribute('data-filter') || 'all';
       filterProjects();
     });
+  });
+
+  cityButtons.forEach(btn => {
+    // Only intercept if button has data-city="all" or doesn't have an href
+    if (btn.tagName === 'BUTTON' || btn.getAttribute('data-city') === 'all') {
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        cityButtons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        
+        currentCityFilter = btn.getAttribute('data-city') || 'all';
+        filterProjects();
+      });
+    }
   });
 }
 
@@ -1480,4 +1673,325 @@ function initProjectSpecificFeatures() {
       }, 100);
     });
   }
+}
+
+/* ==========================================================================
+   13. Interactive R4Realty AI Advisory Chatbot
+   ========================================================================== */
+function initChatbot() {
+  if (document.getElementById('r4ChatLauncher')) return;
+
+  // Render launcher and chat window markup
+  const chatHTML = `
+    <div class="r4-chatbot-launcher" id="r4ChatLauncher" title="Chat with R4Realty Property Advisor">
+      <div class="r4-launcher-icon">
+        <i class="fas fa-comment-dots"></i>
+        <div class="r4-launcher-pulse"></div>
+      </div>
+      <span>Ask Advisor</span>
+    </div>
+
+    <div class="r4-chat-window" id="r4ChatWindow">
+      <div class="r4-chat-header">
+        <div class="r4-chat-header-info">
+          <div class="r4-chat-avatar"><i class="fas fa-user-tie"></i></div>
+          <div>
+            <div class="r4-chat-title">Rajveer Singh · R4Realty</div>
+            <div class="r4-chat-status"><span class="r4-chat-status-dot"></span> Online · Property Advisory</div>
+          </div>
+        </div>
+        <div class="r4-chat-header-actions">
+          <button class="r4-chat-action-btn" id="r4ChatClose" title="Close Chat" aria-label="Close Chat"><i class="fas fa-times"></i></button>
+        </div>
+      </div>
+      <div class="r4-chat-body">
+        <div class="r4-chat-messages" id="r4ChatMessages"></div>
+        <div class="r4-chat-chips-container" id="r4ChatChips">
+          <button class="r4-chip" data-query="commercial">🏢 11% Yield Commercial</button>
+          <button class="r4-chip" data-query="sector 150">🏡 Sector-150 Luxury</button>
+          <button class="r4-chip" data-query="goa">🌴 Goa Vedic City Plots</button>
+          <button class="r4-chip" data-query="zero brokerage">⚖️ Zero Brokerage Policy</button>
+          <button class="r4-chip" data-query="contact">📞 Talk to Rajveer</button>
+        </div>
+        <form class="r4-chat-input-area" id="r4ChatForm">
+          <input type="text" class="r4-chat-input" id="r4ChatInput" placeholder="Ask about projects, yields, RERA..." autocomplete="off" />
+          <button type="submit" class="r4-chat-send-btn" title="Send message" aria-label="Send message"><i class="fas fa-paper-plane"></i></button>
+        </form>
+      </div>
+    </div>
+  `;
+
+  document.body.insertAdjacentHTML('beforeend', chatHTML);
+
+  const launcher = document.getElementById('r4ChatLauncher');
+  const chatWindow = document.getElementById('r4ChatWindow');
+  const closeBtn = document.getElementById('r4ChatClose');
+  const messagesContainer = document.getElementById('r4ChatMessages');
+  const chatForm = document.getElementById('r4ChatForm');
+  const chatInput = document.getElementById('r4ChatInput');
+  const chipsContainer = document.getElementById('r4ChatChips');
+
+  let hasGreeted = false;
+
+  function toggleChat(open) {
+    if (open === undefined) {
+      chatWindow.classList.toggle('active');
+    } else if (open) {
+      chatWindow.classList.add('active');
+    } else {
+      chatWindow.classList.remove('active');
+    }
+
+    if (chatWindow.classList.contains('active')) {
+      if (!hasGreeted) {
+        hasGreeted = true;
+        sendBotGreeting();
+      }
+      setTimeout(() => chatInput.focus(), 150);
+    }
+  }
+
+  launcher.addEventListener('click', () => toggleChat());
+  closeBtn.addEventListener('click', () => toggleChat(false));
+
+  function getCurrentTimeString() {
+    const d = new Date();
+    return d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  }
+
+  function appendUserMessage(text) {
+    const msgDiv = document.createElement('div');
+    msgDiv.className = 'r4-msg user';
+    msgDiv.innerHTML = `
+      <div class="r4-bubble">${escapeHTML(text)}</div>
+      <span class="r4-msg-time">${getCurrentTimeString()}</span>
+    `;
+    messagesContainer.appendChild(msgDiv);
+    scrollToBottom();
+  }
+
+  function appendBotMessage(htmlContent, showWhatsAppCTA = false) {
+    const msgDiv = document.createElement('div');
+    msgDiv.className = 'r4-msg bot';
+
+    let ctaHTML = '';
+    if (showWhatsAppCTA) {
+      ctaHTML = `
+        <div class="r4-chat-btn-group">
+          <a class="r4-chat-btn" href="https://wa.me/917838416570?text=Hi%20Rajveer,%20I%20am%20chatting%20on%20R4Realty%20and%20need%20investment%20details." target="_blank">
+            <i class="fab fa-whatsapp"></i> Chat directly on WhatsApp (+91 78384 16570) &rarr;
+          </a>
+        </div>
+      `;
+    }
+
+    msgDiv.innerHTML = `
+      <div class="r4-bubble">${htmlContent} ${ctaHTML}</div>
+      <span class="r4-msg-time">${getCurrentTimeString()}</span>
+    `;
+    messagesContainer.appendChild(msgDiv);
+    scrollToBottom();
+  }
+
+  function showTypingIndicator() {
+    const typingDiv = document.createElement('div');
+    typingDiv.className = 'r4-msg bot r4-typing-wrapper';
+    typingDiv.innerHTML = `
+      <div class="r4-typing">
+        <div class="r4-dot"></div>
+        <div class="r4-dot"></div>
+        <div class="r4-dot"></div>
+      </div>
+    `;
+    messagesContainer.appendChild(typingDiv);
+    scrollToBottom();
+    return typingDiv;
+  }
+
+  function removeTypingIndicator(indicator) {
+    if (indicator && indicator.parentNode) {
+      indicator.parentNode.removeChild(indicator);
+    }
+  }
+
+  function scrollToBottom() {
+    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+  }
+
+  function escapeHTML(str) {
+    const div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+  }
+
+  function sendBotGreeting() {
+    const typing = showTypingIndicator();
+    setTimeout(() => {
+      removeTypingIndicator(typing);
+      appendBotMessage(`
+        <strong>Welcome to R4Realty!</strong> I'm Rajveer Singh's AI Property Advisor.<br><br>
+        How can I help you today? You can ask about:
+        <ul style="padding-left: 16px; margin: 6px 0;">
+          <li><strong>Pre-leased commercial</strong> with up to 11% rental yield (GYGY Mentis, Sikka Mall)</li>
+          <li><strong>Low-density residences</strong> in Sector-150 Noida</li>
+          <li><strong>RERA township plots</strong> in Vedic City Goa (MOPA Airport)</li>
+          <li>Zero brokerage policy &amp; RERA compliance</li>
+        </ul>
+        What type of property or investment are you looking for?
+      `);
+    }, 400);
+  }
+
+  function processQuery(query) {
+    const q = query.toLowerCase().trim();
+    if (!q) return;
+
+    appendUserMessage(query);
+    chatInput.value = '';
+
+    // Check for phone number / lead capture attempt
+    const phoneMatch = query.match(/(\+?\d{1,4}[\s-]?)?\(?\d{3,5}\)?[\s-]?\d{3,5}[\s-]?\d{3,5}/);
+    if (phoneMatch && phoneMatch[0].replace(/\D/g, '').length >= 10) {
+      const extractedPhone = phoneMatch[0].replace(/\D/g, '');
+      
+      // Save lead asynchronously
+      try {
+        fetch('/api/leads', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            name: 'Chatbot Lead',
+            phone: extractedPhone,
+            email: '',
+            property_type: 'Advisory Consultation',
+            budget: 'General Inquiry',
+            timeline: 'Immediate',
+            message: `Lead captured via Chatbot conversation: "${query}"`
+          })
+        }).catch(() => {});
+      } catch (err) {}
+
+      const typing = showTypingIndicator();
+      setTimeout(() => {
+        removeTypingIndicator(typing);
+        appendBotMessage(`
+          <strong>Thank you!</strong> I have logged your contact (${extractedPhone}).<br><br>
+          Rajveer Singh will connect with you shortly with verified inventory sheets and pre-launch pricing. You can also message him right away on WhatsApp:
+        `, true);
+      }, 500);
+      return;
+    }
+
+    const typing = showTypingIndicator();
+
+    setTimeout(() => {
+      removeTypingIndicator(typing);
+      generateBotResponse(q, query);
+    }, 450);
+  }
+
+  function generateBotResponse(q, rawQuery) {
+    // Commercial
+    if (q.includes('commercial') || q.includes('gygy') || q.includes('sikka') || q.includes('mall of expressway') || q.includes('mentis') || q.includes('retail') || q.includes('office') || q.includes('yield') || q.includes('11%')) {
+      appendBotMessage(`
+        <strong>High-Yield Commercial Opportunities:</strong><br>
+        We specialize in pre-leased assets delivering up to <strong>11% gross rental yield</strong> with institutional lock-in leases:<br>
+        <ul style="padding-left: 16px; margin: 6px 0;">
+          <li><strong>GYGY Mentis (Sector 140A, Noida Expressway):</strong> High-density corporate catchment, Grade-A IT/retail dual towers.</li>
+          <li><strong>Sikka Mall of Expressway (Greater Noida):</strong> Near Pari Chowk transit corridor with steady day-one footfalls and strong pre-leased retail returns.</li>
+          <li><strong>Bhutani Belfair (Sector 140A):</strong> High-footfall entertainment and commercial avenue.</li>
+        </ul>
+        <div class="r4-chat-btn-group">
+          <a class="r4-chat-btn" href="/projects/gygy-mentis.html"><i class="fas fa-arrow-right"></i> View GYGY Mentis Spec Sheet</a>
+          <a class="r4-chat-btn" href="/projects/mall-of-expressway.html"><i class="fas fa-arrow-right"></i> View Sikka Mall of Expressway</a>
+        </div>
+      `, true);
+      return;
+    }
+
+    // Residential / Sector 150
+    if (q.includes('residential') || q.includes('150') || q.includes('apartment') || q.includes('flat') || q.includes('villa') || q.includes('home') || q.includes('luxury')) {
+      appendBotMessage(`
+        <strong>Low-Density Premium Residential (Sector-150, Noida):</strong><br>
+        Known as the <em>"Green Lung of Noida"</em>, Sector-150 offers:
+        <ul style="padding-left: 16px; margin: 6px 0;">
+          <li>80% green cover mandate &amp; sports-centric master planning.</li>
+          <li>Direct connectivity to Noida Expressway, Yamuna Expressway &amp; Jewar Airport.</li>
+          <li>Low-density, biophilic luxury towers with maximum privacy and high capital appreciation.</li>
+        </ul>
+        Would you like Rajveer to share available 3 BHK / 4 BHK floor plans and pricing?
+      `, true);
+      return;
+    }
+
+    // Goa / Plots / Vedic City
+    if (q.includes('goa') || q.includes('vedic') || q.includes('plot') || q.includes('land') || q.includes('farmland') || q.includes('sunrise') || q.includes('soma') || q.includes('graama')) {
+      appendBotMessage(`
+        <strong>Appreciating Land &amp; Township Plots:</strong><br>
+        <ul style="padding-left: 16px; margin: 6px 0;">
+          <li><strong>Vedic City (North Goa):</strong> Located near Manohar International Airport (MOPA) &amp; NH-66 corridor. Master-planned, RERA-approved wellness plots (<strong>Graama</strong> from 300 gaj, <strong>Anandam</strong> from 240 gaj, <strong>Praana</strong> farmhouses from 1380 gaj) ideal for custom luxury villas &amp; high-yield holiday rentals.</li>
+          <li><strong>Sunrise City &amp; Greater Noida Corridors:</strong> Freehold RERA-registered land parcels with rapid infrastructure upside.</li>
+        </ul>
+        <div class="r4-chat-btn-group">
+          <a class="r4-chat-btn" href="/projects/vedic-city-goa.html"><i class="fas fa-arrow-right"></i> Explore Vedic City Goa Plots</a>
+        </div>
+      `, true);
+      return;
+    }
+
+    // Brokerage & Legal Due Diligence
+    if (q.includes('brokerage') || q.includes('commission') || q.includes('fee') || q.includes('rera') || q.includes('legal') || q.includes('msme') || q.includes('free') || q.includes('due diligence')) {
+      appendBotMessage(`
+        <strong>Zero Brokerage &amp; 100% Legal Rigor:</strong><br>
+        <ul style="padding-left: 16px; margin: 6px 0;">
+          <li><strong>Zero Brokerage for Buyers:</strong> We do not charge brokerage or advisory commission. Master developer partnerships ensure you retain 100% purchasing power.</li>
+          <li><strong>Direct Inventory Allocation:</strong> Authorized channel partner with Bhutani Infra, Sikka Group, and Ebrix Developers.</li>
+          <li><strong>Statutory Compliance:</strong> Registered under Ministry of MSME (<strong>UDYAM-RJ-11-0089088</strong>) with 100% UP RERA &amp; Goa RERA verified titles.</li>
+        </ul>
+      `);
+      return;
+    }
+
+    // Contact / Phone / Meeting / Site visit
+    if (q.includes('contact') || q.includes('call') || q.includes('phone') || q.includes('whatsapp') || q.includes('number') || q.includes('talk') || q.includes('meet') || q.includes('visit') || q.includes('rajveer')) {
+      appendBotMessage(`
+        <strong>Connect Directly with Rajveer Singh:</strong><br>
+        📍 R4Realty, Noida / NCR<br>
+        📞 <strong>Phone:</strong> <a href="tel:+917838416570" style="color: var(--accent); text-decoration: underline;">+91 78384 16570</a><br>
+        💬 <strong>WhatsApp:</strong> Instant chat available 7 days a week.<br><br>
+        Feel free to share your phone number here or click below to start a WhatsApp conversation.
+      `, true);
+      return;
+    }
+
+    // General fallback answer
+    appendBotMessage(`
+      I can help you explore verified real estate investments in Noida, Greater Noida, and North Goa with <strong>zero brokerage</strong>.<br><br>
+      Feel free to ask about:
+      <ul style="padding-left: 16px; margin: 6px 0;">
+        <li>Commercial returns &amp; pre-leased options (up to 11% yield)</li>
+        <li>Sector-150 Noida luxury residential developments</li>
+        <li>North Goa (MOPA Airport) RERA villa plots</li>
+        <li>Scheduling a 1-on-1 portfolio review with Rajveer Singh</li>
+      </ul>
+      Or drop your phone number here to receive the latest rate sheets!
+    `, true);
+  }
+
+  // Handle Form Submit
+  chatForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const query = chatInput.value.trim();
+    if (query) {
+      processQuery(query);
+    }
+  });
+
+  // Handle Quick Chips
+  chipsContainer.querySelectorAll('.r4-chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      const q = chip.getAttribute('data-query');
+      processQuery(q);
+    });
+  });
 }

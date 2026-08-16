@@ -25,9 +25,34 @@ app.use(helmet({
   contentSecurityPolicy: {
     directives: {
       defaultSrc: ["'self'"],
-      scriptSrc: ["'self'", "https://www.googletagmanager.com", "https://cdnjs.cloudflare.com", "'unsafe-inline'"],
-      connectSrc: ["'self'", "https://www.google-analytics.com", "https://*.google-analytics.com", "https://*.analytics.google.com", "https://*.googletagmanager.com"],
-      imgSrc: ["'self'", "data:", "https://www.google-analytics.com", "https://*.google-analytics.com", "https://*.googletagmanager.com"],
+      scriptSrc: ["'self'", "https://www.googletagmanager.com", "https://*.googletagmanager.com", "https://www.google-analytics.com", "https://*.google-analytics.com", "https://cdnjs.cloudflare.com", "'unsafe-inline'"],
+      connectSrc: [
+        "'self'", 
+        "https://www.google-analytics.com", 
+        "https://*.google-analytics.com", 
+        "https://analytics.google.com", 
+        "https://*.analytics.google.com", 
+        "https://www.google.com", 
+        "https://*.google.com", 
+        "https://www.googletagmanager.com", 
+        "https://*.googletagmanager.com", 
+        "https://stats.g.doubleclick.net", 
+        "https://*.doubleclick.net"
+      ],
+      imgSrc: [
+        "'self'", 
+        "data:", 
+        "https://www.google-analytics.com", 
+        "https://*.google-analytics.com", 
+        "https://analytics.google.com", 
+        "https://*.analytics.google.com", 
+        "https://www.google.com", 
+        "https://*.google.com", 
+        "https://www.googletagmanager.com", 
+        "https://*.googletagmanager.com", 
+        "https://stats.g.doubleclick.net", 
+        "https://*.doubleclick.net"
+      ],
       styleSrc: ["'self'", "https://fonts.googleapis.com", "https://cdnjs.cloudflare.com", "'unsafe-inline'"],
       fontSrc: ["'self'", "https://fonts.gstatic.com", "https://cdnjs.cloudflare.com"],
       frameSrc: ["'self'"]
@@ -44,7 +69,10 @@ const projectPages = [
   'mall-of-expressway',
   'sector-151-farmlands',
   'sunrise-city',
-  'vedic-city-goa'
+  'vedic-city-goa',
+  'noida',
+  'greater-noida',
+  'goa'
 ];
 
 app.get(['/projects', '/projects/'], (req, res) => {
