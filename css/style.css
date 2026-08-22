@@ -1790,37 +1790,50 @@ body.dark-theme .f-nav-pill:hover {
   background: #15263b;
 }
 
-body.dark-theme .footer-bottom-strip {
-  border-color: #334e68;
-  color: #718096;
-}
-
 /* Footer & Admin Dashboard Access */
-footer {
-  margin-top: 50px;
-  text-align: center;
-  font-family: var(--font-mono);
-  font-size: 11px;
-  color: var(--muted);
-  letter-spacing: 0.05em;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-top: var(--border-thin);
-  padding-top: 20px;
+footer.footer-boxed-container,
+.footer-boxed-container {
+  display: block !important;
+  margin-top: 60px;
+  background: var(--paper);
+  border: var(--border-thick);
+  padding: 24px 24px 18px;
+  box-shadow: var(--shadow-flat);
+  width: 100%;
+  text-align: left;
 }
 
 .admin-lock-btn {
-  background: none;
-  border: none;
-  color: rgba(19, 43, 69, 0.12);
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: var(--paper);
+  border: 1px solid var(--paper-line);
+  color: var(--muted);
+  padding: 4px 9px;
+  border-radius: var(--radius);
   cursor: pointer;
-  font-size: 10px;
-  transition: var(--transition-fast);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  transition: all var(--transition-fast);
 }
 
 .admin-lock-btn:hover {
-  color: var(--accent);
+  background: var(--ink);
+  color: var(--white);
+  border-color: var(--ink);
+}
+
+body.dark-theme .admin-lock-btn {
+  background: #09121f;
+  border-color: #334e68;
+  color: #9fb3c8;
+}
+
+body.dark-theme .admin-lock-btn:hover {
+  background: #c1872e;
+  border-color: #c1872e;
+  color: #ffffff;
 }
 
 /* Responsive adjustments */
