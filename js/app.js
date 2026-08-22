@@ -1404,10 +1404,9 @@ function initLeadDashboard() {
     updatePinBtn.addEventListener('click', () => {
       const curPin = document.getElementById('settingsCurrentPin').value.trim();
       const newPin = document.getElementById('settingsNewPin').value.trim();
-      const activePin = localStorage.getItem('r4realty_admin_pin') || 'r4realty@123';
 
-      if (curPin !== activePin && curPin !== activeAdminPin) {
-        showToast('Incorrect PIN', 'Current PIN does not match.', 'error');
+      if (!activeAdminPin || curPin !== activeAdminPin) {
+        showToast('Incorrect PIN', 'Current PIN does not match your active session PIN.', 'error');
         return;
       }
       if (newPin.length < 6) {
@@ -1415,11 +1414,10 @@ function initLeadDashboard() {
         return;
       }
 
-      localStorage.setItem('r4realty_admin_pin', newPin);
       activeAdminPin = newPin;
       document.getElementById('settingsCurrentPin').value = '';
       document.getElementById('settingsNewPin').value = '';
-      showToast('PIN Updated', 'Administrator security PIN has been updated.', 'success');
+      showToast('PIN Updated', 'Session security PIN updated. Remember to update your server ADMIN_PIN environment variable.', 'success');
     });
   }
 
