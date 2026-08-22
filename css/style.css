@@ -1600,27 +1600,28 @@ body.dark-theme .crm-status-select {
 .footer-box {
   background: var(--white);
   border: var(--border-thick);
-  padding: 18px 16px;
+  padding: 20px 18px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   box-shadow: 2px 2px 0 var(--paper-line);
-  transition: transform var(--transition-fast), border-color var(--transition-fast);
+  transition: transform var(--transition-fast), border-color var(--transition-fast), box-shadow var(--transition-fast);
 }
 
 .footer-box:hover {
   border-color: var(--accent);
+  box-shadow: 3px 3px 0 var(--paper-line);
 }
 
 .f-box-head {
   font-family: var(--font-heading);
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 700;
   color: var(--ink);
   text-transform: uppercase;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.06em;
   padding-bottom: 8px;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
   border-bottom: var(--border-thin);
   display: flex;
   align-items: center;
@@ -1632,8 +1633,8 @@ body.dark-theme .crm-status-select {
 }
 
 .f-box-body {
-  font-size: 12px;
-  line-height: 1.5;
+  font-size: 12.5px;
+  line-height: 1.55;
   color: var(--ink-soft);
   flex: 1;
 }
@@ -1642,14 +1643,14 @@ body.dark-theme .crm-status-select {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  margin-top: 12px;
-  padding: 6px 12px;
+  margin-top: 14px;
+  padding: 7px 14px;
   font-family: var(--font-mono);
   font-size: 11px;
   font-weight: 600;
-  color: var(--accent);
-  background: var(--accent-soft);
-  border: 1px solid var(--accent);
+  color: var(--ink);
+  background: var(--paper);
+  border: 1px solid var(--ink);
   cursor: pointer;
   text-decoration: none;
   transition: all var(--transition-fast);
@@ -1658,18 +1659,19 @@ body.dark-theme .crm-status-select {
 }
 
 .f-box-btn:hover {
-  background: var(--accent);
+  background: var(--ink);
   color: var(--white);
+  border-color: var(--ink);
 }
 
 .f-box-btn.wa {
-  color: #25D366;
-  background: rgba(37, 211, 102, 0.1);
-  border-color: #25D366;
+  color: #1b8a47;
+  background: #e8f5e9;
+  border-color: #2e7d32;
 }
 
 .f-box-btn.wa:hover {
-  background: #25D366;
+  background: #2e7d32;
   color: #ffffff;
 }
 
@@ -1681,15 +1683,15 @@ body.dark-theme .crm-status-select {
 
 .f-nav-pill {
   font-family: var(--font-mono);
-  font-size: 10.5px;
-  padding: 4px 8px;
+  font-size: 11px;
+  padding: 5px 9px;
   background: var(--paper);
   border: 1px solid var(--paper-line);
   color: var(--ink);
   text-decoration: none;
   display: inline-flex;
   align-items: center;
-  gap: 4px;
+  gap: 5px;
   border-radius: var(--radius);
   transition: all var(--transition-fast);
 }
@@ -1698,11 +1700,12 @@ body.dark-theme .crm-status-select {
   border-color: var(--accent);
   color: var(--accent);
   background: var(--white);
+  transform: translateY(-1px);
 }
 
 .footer-bottom-strip {
   border-top: var(--border-thick);
-  padding-top: 14px;
+  padding-top: 16px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -1736,7 +1739,7 @@ body.dark-theme .footer-boxed-container {
 body.dark-theme .footer-box {
   background: #0d1a2c;
   border-color: #334e68;
-  box-shadow: 2px 2px 0 #1e293b;
+  box-shadow: 2px 2px 0 #050b14;
 }
 
 body.dark-theme .footer-box:hover {
@@ -1752,6 +1755,29 @@ body.dark-theme .f-box-body {
   color: #9fb3c8;
 }
 
+body.dark-theme .f-box-btn {
+  background: #09121f;
+  border-color: #486581;
+  color: #ecf3fa;
+}
+
+body.dark-theme .f-box-btn:hover {
+  background: #c1872e;
+  border-color: #c1872e;
+  color: #ffffff;
+}
+
+body.dark-theme .f-box-btn.wa {
+  background: rgba(37, 211, 102, 0.15);
+  border-color: #25D366;
+  color: #4ade80;
+}
+
+body.dark-theme .f-box-btn.wa:hover {
+  background: #25D366;
+  color: #000000;
+}
+
 body.dark-theme .f-nav-pill {
   background: #09121f;
   border-color: #334e68;
@@ -1761,18 +1787,7 @@ body.dark-theme .f-nav-pill {
 body.dark-theme .f-nav-pill:hover {
   border-color: #c1872e;
   color: #ffca28;
-  background: #1e293b;
-}
-
-body.dark-theme .f-box-btn {
-  background: #2b1f0c;
-  border-color: #c1872e;
-  color: #ffca28;
-}
-
-body.dark-theme .f-box-btn:hover {
-  background: #c1872e;
-  color: #ffffff;
+  background: #15263b;
 }
 
 body.dark-theme .footer-bottom-strip {
