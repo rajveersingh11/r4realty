@@ -16,6 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initConsultationModal();
   initPrivacyModal();
   initAboutModal();
+  initLegalModal();
   initFaqAccordion();
   initProximityMap();
   initHomepageFeatures();
@@ -1232,6 +1233,121 @@ function initAboutModal() {
   });
 
   // Handle Close clicking outside
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) {
+      modal.classList.remove('active');
+    }
+  });
+}
+
+/* ==========================================================================
+   9b. Legal Disclaimers & Advisory Modal
+   ========================================================================== */
+function initLegalModal() {
+  const modalHTML = `
+    <div class="modal-backdrop" id="legal-modal">
+      <div class="modal-content" style="max-width: 860px;">
+        <div class="modal-header">
+          <div>
+            <h3 style="margin: 0; font-size: 17px;"><i class="fas fa-balance-scale" style="color: var(--accent);"></i> Legal Disclaimers &amp; Advisory Terms</h3>
+            <div style="font-family: var(--font-mono); font-size: 11px; color: var(--accent); margin-top: 2px;">UPRERA &amp; Goa RERA Compliance &middot; Ministry of MSME UDYAM-RJ-11-0089088 &middot; Zero Brokerage Mandate</div>
+          </div>
+          <button class="close-modal-btn" id="close-legal-modal">&times;</button>
+        </div>
+        <div class="modal-body" style="font-family: var(--font-body); font-size: 13px; line-height: 1.6; color: var(--ink-soft); max-height: 75vh; overflow-y: auto;">
+          
+          <div style="background: var(--paper); border: var(--border-thin); padding: 14px 18px; margin-bottom: 18px;">
+            <strong style="color: var(--ink); font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;">
+              <i class="fas fa-shield-alt" style="color: var(--accent);"></i> Statutory Notice &amp; Regulatory Fiduciary Statement
+            </strong>
+            <p style="font-size: 12px; line-height: 1.5; margin-top: 6px; color: var(--ink-soft);">
+              R4Realty is an independent real estate consultancy and strategic marketing advisory firm operating strictly under statutory laws, Real Estate (Regulation and Development) Act, 2016 (RERA), and the Ministry of Micro, Small &amp; Medium Enterprises (MSME).
+            </p>
+          </div>
+
+          <h4 style="font-size: 14px; margin-top: 16px; margin-bottom: 8px; color: var(--ink); font-family: var(--font-heading); text-transform: uppercase;"><i class="fas fa-check-circle" style="color: var(--accent);"></i> 1. RERA Statutory Registrations</h4>
+          <p style="margin-bottom: 10px; font-size: 12.5px;">All projects listed on this platform are registered with their respective state Real Estate Regulatory Authorities (UPRERA in Uttar Pradesh and Goa RERA in Goa). R4Realty only represents authorized inventory allotments directly from primary developers:</p>
+          <table class="compliance-table" style="margin-bottom: 18px;">
+            <thead>
+              <tr>
+                <th>Project Name</th>
+                <th>Location &amp; Corridor</th>
+                <th>Official RERA Number</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Ace Terra</strong></td>
+                <td>Sector 22D, Yamuna Expressway</td>
+                <td><code style="color: var(--accent); font-weight: 600;">UPRERAPRJ683888</code></td>
+              </tr>
+              <tr>
+                <td><strong>GYGY Mentis</strong></td>
+                <td>Sector 140A, Noida Expressway</td>
+                <td><code style="color: var(--accent); font-weight: 600;">UPRERAPRJ251909</code></td>
+              </tr>
+              <tr>
+                <td><strong>Sikka Mall of Expressway</strong></td>
+                <td>Greater Noida Transit Corridor</td>
+                <td><code style="color: var(--accent); font-weight: 600;">UPRERAPRJ4454</code></td>
+              </tr>
+              <tr>
+                <td><strong>Bhutani Belfair</strong></td>
+                <td>Sector 140A, Noida Expressway</td>
+                <td><code style="color: var(--accent); font-weight: 600;">UPRERAPRJ235721</code></td>
+              </tr>
+              <tr>
+                <td><strong>Vedic City (Township Plots)</strong></td>
+                <td>North Goa (MOPA Corridor)</td>
+                <td><code style="color: var(--accent); font-weight: 600;">PRGO04242194</code></td>
+              </tr>
+              <tr>
+                <td><strong>Sunrise City</strong></td>
+                <td>Greater Noida Corridors</td>
+                <td><code style="color: var(--accent); font-weight: 600;">UPRERAPRJ763914</code></td>
+              </tr>
+            </tbody>
+          </table>
+
+          <h4 style="font-size: 14px; margin-top: 16px; margin-bottom: 8px; color: var(--ink); font-family: var(--font-heading); text-transform: uppercase;"><i class="fas fa-hand-holding-usd" style="color: var(--accent);"></i> 2. 100% Brokerage-Free Mandate for Buyers</h4>
+          <p style="margin-bottom: 14px; font-size: 12.5px;">R4Realty charges <strong>zero (0%) brokerage fee or hidden commission</strong> to prospective buyers, investors, or allottees for primary direct developer allocations. Our institutional advisory, project feasibility walkthroughs, and paperwork facilitation are 100% free of charge to purchasers.</p>
+
+          <h4 style="font-size: 14px; margin-top: 16px; margin-bottom: 8px; color: var(--ink); font-family: var(--font-heading); text-transform: uppercase;"><i class="fas fa-certificate" style="color: var(--accent);"></i> 3. Enterprise Government Registration</h4>
+          <p style="margin-bottom: 14px; font-size: 12.5px;">R4Realty is officially registered under the <strong>Ministry of Micro, Small and Medium Enterprises (MSME)</strong>, Government of India, holding Enterprise Registration Number <strong>UDYAM-RJ-11-0089088</strong>, operating under standard commercial and consulting business codes.</p>
+
+          <h4 style="font-size: 14px; margin-top: 16px; margin-bottom: 8px; color: var(--ink); font-family: var(--font-heading); text-transform: uppercase;"><i class="fas fa-file-contract" style="color: var(--accent);"></i> 4. Investor Due Diligence &amp; Advisory Notice</h4>
+          <p style="margin-bottom: 14px; font-size: 12.5px;">Project floor plans, artistic renders, payment milestones, rental yield projections, and possession dates displayed on this website are sourced directly from verified developer master filings. Prospective buyers are advised to review the builder-buyer agreement (BBA), title search reports, and official RERA disclosures before executing payment.</p>
+
+          <h4 style="font-size: 14px; margin-top: 16px; margin-bottom: 8px; color: var(--ink); font-family: var(--font-heading); text-transform: uppercase;"><i class="fas fa-envelope-open-text" style="color: var(--accent);"></i> 5. Regulatory &amp; Grievance Contact</h4>
+          <div style="background: var(--paper); border: var(--border-thin); padding: 12px 16px; font-family: var(--font-mono); font-size: 11.5px;">
+            <div><strong>Principal Advisor:</strong> Rajveer Singh</div>
+            <div><strong>Direct Contact:</strong> +91 78384 16570</div>
+            <div><strong>Advisory &amp; Legal Inquiries:</strong> legal@r4realty.in / info@r4realty.in</div>
+            <div><strong>Registered Region:</strong> Noida / National Capital Region (NCR), India</div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  `;
+
+  document.body.insertAdjacentHTML('beforeend', modalHTML);
+
+  const modal = document.getElementById('legal-modal');
+  const closeBtn = document.getElementById('close-legal-modal');
+  const openBtns = document.querySelectorAll('.open-legal-btn');
+
+  openBtns.forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      modal.classList.add('active');
+    });
+  });
+
+  closeBtn.addEventListener('click', () => {
+    modal.classList.remove('active');
+  });
+
   modal.addEventListener('click', (e) => {
     if (e.target === modal) {
       modal.classList.remove('active');
