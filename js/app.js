@@ -1217,7 +1217,7 @@ function initAboutModal() {
 
   const modal = document.getElementById('about-modal');
   const closeBtn = document.getElementById('close-about-modal');
-  const openBtns = document.querySelectorAll('.open-about-btn');
+  const openBtns = document.querySelectorAll('.open-about-btn, a[href="#about"], a[href="/#about"]');
 
   // Trigger modal display
   openBtns.forEach(btn => {
@@ -1335,7 +1335,7 @@ function initLegalModal() {
 
   const modal = document.getElementById('legal-modal');
   const closeBtn = document.getElementById('close-legal-modal');
-  const openBtns = document.querySelectorAll('.open-legal-btn');
+  const openBtns = document.querySelectorAll('.open-legal-btn, a[href="#legal"], a[href="/#legal"]');
 
   openBtns.forEach(btn => {
     btn.addEventListener('click', (e) => {
