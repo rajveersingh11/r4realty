@@ -12,6 +12,8 @@ web_modules/
 
 # Local Database Files
 leads_db.json
+data/
+*.db
 
 # IDE Configurations & OS Temp Files
 .agents/

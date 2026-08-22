@@ -736,18 +736,12 @@ function initLeadDashboard() {
       return;
     }
 
-    const savedPin = localStorage.getItem('r4realty_admin_pin') || 'r4realty@123';
-    
-    // Check server first, fallback to local PIN
+    // Authenticate exclusively via Server PIN Header
     fetch('/api/leads', {
       headers: { 'X-Admin-Pin': pass }
     })
     .then(res => {
       if (res.status === 401) {
-        if (pass === savedPin) {
-          // Local offline match
-          return [];
-        }
         showToast('Access Denied', 'Invalid administrator security PIN.', 'error');
         throw new Error('Unauthorized');
       }
@@ -758,14 +752,9 @@ function initLeadDashboard() {
       activeAdminPin = pass;
       loginScreen.style.display = 'none';
       dashboardContent.style.display = 'block';
-      if (Array.isArray(data) && data.length > 0) {
+      if (Array.isArray(data)) {
         crmAllLeads = data;
         localStorage.setItem('r4realty_leads', JSON.stringify(crmAllLeads));
-      } else {
-        try {
-          const localStored = localStorage.getItem('r4realty_leads');
-          if (localStored) crmAllLeads = JSON.parse(localStored);
-        } catch (e) {}
       }
       renderCrmTable();
       renderDialerConsole();
@@ -775,22 +764,7 @@ function initLeadDashboard() {
     })
     .catch(err => {
       if (err.message === 'Unauthorized') return;
-      if (pass === savedPin) {
-        activeAdminPin = pass;
-        loginScreen.style.display = 'none';
-        dashboardContent.style.display = 'block';
-        try {
-          const localStored = localStorage.getItem('r4realty_leads');
-          if (localStored) crmAllLeads = JSON.parse(localStored);
-        } catch (e) {}
-        renderCrmTable();
-        renderDialerConsole();
-        renderCareerManager();
-        renderProjectEditor();
-        showToast('Offline Mode', 'CRM Suite unlocked in local storage mode.', 'info');
-      } else {
-        showToast('Access Denied', 'Invalid administrator PIN.', 'error');
-      }
+      showToast('Connection Error', 'Failed to connect to backend server for verification.', 'error');
     });
   });
 
@@ -832,14 +806,14 @@ function initLeadDashboard() {
     const csvRows = [headers.join(',')];
     crmAllLeads.forEach(l => {
       const row = [
-        `"${(l.id || '').toString().replace(/"/g, '""')}"`,
-        `"${(l.timestamp || '').toString().replace(/"/g, '""')}"`,
-        `"${(l.name || '').toString().replace(/"/g, '""')}"`,
-        `"${(l.phone || '').toString().replace(/"/g, '""')}"`,
-        `"${(l.email || '').toString().replace(/"/g, '""')}"`,
-        `"${(l.project || '').toString().replace(/"/g, '""')}"`,
-        `"${(l.status || 'New').toString().replace(/"/g, '""')}"`,
-        `"${(l.message || '').toString().replace(/"/g, '""')}"`
+        csvSafeCell(l.id),
+        csvSafeCell(l.timestamp),
+        csvSafeCell(l.name),
+        csvSafeCell(l.phone),
+        csvSafeCell(l.email),
+        csvSafeCell(l.project),
+        csvSafeCell(l.status || 'New'),
+        csvSafeCell(l.message)
       ];
       csvRows.push(row.join(','));
     });
@@ -1053,12 +1027,12 @@ function initLeadDashboard() {
       currentDialerContacts.forEach(c => {
         const st = dialerState[c.id] || { status: 'not_called', note: '' };
         const row = [
-          c.id,
-          `"${c.name.replace(/"/g, '""')}"`,
-          `"${c.phone}"`,
-          `"${c.type}"`,
-          `"${st.status}"`,
-          `"${(st.note || '').replace(/"/g, '""')}"`
+          csvSafeCell(c.id),
+          csvSafeCell(c.name),
+          csvSafeCell(c.phone),
+          csvSafeCell(c.type),
+          csvSafeCell(st.status || 'not_called'),
+          csvSafeCell(st.note || '')
         ];
         csvRows.push(row.join(','));
       });
@@ -1459,6 +1433,16 @@ function initLeadDashboard() {
       showToast('Contact Saved', 'Advisory hotline and email preferences saved.', 'success');
     });
   }
+}
+
+// CSV / Excel Formula Injection Sanitizer
+function csvSafeCell(val) {
+  if (val == null || val === undefined) return '""';
+  let s = val.toString();
+  if (/^[=+\-@\t\r]/.test(s)) {
+    s = "'" + s;
+  }
+  return `"${s.replace(/"/g, '""')}"`;
 }
 
 function escapeHTML(str) {

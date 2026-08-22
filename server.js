@@ -10,7 +10,7 @@ const helmet = require('helmet');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-const LEADS_FILE = path.join(__dirname, 'leads_db.json');
+const LEADS_FILE = path.join(__dirname, 'data', 'leads_db.json');
 
 // ADMIN_PIN must be provided via environment for admin endpoints to work
 const ADMIN_PIN = process.env.ADMIN_PIN;
@@ -20,12 +20,21 @@ if (!ADMIN_PIN) {
   process.exit(1);
 }
 
-// Middleware
+// 1. HTTP Security Headers (HSTS & CSP)
+app.use(helmet.hsts({ maxAge: 31536000, includeSubDomains: true, preload: true }));
 app.use(helmet({
   contentSecurityPolicy: {
     directives: {
       defaultSrc: ["'self'"],
-      scriptSrc: ["'self'", "https://www.googletagmanager.com", "https://*.googletagmanager.com", "https://www.google-analytics.com", "https://*.google-analytics.com", "https://cdnjs.cloudflare.com", "'unsafe-inline'"],
+      scriptSrc: [
+        "'self'", 
+        "https://www.googletagmanager.com", 
+        "https://*.googletagmanager.com", 
+        "https://www.google-analytics.com", 
+        "https://*.google-analytics.com", 
+        "https://cdnjs.cloudflare.com", 
+        "'unsafe-inline'"
+      ],
       connectSrc: [
         "'self'", 
         "https://www.google-analytics.com", 
@@ -59,8 +68,44 @@ app.use(helmet({
     }
   }
 }));
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// 2. Security Firewall: Block access to internal files, database backups, and server code
+app.use((req, res, next) => {
+  const reqPath = req.path.toLowerCase();
+  if (
+    reqPath.startsWith('/data') ||
+    reqPath.startsWith('/functions') ||
+    reqPath.startsWith('/.git') ||
+    reqPath.startsWith('/.gemini') ||
+    reqPath.endsWith('.json') ||
+    reqPath.endsWith('.env') ||
+    reqPath.endsWith('.yaml') ||
+    reqPath.endsWith('.yml') ||
+    reqPath.endsWith('.lock') ||
+    reqPath === '/server.js' ||
+    reqPath.includes('package')
+  ) {
+    return res.status(403).json({ error: 'Access Denied: Protected System Resource' });
+  }
+  next();
+});
+
+// 3. Explicitly serve only safe public frontend asset directories
+app.use('/css', express.static(path.join(__dirname, 'css')));
+app.use('/js', express.static(path.join(__dirname, 'js')));
+app.use('/images', express.static(path.join(__dirname, 'images')));
+app.use('/projects', express.static(path.join(__dirname, 'projects')));
+app.use('/blog', express.static(path.join(__dirname, 'blog')));
+
+// 4. Explicitly serve root-level public files
+app.get(['/', '/index.html'], (req, res) => res.sendFile(path.join(__dirname, 'index.html')));
+app.get(['/careers', '/careers.html'], (req, res) => res.sendFile(path.join(__dirname, 'careers.html')));
+app.get('/robots.txt', (req, res) => res.sendFile(path.join(__dirname, 'robots.txt')));
+app.get('/sitemap.xml', (req, res) => res.sendFile(path.join(__dirname, 'sitemap.xml')));
+app.get('/favicon.ico', (req, res) => res.sendFile(path.join(__dirname, 'favicon.ico')));
 
 // Clean URLs / SEO routing for projects catalog and sub-pages
 const projectPages = [
@@ -98,12 +143,6 @@ app.get(['/blog/delhi-ncr-real-estate-trends-2026', '/blog/delhi-ncr-real-estate
   res.sendFile(path.join(__dirname, 'blog', 'delhi-ncr-real-estate-trends-2026.html'));
 });
 
-// Serve static assets from root directory
-app.use(express.static(__dirname));
-
-// Serve static assets from projects folder
-app.use('/projects', express.static(path.join(__dirname, 'projects')));
-
 // Database credentials
 const dbConfig = {
   host: process.env.DB_HOST || 'localhost',
@@ -138,7 +177,8 @@ async function readLeadsFromFile() {
 // Helper to write leads to backup JSON file
 async function writeLeadsToFile(leads) {
   try {
-    await fs.writeFile(LEADS_FILE, JSON.stringify(leads, null, 2), 'utf8');
+    await fs.mkdir(path.dirname(LEADS_FILE), { recursive: true });
+    await fs.writeFile(LEADS_FILE, JSON.stringify(leads, null, 2), { encoding: 'utf8', mode: 0o600 });
   } catch (err) {
     console.error('Backup JSON write failed:', err.message);
   }
@@ -182,7 +222,7 @@ async function initDatabase() {
 
   } catch (error) {
     console.error('MySQL Connection Offline:', error.message);
-    console.log('Using File-based JSON Database Fallback (leads_db.json) for local operations.');
+    console.log('Using File-based JSON Database Fallback (data/leads_db.json) for local operations.');
   }
 }
 
@@ -291,10 +331,19 @@ app.get('/api/leads', adminLimiter, authorizeAdmin, async (req, res) => {
   }
 });
 
-// 2b. Export leads as CSV (Protected)
+// 2b. Export leads as CSV (Protected with CSV Injection Formula Defense)
 app.get('/api/leads/export', adminLimiter, authorizeAdmin, async (req, res) => {
   try {
     const leads = await fetchAllLeads();
+
+    function csvSafeCell(val) {
+      if (val == null || val === undefined) return '""';
+      let s = val.toString();
+      if (/^[=+\-@\t\r]/.test(s)) {
+        s = "'" + s;
+      }
+      return `"${s.replace(/"/g, '""')}"`;
+    }
 
     res.setHeader('Content-Type', 'text/csv');
     res.setHeader('Content-Disposition', `attachment; filename="r4realty_leads_${new Date().toISOString().slice(0,10)}.csv"`);
@@ -304,13 +353,13 @@ app.get('/api/leads/export', adminLimiter, authorizeAdmin, async (req, res) => {
 
     leads.forEach(lead => {
       const row = [
-        `"${(lead.timestamp || '').toString().replace(/"/g, '""')}"`,
-        `"${(lead.name || '').toString().replace(/"/g, '""')}"`,
-        `"${(lead.phone || '').toString().replace(/"/g, '""')}"`,
-        `"${(lead.email || '').toString().replace(/"/g, '""')}"`,
-        `"${(lead.project || '').toString().replace(/"/g, '""')}"`,
-        `"${(lead.message || '').toString().replace(/"/g, '""')}"`,
-        `"${(lead.status || 'New').toString().replace(/"/g, '""')}"`
+        csvSafeCell(lead.timestamp),
+        csvSafeCell(lead.name),
+        csvSafeCell(lead.phone),
+        csvSafeCell(lead.email),
+        csvSafeCell(lead.project),
+        csvSafeCell(lead.message),
+        csvSafeCell(lead.status || 'New')
       ];
       res.write(row.join(',') + '\n');
     });
