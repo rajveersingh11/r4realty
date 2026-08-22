@@ -1578,6 +1578,208 @@ body.dark-theme .crm-status-select {
   margin-bottom: 16px;
 }
 
+/* ==========================================================================
+   Architectural Boxed Footer Component
+   ========================================================================== */
+.footer-boxed-container {
+  margin-top: 60px;
+  background: var(--paper);
+  border: var(--border-thick);
+  padding: 24px;
+  box-shadow: var(--shadow-flat);
+  width: 100%;
+}
+
+.footer-boxes-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.footer-box {
+  background: var(--white);
+  border: var(--border-thick);
+  padding: 18px 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: 2px 2px 0 var(--paper-line);
+  transition: transform var(--transition-fast), border-color var(--transition-fast);
+}
+
+.footer-box:hover {
+  border-color: var(--accent);
+}
+
+.f-box-head {
+  font-family: var(--font-heading);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--ink);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding-bottom: 8px;
+  margin-bottom: 10px;
+  border-bottom: var(--border-thin);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.f-box-head i {
+  color: var(--accent);
+}
+
+.f-box-body {
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--ink-soft);
+  flex: 1;
+}
+
+.f-box-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 12px;
+  padding: 6px 12px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--accent);
+  background: var(--accent-soft);
+  border: 1px solid var(--accent);
+  cursor: pointer;
+  text-decoration: none;
+  transition: all var(--transition-fast);
+  border-radius: var(--radius);
+  width: fit-content;
+}
+
+.f-box-btn:hover {
+  background: var(--accent);
+  color: var(--white);
+}
+
+.f-box-btn.wa {
+  color: #25D366;
+  background: rgba(37, 211, 102, 0.1);
+  border-color: #25D366;
+}
+
+.f-box-btn.wa:hover {
+  background: #25D366;
+  color: #ffffff;
+}
+
+.f-nav-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.f-nav-pill {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  padding: 4px 8px;
+  background: var(--paper);
+  border: 1px solid var(--paper-line);
+  color: var(--ink);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  border-radius: var(--radius);
+  transition: all var(--transition-fast);
+}
+
+.f-nav-pill:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: var(--white);
+}
+
+.footer-bottom-strip {
+  border-top: var(--border-thick);
+  padding-top: 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--muted);
+}
+
+@media (max-width: 1024px) {
+  .footer-boxes-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .footer-boxes-grid {
+    grid-template-columns: 1fr;
+  }
+  .footer-boxed-container {
+    padding: 16px;
+  }
+}
+
+body.dark-theme .footer-boxed-container {
+  background: #09121f;
+  border-color: #334e68;
+}
+
+body.dark-theme .footer-box {
+  background: #0d1a2c;
+  border-color: #334e68;
+  box-shadow: 2px 2px 0 #1e293b;
+}
+
+body.dark-theme .footer-box:hover {
+  border-color: #c1872e;
+}
+
+body.dark-theme .f-box-head {
+  color: #ecf3fa;
+  border-color: #334e68;
+}
+
+body.dark-theme .f-box-body {
+  color: #9fb3c8;
+}
+
+body.dark-theme .f-nav-pill {
+  background: #09121f;
+  border-color: #334e68;
+  color: #ecf3fa;
+}
+
+body.dark-theme .f-nav-pill:hover {
+  border-color: #c1872e;
+  color: #ffca28;
+  background: #1e293b;
+}
+
+body.dark-theme .f-box-btn {
+  background: #2b1f0c;
+  border-color: #c1872e;
+  color: #ffca28;
+}
+
+body.dark-theme .f-box-btn:hover {
+  background: #c1872e;
+  color: #ffffff;
+}
+
+body.dark-theme .footer-bottom-strip {
+  border-color: #334e68;
+  color: #718096;
+}
+
 /* Footer & Admin Dashboard Access */
 footer {
   margin-top: 50px;
@@ -1596,7 +1798,7 @@ footer {
 .admin-lock-btn {
   background: none;
   border: none;
-  color: rgba(19, 43, 69, 0.08);
+  color: rgba(19, 43, 69, 0.12);
   cursor: pointer;
   font-size: 10px;
   transition: var(--transition-fast);

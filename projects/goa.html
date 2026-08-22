@@ -192,45 +192,83 @@
   </div>
 
   <!-- FOOTER -->
-  <footer>
-    <div class="container">
-      <div class="footer-grid">
-        <div>
-          <div class="footer-title">R4Realty Property Consultancy</div>
-          <p style="font-size: 13px; color: var(--ink-soft); line-height: 1.6; margin-bottom: 12px;">
-            Specializing in verified residential, commercial, and plotting opportunities across North Goa, Noida, and Delhi-NCR.
-          </p>
+      <!-- ARCHITECTURAL BOXED FOOTER -->
+    <footer class="footer-boxed-container">
+      <div class="footer-boxes-grid">
+        
+        <!-- Box 1: Consultant Identity -->
+        <div class="footer-box">
+          <div>
+            <div class="f-box-head"><i class="fas fa-id-card"></i> Consultant Profile</div>
+            <div class="f-box-body">
+              <strong style="color: var(--ink);">Rajveer Singh</strong><br>
+              Principal Property Consultant &amp; Portfolio Strategist.<br>
+              <div style="margin-top: 6px; font-family: var(--font-mono); font-size: 10.5px; color: var(--accent);">
+                <i class="fas fa-certificate"></i> MSME: <strong>UDYAM-RJ-11-0089088</strong>
+              </div>
+            </div>
+          </div>
+          <button type="button" class="f-box-btn open-about-btn"><i class="fas fa-info-circle"></i> About Practice &rarr;</button>
         </div>
-        <div>
-          <div class="footer-title">Cities &amp; Locations</div>
-          <ul class="footer-links">
-            <li><a href="/projects/noida">&rarr; Noida Projects</a></li>
-            <li><a href="/projects/greater-noida">&rarr; Greater Noida Projects</a></li>
-            <li><a href="/projects/goa">&rarr; Goa Projects</a></li>
-            <li><a href="/projects">&rarr; All Projects</a></li>
-          </ul>
+
+        <!-- Box 2: Legal & Advisory -->
+        <div class="footer-box">
+          <div>
+            <div class="f-box-head"><i class="fas fa-balance-scale"></i> Legal &amp; Advisory</div>
+            <div class="f-box-body">
+              All projects conform strictly to state UPRERA &amp; Goa RERA specifications. We provide 100% direct builder allocations with zero buyer brokerage fees.
+            </div>
+          </div>
+          <button type="button" class="f-box-btn open-legal-btn"><i class="fas fa-file-contract"></i> Read Disclosures &rarr;</button>
         </div>
-        <div>
-          <div class="footer-title">Direct Contact</div>
-          <div style="font-family: var(--font-mono); font-size: 12px; line-height: 1.8; color: var(--ink-soft);">
-            <div><i class="fas fa-phone-alt"></i> +91 78384 16570</div>
-            <div><i class="fab fa-whatsapp"></i> +91 78384 16570</div>
-            <div><i class="fas fa-map-marker-alt"></i> Sector 140, Noida, UP</div>
+
+        <!-- Box 3: Quick Navigation -->
+        <div class="footer-box">
+          <div>
+            <div class="f-box-head"><i class="fas fa-compass"></i> Quick Links</div>
+            <div class="f-box-body">
+              <div class="f-nav-pills">
+                <a href="/projects" class="f-nav-pill"><i class="fas fa-city"></i> Projects</a>
+                <a href="/blog" class="f-nav-pill"><i class="fas fa-newspaper"></i> Blog</a>
+                <a href="/careers" class="f-nav-pill"><i class="fas fa-user-tie"></i> Careers</a>
+                <a href="#" class="f-nav-pill open-privacy-btn"><i class="fas fa-user-shield"></i> Privacy</a>
+                <a href="#" class="f-nav-pill open-consultation-btn"><i class="far fa-calendar-check"></i> Book Call</a>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-      <div style="border-top: var(--border-thin); margin-top: 30px; padding-top: 20px; font-family: var(--font-mono); font-size: 11px; text-align: center; color: var(--muted); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
-        <div>&copy; 2026 R4Realty. Direct Developer Inventory &bull; Zero Brokerage.</div>
-        <div style="display: flex; gap: 14px; flex-wrap: wrap;">
-          <a href="#" class="open-about-btn" style="color: var(--accent);"><i class="fas fa-info-circle"></i> About Us</a>
-          <a href="#" class="open-legal-btn" style="color: var(--accent);"><i class="fas fa-balance-scale"></i> Legal &amp; Advisory</a>
-          <a href="/careers" style="color: var(--accent);"><i class="fas fa-user-tie"></i> Careers</a>
-          <a href="#" class="open-privacy-btn" style="color: var(--accent);"><i class="fas fa-user-shield"></i> Privacy Policy</a>
+
+        <!-- Box 4: Direct Advisory Hotline -->
+        <div class="footer-box">
+          <div>
+            <div class="f-box-head"><i class="fas fa-headset"></i> Direct Advisory</div>
+            <div class="f-box-body">
+              <div style="font-family: var(--font-mono); font-size: 11.5px; line-height: 1.6;">
+                <div><a href="tel:+917838416570" style="color: var(--ink); text-decoration: underline; font-weight: 600;"><i class="fas fa-phone-alt"></i> +91 78384 16570</a></div>
+                <div style="color: var(--muted); font-size: 11px; margin-top: 4px;">Noida / Greater Noida / Goa</div>
+              </div>
+            </div>
+          </div>
+          <a href="https://wa.me/917838416570?text=Hi%20Rajveer,%20I%20am%20contacting%20you%20from%20R4Realty." target="_blank" class="f-box-btn wa">
+            <i class="fab fa-whatsapp"></i> WhatsApp Chat &rarr;
+          </a>
         </div>
-        <div><i class="fas fa-certificate" style="color: var(--accent);"></i> Govt. MSME Reg: <strong>UDYAM-RJ-11-0089088</strong></div>
+
       </div>
-    </div>
-  </footer>
+
+      <!-- Footer Bottom Metadata Strip -->
+      <div class="footer-bottom-strip">
+        <div>R4REALTY &mdash; NOIDA / NCR &mdash; RESIDENTIAL &middot; COMMERCIAL &middot; PLOTS</div>
+        <div style="display: flex; gap: 14px; align-items: center;" class="footer-socials">
+          <a href="https://www.linkedin.com/in/rajveer-singh-403a5824a" target="_blank" style="color: var(--muted);"><i class="fab fa-linkedin"></i> LinkedIn</a>
+          <a href="https://www.instagram.com/_rajveersinghshekhawat" target="_blank" style="color: var(--muted);"><i class="fab fa-instagram"></i> Instagram</a>
+        </div>
+        <div style="display: flex; align-items: center; gap: 6px;">
+          <span>&copy; 2026 R4Realty</span>
+          <button class="admin-lock-btn" id="admin-dashboard-trigger" title="Admin Database Panel" aria-label="Open Admin Dashboard"><i class="fas fa-lock"></i></button>
+        </div>
+      </div>
+    </footer>
 
   <script src="/js/app.js"></script>
 </body>
