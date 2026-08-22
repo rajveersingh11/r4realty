@@ -322,9 +322,71 @@ app.get('/api/leads/export', adminLimiter, authorizeAdmin, async (req, res) => {
   }
 });
 
-// 3. Clear database (Protected - Admin pin header required)
+// 3. Update lead status/notes (Protected - Admin pin header required)
+app.patch('/api/leads', adminLimiter, authorizeAdmin, async (req, res) => {
+  const { id, status, message } = req.body;
+
+  if (!id) {
+    return res.status(400).json({ error: 'Lead ID is required.' });
+  }
+
+  // Update MySQL if active
+  if (pool) {
+    try {
+      if (status && message) {
+        await pool.query('UPDATE leads SET status = ?, message = ? WHERE id = ?', [status, message, id]);
+      } else if (status) {
+        await pool.query('UPDATE leads SET status = ? WHERE id = ?', [status, id]);
+      } else if (message) {
+        await pool.query('UPDATE leads SET message = ? WHERE id = ?', [message, id]);
+      }
+    } catch (error) {
+      console.warn('MySQL update failed:', error.message);
+    }
+  }
+
+  // Update local JSON file
+  try {
+    const fileLeads = await readLeadsFromFile();
+    const target = fileLeads.find(l => (l.id || l.timestamp) === id);
+    if (target) {
+      if (status) target.status = status;
+      if (message) target.message = message;
+      await writeLeadsToFile(fileLeads);
+    }
+    res.status(200).json({ success: true, message: 'Lead updated successfully.' });
+  } catch (err) {
+    console.error('Failed to update lead in database:', err.message);
+    res.status(500).json({ error: 'Failed to update lead record.' });
+  }
+});
+
+// 4. Clear database or delete single lead (Protected - Admin pin header required)
 app.delete('/api/leads', adminLimiter, authorizeAdmin, async (req, res) => {
-  // Clear MySQL if pool is active
+  const leadId = req.query.id;
+
+  if (leadId) {
+    // Delete single lead
+    if (pool) {
+      try {
+        await pool.query('DELETE FROM leads WHERE id = ?', [leadId]);
+      } catch (error) {
+        console.warn('MySQL single lead deletion failed:', error.message);
+      }
+    }
+
+    try {
+      let fileLeads = await readLeadsFromFile();
+      fileLeads = fileLeads.filter(l => (l.id || l.timestamp) !== leadId);
+      await writeLeadsToFile(fileLeads);
+      return res.status(200).json({ success: true, message: `Lead ${leadId} deleted.` });
+    } catch (err) {
+      console.error('Failed to delete lead:', err.message);
+      return res.status(500).json({ error: 'Failed to delete lead.' });
+    }
+  }
+
+  // Clear all leads
   if (pool) {
     try {
       await pool.query('TRUNCATE TABLE leads');
@@ -334,7 +396,6 @@ app.delete('/api/leads', adminLimiter, authorizeAdmin, async (req, res) => {
     }
   }
 
-  // Clear local JSON database file
   try {
     await writeLeadsToFile([]);
     console.log('Server JSON file database cleared.');
