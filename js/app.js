@@ -353,7 +353,7 @@ function initLeadDashboard() {
                   <i class="fas fa-inbox"></i> Inbound Pipeline (<span id="tab-inbound-count">0</span>)
                 </button>
                 <button type="button" class="admin-tab-btn" data-tab="tab-dialer-console">
-                  <i class="fas fa-phone-volume"></i> Outbound Dialer (200 Leads)
+                  <i class="fas fa-phone-volume"></i> Outbound Dialer (<span id="dialer-tab-count">200</span> Leads)
                 </button>
                 <button type="button" class="admin-tab-btn" data-tab="tab-career-manager">
                   <i class="fas fa-briefcase"></i> Post &amp; Manage Jobs
@@ -471,9 +471,20 @@ function initLeadDashboard() {
                         </div>
                       </div>
 
-                      <div style="display: flex; gap: 8px;">
-                        <button class="cta-button secondary" id="export-dialer-csv-btn"><i class="fas fa-download"></i> Save CSV</button>
-                        <button class="cta-button secondary" id="reset-dialer-btn" title="Reset dialer progress"><i class="fas fa-undo"></i> Reset</button>
+                      <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                        <input type="file" id="dialerCsvFileInput" accept=".csv, .txt" style="display: none;" />
+                        <button type="button" class="cta-button" id="import-dialer-csv-trigger" title="Upload custom CSV leads list">
+                          <i class="fas fa-file-upload"></i> Upload CSV
+                        </button>
+                        <button type="button" class="cta-button secondary" id="export-dialer-csv-btn">
+                          <i class="fas fa-download"></i> Save CSV
+                        </button>
+                        <button type="button" class="cta-button secondary" id="download-dialer-template-btn" title="Download sample CSV format">
+                          <i class="fas fa-file-alt"></i> Template
+                        </button>
+                        <button type="button" class="cta-button secondary" id="reset-dialer-btn" title="Reset dialer progress">
+                          <i class="fas fa-undo"></i> Reset
+                        </button>
                       </div>
                     </div>
 
@@ -859,8 +870,21 @@ function initLeadDashboard() {
   });
 
   // =========================================================================
-  // MODULE 2: OUTBOUND CALL CONSOLE (200 LEADS DIALER LOGIC)
+  // MODULE 2: OUTBOUND CALL CONSOLE & CSV IMPORTER LOGIC
   // =========================================================================
+  let currentDialerContacts = [];
+  try {
+    const savedContacts = localStorage.getItem('r4realty_custom_dialer_contacts');
+    if (savedContacts) {
+      currentDialerContacts = JSON.parse(savedContacts);
+    } else {
+      currentDialerContacts = DEFAULT_DIALER_CONTACTS;
+      localStorage.setItem('r4realty_custom_dialer_contacts', JSON.stringify(currentDialerContacts));
+    }
+  } catch (e) {
+    currentDialerContacts = DEFAULT_DIALER_CONTACTS;
+  }
+
   let dialerState = {};
   try {
     const savedDialer = localStorage.getItem('r4realty_dialer_state');
@@ -869,6 +893,10 @@ function initLeadDashboard() {
 
   function saveDialerState() {
     localStorage.setItem('r4realty_dialer_state', JSON.stringify(dialerState));
+  }
+
+  function saveDialerContacts() {
+    localStorage.setItem('r4realty_custom_dialer_contacts', JSON.stringify(currentDialerContacts));
   }
 
   function renderDialerConsole() {
@@ -886,7 +914,7 @@ function initLeadDashboard() {
     let callbackCount = 0;
     let closedCount = 0;
 
-    DEFAULT_DIALER_CONTACTS.forEach(contact => {
+    currentDialerContacts.forEach(contact => {
       const state = dialerState[contact.id] || { status: 'not_called', note: '' };
       if (state.status && state.status !== 'not_called') calledCount++;
       if (state.status === 'interested') interestedCount++;
@@ -894,8 +922,12 @@ function initLeadDashboard() {
       if (state.status === 'deal_closed') closedCount++;
     });
 
-    const total = DEFAULT_DIALER_CONTACTS.length;
-    const pct = Math.round((calledCount / total) * 100);
+    const total = currentDialerContacts.length;
+    const pct = total > 0 ? Math.round((calledCount / total) * 100) : 0;
+
+    const tabCountEl = document.getElementById('dialer-tab-count');
+    if (tabCountEl) tabCountEl.textContent = total;
+    if (filterEl && filterEl.options[0]) filterEl.options[0].textContent = `All Contacts (${total})`;
 
     const totalValEl = document.getElementById('dialer-total-val');
     const calledValEl = document.getElementById('dialer-called-val');
@@ -917,7 +949,7 @@ function initLeadDashboard() {
     }
 
     // Filter contacts
-    const filteredContacts = DEFAULT_DIALER_CONTACTS.filter(contact => {
+    const filteredContacts = currentDialerContacts.filter(contact => {
       const state = dialerState[contact.id] || { status: 'not_called', note: '' };
       if (filterStatus !== 'ALL' && state.status !== filterStatus) return false;
 
@@ -1018,7 +1050,7 @@ function initLeadDashboard() {
     exportDialerCsvBtn.addEventListener('click', () => {
       const headers = ['ID', 'Name', 'Phone', 'Type', 'Status', 'Notes'];
       const csvRows = [headers.join(',')];
-      DEFAULT_DIALER_CONTACTS.forEach(c => {
+      currentDialerContacts.forEach(c => {
         const st = dialerState[c.id] || { status: 'not_called', note: '' };
         const row = [
           c.id,
@@ -1041,11 +1073,176 @@ function initLeadDashboard() {
     });
   }
 
+  // Helper function to parse CSV lines safely handling quotes
+  function parseCSV(text) {
+    const lines = text.split(/\r?\n/).map(l => l.trim()).filter(l => l.length > 0);
+    if (lines.length === 0) return [];
+
+    function parseLine(line) {
+      const result = [];
+      let cur = '';
+      let inQuotes = false;
+      for (let i = 0; i < line.length; i++) {
+        const c = line[i];
+        if (c === '"') {
+          if (inQuotes && line[i + 1] === '"') {
+            cur += '"';
+            i++;
+          } else {
+            inQuotes = !inQuotes;
+          }
+        } else if (c === ',' && !inQuotes) {
+          result.push(cur.trim());
+          cur = '';
+        } else {
+          cur += c;
+        }
+      }
+      result.push(cur.trim());
+      return result;
+    }
+
+    const headers = parseLine(lines[0]).map(h => h.toLowerCase().replace(/[^a-z0-9]/g, ''));
+    let nameIdx = headers.findIndex(h => h.includes('name') || h.includes('client') || h.includes('lead') || h.includes('customer'));
+    let phoneIdx = headers.findIndex(h => h.includes('phone') || h.includes('mobile') || h.includes('contact') || h.includes('number') || h.includes('tel'));
+    let typeIdx = headers.findIndex(h => h.includes('type') || h.includes('category') || h.includes('account'));
+    let statusIdx = headers.findIndex(h => h.includes('status') || h.includes('stage'));
+    let noteIdx = headers.findIndex(h => h.includes('note') || h.includes('remark') || h.includes('comment'));
+
+    let startLine = 1;
+    if (nameIdx === -1 && phoneIdx === -1) {
+      // No header row, default column 0 = Name, column 1 = Phone, column 2 = Type
+      nameIdx = 0;
+      phoneIdx = 1;
+      typeIdx = 2;
+      statusIdx = 3;
+      noteIdx = 4;
+      startLine = 0;
+    } else {
+      if (nameIdx === -1) nameIdx = 0;
+      if (phoneIdx === -1) phoneIdx = 1;
+    }
+
+    const parsedContacts = [];
+    for (let i = startLine; i < lines.length; i++) {
+      const cols = parseLine(lines[i]);
+      if (!cols[nameIdx] && !cols[phoneIdx]) continue;
+
+      const rawName = cols[nameIdx] || 'Lead';
+      const rawPhone = cols[phoneIdx] || '';
+      const rawType = (typeIdx !== -1 && cols[typeIdx]) ? cols[typeIdx] : 'Individual';
+      const rawStatus = (statusIdx !== -1 && cols[statusIdx]) ? cols[statusIdx] : 'not_called';
+      const rawNote = (noteIdx !== -1 && cols[noteIdx]) ? cols[noteIdx] : '';
+
+      parsedContacts.push({
+        name: rawName,
+        phone: rawPhone,
+        type: rawType,
+        status: rawStatus,
+        note: rawNote
+      });
+    }
+    return parsedContacts;
+  }
+
+  // Trigger CSV File Upload
+  const importCsvTrigger = document.getElementById('import-dialer-csv-trigger');
+  const dialerCsvFileInput = document.getElementById('dialerCsvFileInput');
+
+  if (importCsvTrigger && dialerCsvFileInput) {
+    importCsvTrigger.addEventListener('click', () => {
+      dialerCsvFileInput.value = '';
+      dialerCsvFileInput.click();
+    });
+
+    dialerCsvFileInput.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        try {
+          const csvText = event.target.result;
+          const parsed = parseCSV(csvText);
+
+          if (parsed.length === 0) {
+            showToast('Empty CSV', 'No valid contact records found in the uploaded file.', 'error');
+            return;
+          }
+
+          const shouldAppend = confirm(
+            `Found ${parsed.length} contacts in "${file.name}".\n\nClick [OK] to APPEND to your current list (${currentDialerContacts.length} contacts).\nClick [Cancel] to REPLACE your entire list with these ${parsed.length} contacts.`
+          );
+
+          if (shouldAppend) {
+            let nextId = currentDialerContacts.length + 1;
+            parsed.forEach(c => {
+              const newId = nextId++;
+              currentDialerContacts.push({
+                id: newId,
+                name: c.name,
+                phone: c.phone,
+                type: c.type
+              });
+              if (c.status && c.status !== 'not_called') {
+                dialerState[newId] = { status: c.status, note: c.note || '' };
+              } else if (c.note) {
+                dialerState[newId] = { status: 'not_called', note: c.note };
+              }
+            });
+          } else {
+            currentDialerContacts = parsed.map((c, idx) => ({
+              id: idx + 1,
+              name: c.name,
+              phone: c.phone,
+              type: c.type
+            }));
+            dialerState = {};
+            parsed.forEach((c, idx) => {
+              const newId = idx + 1;
+              if (c.status && c.status !== 'not_called') {
+                dialerState[newId] = { status: c.status, note: c.note || '' };
+              } else if (c.note) {
+                dialerState[newId] = { status: 'not_called', note: c.note };
+              }
+            });
+          }
+
+          saveDialerContacts();
+          saveDialerState();
+          renderDialerConsole();
+          showToast('Import Complete', `Loaded ${parsed.length} contacts successfully into Outbound Dialer.`, 'success');
+        } catch (err) {
+          console.error('CSV parse error:', err);
+          showToast('Import Error', 'Failed to read or parse the CSV file. Please check format.', 'error');
+        }
+      };
+      reader.readAsText(file);
+    });
+  }
+
+  // Download Sample CSV Template
+  const downloadTemplateBtn = document.getElementById('download-dialer-template-btn');
+  if (downloadTemplateBtn) {
+    downloadTemplateBtn.addEventListener('click', () => {
+      const templateContent = "Name,Phone,Type,Status,Notes\r\nRajesh Sharma,9811001122,Individual,not_called,Looking for 3BHK Sector 150\r\nAcme Global Solutions,9899003344,Company,not_called,Office lease inquiry 1500 sqft\r\nPooja Verma,9818556677,Individual,interested,Budget 1.5Cr Noida Expressway";
+      const blob = new Blob([templateContent], { type: 'text/csv;charset=utf-8;' });
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = 'R4Realty_Leads_Upload_Template.csv';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      showToast('Template Downloaded', 'Sample CSV format saved.', 'info');
+    });
+  }
+
   // Reset Dialer Progress
   const resetDialerBtn = document.getElementById('reset-dialer-btn');
   if (resetDialerBtn) {
     resetDialerBtn.addEventListener('click', () => {
-      if (confirm('Reset calling progress for all 200 contacts?')) {
+      const choice = confirm('Reset calling progress or restore default 200 list?\n\nClick [OK] to reset progress only.\nClick [Cancel] to keep current progress.');
+      if (choice) {
         dialerState = {};
         saveDialerState();
         renderDialerConsole();
