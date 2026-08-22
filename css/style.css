@@ -1579,6 +1579,404 @@ body.dark-theme .crm-status-select {
 }
 
 /* ==========================================================================
+   Admin CRM Multi-Tab System & Feature Styles
+   ========================================================================== */
+.admin-tab-nav {
+  display: flex;
+  gap: 8px;
+  border-bottom: var(--border-thick);
+  padding-bottom: 12px;
+  margin-bottom: 16px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.admin-tab-nav::-webkit-scrollbar {
+  display: none;
+}
+
+.admin-tab-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--ink-soft);
+  background: var(--paper);
+  border: 1px solid var(--paper-line);
+  cursor: pointer;
+  white-space: nowrap;
+  border-radius: var(--radius);
+  transition: all var(--transition-fast);
+}
+
+.admin-tab-btn:hover {
+  border-color: var(--accent);
+  color: var(--ink);
+}
+
+.admin-tab-btn.active {
+  background: var(--ink);
+  color: var(--white);
+  border-color: var(--ink);
+}
+
+.admin-tab-panel {
+  display: none;
+  animation: fadeIn 0.2s ease-in-out;
+}
+
+.admin-tab-panel.active {
+  display: block;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Outbound Call Console (Dialer) */
+.dialer-container {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.dialer-header-card {
+  background: var(--paper);
+  border: var(--border-thick);
+  padding: 16px;
+  box-shadow: 2px 2px 0 var(--paper-line);
+}
+
+.dialer-stats-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.dialer-ring-box {
+  position: relative;
+  width: 58px;
+  height: 58px;
+  flex-shrink: 0;
+}
+
+.dialer-ring-box svg {
+  transform: rotate(-90deg);
+}
+
+.dialer-ring-track {
+  fill: none;
+  stroke: var(--paper-line);
+  stroke-width: 5;
+}
+
+.dialer-ring-fill {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 5;
+  stroke-linecap: round;
+  transition: stroke-dasharray 0.4s ease;
+}
+
+.dialer-ring-pct {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.dialer-chips-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  flex: 1;
+}
+
+.dialer-stat-chip {
+  background: var(--white);
+  border: var(--border-thin);
+  padding: 6px 10px;
+  border-radius: var(--radius);
+  min-width: 70px;
+}
+
+.dialer-stat-chip .val {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.dialer-stat-chip .lbl {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.dialer-cards-list {
+  max-height: 480px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-right: 4px;
+}
+
+.dialer-lead-card {
+  background: var(--white);
+  border: var(--border-thick);
+  padding: 12px 16px;
+  box-shadow: 2px 2px 0 var(--paper-line);
+  transition: all var(--transition-fast);
+}
+
+.dialer-lead-card.done {
+  opacity: 0.7;
+  background: var(--paper);
+}
+
+.dialer-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.dialer-lead-name {
+  font-family: var(--font-heading);
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.dialer-lead-phone {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--accent);
+  margin-top: 2px;
+}
+
+.dialer-actions {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.dialer-call-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: var(--accent);
+  color: var(--white);
+  border: 1px solid var(--accent);
+  padding: 6px 12px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  border-radius: var(--radius);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.dialer-call-btn:hover {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--white);
+}
+
+.dialer-card-bottom {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.dialer-status-select {
+  background: var(--paper);
+  border: 1px solid var(--paper-line);
+  padding: 5px 8px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--ink);
+  border-radius: var(--radius);
+  outline: none;
+}
+
+.dialer-note-input {
+  flex: 1;
+  min-width: 160px;
+  background: var(--paper);
+  border: 1px solid var(--paper-line);
+  padding: 5px 8px;
+  font-size: 11.5px;
+  border-radius: var(--radius);
+  outline: none;
+}
+
+.dialer-note-input:focus {
+  border-color: var(--accent);
+  background: var(--white);
+}
+
+/* Career Job Poster Styles */
+.crm-job-grid {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: 20px;
+}
+
+@media (max-width: 860px) {
+  .crm-job-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.crm-form-card {
+  background: var(--white);
+  border: var(--border-thick);
+  padding: 18px;
+  box-shadow: var(--shadow-flat);
+}
+
+.crm-form-title {
+  font-family: var(--font-heading);
+  font-size: 15px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: var(--border-thin);
+  color: var(--ink);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.crm-job-list {
+  max-height: 480px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.crm-job-item {
+  background: var(--paper);
+  border: var(--border-thick);
+  padding: 14px;
+}
+
+.crm-job-item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 6px;
+}
+
+.crm-job-item h4 {
+  font-size: 14px;
+  margin: 0;
+  color: var(--ink);
+}
+
+.crm-job-meta {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  color: var(--muted);
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 8px;
+}
+
+/* Project & Price Editor Styles */
+.crm-project-editor-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.crm-project-editor-table th,
+.crm-project-editor-table td {
+  padding: 10px 12px;
+  border: var(--border-thin);
+  font-size: 12px;
+}
+
+.crm-project-editor-table th {
+  background: var(--paper);
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  text-transform: uppercase;
+  text-align: left;
+}
+
+.crm-inline-input {
+  width: 100%;
+  padding: 6px 8px;
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  border: 1px solid var(--paper-line);
+  background: var(--white);
+  color: var(--ink);
+}
+
+/* Dark Theme Overrides for Admin Suite */
+body.dark-theme .admin-tab-btn {
+  background: #09121f;
+  border-color: #334e68;
+  color: #9fb3c8;
+}
+body.dark-theme .admin-tab-btn.active {
+  background: #c1872e;
+  border-color: #c1872e;
+  color: #ffffff;
+}
+body.dark-theme .dialer-header-card,
+body.dark-theme .crm-form-card,
+body.dark-theme .crm-job-item {
+  background: #0d1a2c;
+  border-color: #334e68;
+}
+body.dark-theme .dialer-lead-card {
+  background: #0d1a2c;
+  border-color: #334e68;
+}
+body.dark-theme .dialer-lead-card.done {
+  background: #09121f;
+}
+body.dark-theme .dialer-stat-chip {
+  background: #09121f;
+  border-color: #334e68;
+}
+body.dark-theme .dialer-status-select,
+body.dark-theme .dialer-note-input,
+body.dark-theme .crm-inline-input {
+  background: #09121f;
+  border-color: #334e68;
+  color: #ecf3fa;
+}
+body.dark-theme .crm-project-editor-table th {
+  background: #09121f;
+  border-color: #334e68;
+}
+body.dark-theme .crm-project-editor-table td {
+  border-color: #334e68;
+}
+
+/* ==========================================================================
    Architectural Boxed Footer Component
    ========================================================================== */
 .footer-boxed-container {
