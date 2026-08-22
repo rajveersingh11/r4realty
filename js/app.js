@@ -1037,7 +1037,10 @@ function initTheme() {
     toggleBtn.type = 'button';
     toggleBtn.setAttribute('title', currentIsDark ? 'Switch to Light Mode' : 'Switch to Dark Mode');
     toggleBtn.setAttribute('aria-label', currentIsDark ? 'Switch to Light Mode' : 'Switch to Dark Mode');
-    toggleBtn.innerHTML = `<i class="fas ${currentIsDark ? 'fa-sun' : 'fa-moon'}"></i>`;
+    toggleBtn.innerHTML = `
+      <svg class="theme-icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+      <svg class="theme-icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+    `;
     
     if (btnWrapper.classList.contains('nav-wrapper')) {
       btnWrapper.appendChild(toggleBtn);
@@ -1685,7 +1688,7 @@ function initChatbot() {
   const chatHTML = `
     <div class="r4-chatbot-launcher" id="r4ChatLauncher" title="Chat with R4Realty Property Advisor">
       <div class="r4-launcher-icon">
-        <i class="fas fa-comment-dots"></i>
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-2 10H6v-2h12v2zm0-3H6V7h12v2z"/></svg>
         <div class="r4-launcher-pulse"></div>
       </div>
       <span>Ask Advisor</span>
@@ -1694,14 +1697,18 @@ function initChatbot() {
     <div class="r4-chat-window" id="r4ChatWindow">
       <div class="r4-chat-header">
         <div class="r4-chat-header-info">
-          <div class="r4-chat-avatar"><i class="fas fa-user-tie"></i></div>
+          <div class="r4-chat-avatar">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+          </div>
           <div>
             <div class="r4-chat-title">Rajveer Singh · R4Realty</div>
             <div class="r4-chat-status"><span class="r4-chat-status-dot"></span> Online · Property Advisory</div>
           </div>
         </div>
         <div class="r4-chat-header-actions">
-          <button class="r4-chat-action-btn" id="r4ChatClose" title="Close Chat" aria-label="Close Chat"><i class="fas fa-times"></i></button>
+          <button class="r4-chat-action-btn" id="r4ChatClose" title="Close Chat" aria-label="Close Chat">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </button>
         </div>
       </div>
       <div class="r4-chat-body">
@@ -1715,7 +1722,9 @@ function initChatbot() {
         </div>
         <form class="r4-chat-input-area" id="r4ChatForm">
           <input type="text" class="r4-chat-input" id="r4ChatInput" placeholder="Ask about projects, yields, RERA..." autocomplete="off" />
-          <button type="submit" class="r4-chat-send-btn" title="Send message" aria-label="Send message"><i class="fas fa-paper-plane"></i></button>
+          <button type="submit" class="r4-chat-send-btn" title="Send message" aria-label="Send message">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+          </button>
         </form>
       </div>
     </div>
@@ -1779,7 +1788,7 @@ function initChatbot() {
       ctaHTML = `
         <div class="r4-chat-btn-group">
           <a class="r4-chat-btn" href="https://wa.me/917838416570?text=Hi%20Rajveer,%20I%20am%20chatting%20on%20R4Realty%20and%20need%20investment%20details." target="_blank">
-            <i class="fab fa-whatsapp"></i> Chat directly on WhatsApp (+91 78384 16570) &rarr;
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor" style="display:inline-block; vertical-align:middle; margin-right:5px;"><path d="M17.5 14.4c-.3-.1-1.7-.9-2-.9-.3-.1-.5-.1-.7.1-.2.3-.7.9-.9 1.1-.2.2-.3.2-.6.1-.3-.1-1.3-.5-2.4-1.5-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.6.1-.1.3-.3.4-.5.1-.1.2-.3.3-.4.1-.2 0-.4 0-.5 0-.1-.7-1.6-.9-2.2-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.4s1.1 2.8 1.2 3c.1.2 2.1 3.2 5 4.4.7.3 1.3.5 1.7.6.7.2 1.4.2 1.9.1.6-.1 1.7-.7 2-1.4.2-.6.2-1.2.2-1.3-.1-.1-.3-.2-.6-.3z"/><path d="M12 2C6.5 2 2 6.5 2 12c0 1.8.5 3.6 1.4 5.1L2 22l5.1-1.3C8.5 21.5 10.2 22 12 22c5.5 0 10-4.5 10-10S17.5 2 12 2zm0 18c-1.6 0-3.1-.4-4.5-1.2l-.3-.2-3.3.9.9-3.2-.2-.3C3.8 14.4 3.3 13.2 3.3 12 3.3 7.2 7.2 3.3 12 3.3S20.7 7.2 20.7 12 16.8 20 12 20z"/></svg>Chat directly on WhatsApp (+91 78384 16570) &rarr;
           </a>
         </div>
       `;
@@ -1902,8 +1911,8 @@ function initChatbot() {
           <li><strong>Bhutani Belfair (Sector 140A):</strong> High-footfall entertainment and commercial avenue.</li>
         </ul>
         <div class="r4-chat-btn-group">
-          <a class="r4-chat-btn" href="/projects/gygy-mentis.html"><i class="fas fa-arrow-right"></i> View GYGY Mentis Spec Sheet</a>
-          <a class="r4-chat-btn" href="/projects/mall-of-expressway.html"><i class="fas fa-arrow-right"></i> View Sikka Mall of Expressway</a>
+          <a class="r4-chat-btn" href="/projects/gygy-mentis.html"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block; vertical-align:middle; margin-right:4px;"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>View GYGY Mentis Spec Sheet</a>
+          <a class="r4-chat-btn" href="/projects/mall-of-expressway.html"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block; vertical-align:middle; margin-right:4px;"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>View Sikka Mall of Expressway</a>
         </div>
       `, true);
       return;
@@ -1933,7 +1942,7 @@ function initChatbot() {
           <li><strong>Sunrise City &amp; Greater Noida Corridors:</strong> Freehold RERA-registered land parcels with rapid infrastructure upside.</li>
         </ul>
         <div class="r4-chat-btn-group">
-          <a class="r4-chat-btn" href="/projects/vedic-city-goa.html"><i class="fas fa-arrow-right"></i> Explore Vedic City Goa Plots</a>
+          <a class="r4-chat-btn" href="/projects/vedic-city-goa.html"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block; vertical-align:middle; margin-right:4px;"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>Explore Vedic City Goa Plots</a>
         </div>
       `, true);
       return;

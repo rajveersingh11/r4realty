@@ -3,8 +3,6 @@
   Adapted from the design system of Rajveer Singh's R4Realty
 */
 
-@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
-
 :root {
   /* Blueprint Color Palette */
   --paper: #ECEFEA;
@@ -52,7 +50,7 @@ body {
   background-color: var(--paper);
   background-image:
     linear-gradient(rgba(244, 241, 234, 0.76), rgba(244, 241, 234, 0.84)),
-    url('/ChatGPT%20Image%20Aug%2016,%202026,%2010_36_30%20PM.png');
+    url('/assets/bg-pattern.webp');
   background-size: cover;
   background-position: top center;
   background-attachment: fixed;
@@ -274,12 +272,29 @@ header {
   transform: translateY(-1px);
 }
 
-.theme-toggle-btn i {
+.theme-toggle-btn i,
+.theme-toggle-btn svg {
   transition: transform var(--transition-fast), color var(--transition-fast);
 }
 
-.theme-toggle-btn:hover i {
+.theme-toggle-btn:hover i,
+.theme-toggle-btn:hover svg {
   transform: scale(1.15) rotate(15deg);
+}
+
+.theme-toggle-btn .theme-icon-sun,
+.theme-toggle-btn .theme-icon-moon {
+  width: 18px;
+  height: 18px;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+body:not(.dark-theme) .theme-toggle-btn .theme-icon-sun {
+  display: none !important;
+}
+body:not(.dark-theme) .theme-toggle-btn .theme-icon-moon {
+  display: inline-block !important;
 }
 
 body.dark-theme .theme-toggle-btn {
@@ -293,6 +308,14 @@ body.dark-theme .theme-toggle-btn:hover {
   background: #15263b;
   color: #ffca28;
   border-color: #ffca28;
+}
+
+body.dark-theme .theme-toggle-btn .theme-icon-moon {
+  display: none !important;
+}
+body.dark-theme .theme-toggle-btn .theme-icon-sun {
+  display: inline-block !important;
+  color: #ffca28;
 }
 
 /* Title Block / Hero styling (Technical sheet wrapper) */
@@ -1594,7 +1617,7 @@ body.dark-theme {
   --success: #388e3c;
   background-image:
     linear-gradient(rgba(9, 18, 31, 0.90), rgba(9, 18, 31, 0.94)),
-    url('/ChatGPT%20Image%20Aug%2016,%202026,%2010_36_30%20PM.png');
+    url('/assets/bg-pattern.webp');
 }
 
 /* Ensure images/iframes in dark mode have soft highlights */
