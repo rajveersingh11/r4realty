@@ -112,9 +112,9 @@ a {
 /* Layout Utilities */
 .container {
   width: 100%;
-  max-width: 920px;
+  max-width: 1140px;
   margin: 0 auto;
-  padding: 0 20px;
+  padding: 0 24px;
 }
 
 .grid-2 {
@@ -385,7 +385,19 @@ body.dark-theme .theme-toggle-btn .theme-icon-sun {
 }
 
 .tb-body {
-  padding: 40px 24px 34px;
+  padding: 36px 28px;
+}
+
+.tb-hero-grid {
+  display: grid;
+  grid-template-columns: 1.25fr 0.95fr;
+  gap: 32px;
+  align-items: center;
+}
+
+.tb-hero-content {
+  display: flex;
+  flex-direction: column;
 }
 
 .eyebrow {
@@ -394,20 +406,106 @@ body.dark-theme .theme-toggle-btn .theme-icon-sun {
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--accent);
-  margin-bottom: 14px;
+  margin-bottom: 12px;
 }
 
 h1 {
-  font-size: clamp(34px, 6vw, 54px);
-  line-height: 0.98;
-  max-width: 14ch;
+  font-size: clamp(34px, 5.5vw, 52px);
+  line-height: 1.02;
+  margin-bottom: 16px;
 }
 
 .lede {
-  margin-top: 18px;
-  max-width: 48ch;
   color: var(--ink-soft);
   font-size: 15px;
+  line-height: 1.6;
+  margin-bottom: 24px;
+}
+
+.tb-hero-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+/* Technical Hero Spec Card on Right */
+.tb-spec-card {
+  border: var(--border-thick);
+  background: var(--paper);
+  padding: 24px;
+  box-shadow: var(--shadow-flat);
+}
+
+.tb-spec-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: var(--border-thin);
+  padding-bottom: 12px;
+  margin-bottom: 16px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--accent);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.tb-spec-card-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 18px 0;
+}
+
+.tb-spec-card-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px dashed var(--paper-line);
+  font-size: 12.5px;
+}
+
+.tb-spec-card-list li:last-child {
+  border-bottom: none;
+}
+
+.tb-spec-card-list .spec-k {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+
+.tb-spec-card-list .spec-v {
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.tb-corridor-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding-top: 12px;
+  border-top: var(--border-thin);
+}
+
+.tb-corridor-pill {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  padding: 2px 7px;
+  background: var(--white);
+  border: 1px solid var(--border-light);
+  color: var(--ink-soft);
+  text-transform: uppercase;
+}
+
+@media (max-width: 900px) {
+  .tb-hero-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
 }
 
 .tb-strip {
@@ -1807,8 +1905,16 @@ body.dark-theme .project-card,
 body.dark-theme .spec-sheet, 
 body.dark-theme .calc-widget, 
 body.dark-theme .dashboard-stat-card,
-body.dark-theme .modal-content {
+body.dark-theme .modal-content,
+body.dark-theme .tb-spec-card {
   background: var(--white);
+  border-color: #334e68;
+}
+
+body.dark-theme .tb-corridor-pill {
+  background: #09121f;
+  border-color: #334e68;
+  color: #ecf3fa;
 }
 
 /* FAQ Accordion Styling (Blueprint Ticket Style) */
