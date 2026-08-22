@@ -253,99 +253,135 @@ function showToast(title, message, type = 'success') {
 }
 
 /* ==========================================================================
-   5. Lead Management Dashboard (Local & Free CRM)
+   5. Lead Management Dashboard (Advanced R4Realty CRM)
    ========================================================================== */
+let activeAdminPin = '';
+let crmAllLeads = [];
+let crmCurrentFilter = 'ALL';
+let crmCurrentSearch = '';
+
 function initLeadDashboard() {
   const adminBtn = document.getElementById('admin-dashboard-trigger');
-  let activeAdminPin = '';
   
   if (!adminBtn) return;
 
-  // Create modal markup in DOM
-  const modalHTML = `
-    <div class="modal-backdrop" id="admin-leads-modal">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h3><i class="fas fa-chart-line"></i> R4Realty Lead Manager (Local CRM)</h3>
-          <button class="close-modal-btn" id="close-leads-modal">&times;</button>
-        </div>
-        <div class="modal-body">
-          <div id="admin-login-screen">
-            <div class="admin-auth-container">
-              <i class="fas fa-lock"></i>
-              <h4>Security Check</h4>
-              <p>Please enter the administrator access pin to view captured leads.</p>
-              <div class="form-group" style="width: 100%;">
-                <input type="password" id="admin-pass-input" class="form-input" placeholder="Enter Access Pin (default: admin123)" />
-              </div>
-              <button class="cta-button" id="admin-login-btn">Unlock Dashboard</button>
-            </div>
+  // Create modal markup in DOM if not present
+  if (!document.getElementById('admin-leads-modal')) {
+    const modalHTML = `
+      <div class="modal-backdrop" id="admin-leads-modal">
+        <div class="modal-content" style="max-width: 1040px;">
+          <div class="modal-header">
+            <h3><i class="fas fa-chart-line"></i> R4Realty Lead &amp; Talent CRM</h3>
+            <button class="close-modal-btn" id="close-leads-modal">&times;</button>
           </div>
-          <div id="admin-dashboard-content" style="display: none;">
-            <div class="modal-actions">
-              <div class="dashboard-stats">
-                <div class="dashboard-stat-card">
-                  <span>Total Leads</span>
-                  <h4 id="stat-total-leads">0</h4>
+          <div class="modal-body" style="padding: 16px;">
+            <div id="admin-login-screen">
+              <div class="admin-auth-container">
+                <i class="fas fa-shield-alt"></i>
+                <h4>Admin Security Check</h4>
+                <p>Please enter the administrator access PIN to view inquiries and applications.</p>
+                <div class="form-group" style="width: 100%; margin: 12px 0;">
+                  <input type="password" id="admin-pass-input" class="form-input" placeholder="Enter Access PIN" autofocus />
                 </div>
-                <div class="dashboard-stat-card">
-                  <span>Export Format</span>
-                  <h4>CSV / Excel</h4>
-                </div>
-              </div>
-              <div style="display: flex; gap: 1rem;">
-                <button class="cta-button secondary" id="clear-leads-btn"><i class="fas fa-trash"></i> Reset Database</button>
-                <button class="cta-button" id="export-leads-btn"><i class="fas fa-file-csv"></i> Export to Excel</button>
+                <button class="cta-button" id="admin-login-btn"><i class="fas fa-unlock"></i> Unlock Dashboard</button>
               </div>
             </div>
-            
-            <div class="table-responsive">
-              <table class="leads-table">
-                <thead>
-                  <tr>
-                    <th>Date & Time</th>
-                    <th>Lead Name</th>
-                    <th>Phone Number</th>
-                    <th>Email</th>
-                    <th>Project</th>
-                    <th>Inquiry Details</th>
-                    <th>Status</th>
-                  </tr>
-                </thead>
-                <tbody id="leads-table-body">
-                  <!-- Leads will be injected here -->
-                </tbody>
-              </table>
-            </div>
-            <div id="no-leads-message" class="empty-leads-state" style="display: none;">
-              <i class="far fa-folder-open"></i>
-              <p>No organic leads captured yet. Start sharing your project listings to get views!</p>
+            <div id="admin-dashboard-content" style="display: none;">
+              <!-- Stats Row -->
+              <div class="modal-actions" style="margin-bottom: 12px;">
+                <div class="dashboard-stats" id="crmStatsContainer">
+                  <div class="dashboard-stat-card active" data-status-filter="ALL">
+                    <span>Total Leads</span>
+                    <h4 id="stat-total-leads">0</h4>
+                  </div>
+                  <div class="dashboard-stat-card" data-status-filter="New">
+                    <span style="color: #2196f3;">New</span>
+                    <h4 id="stat-new-leads" style="color: #2196f3;">0</h4>
+                  </div>
+                  <div class="dashboard-stat-card" data-status-filter="Contacted">
+                    <span style="color: #ff9800;">Contacted</span>
+                    <h4 id="stat-contacted-leads" style="color: #ff9800;">0</h4>
+                  </div>
+                  <div class="dashboard-stat-card" data-status-filter="Qualified">
+                    <span style="color: #9c27b0;">Qualified</span>
+                    <h4 id="stat-qualified-leads" style="color: #9c27b0;">0</h4>
+                  </div>
+                  <div class="dashboard-stat-card" data-status-filter="Closed">
+                    <span style="color: #4caf50;">Closed</span>
+                    <h4 id="stat-closed-leads" style="color: #4caf50;">0</h4>
+                  </div>
+                </div>
+                <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                  <button class="cta-button secondary" id="refresh-crm-btn" title="Refresh Live Database"><i class="fas fa-sync-alt"></i> Sync</button>
+                  <button class="cta-button secondary" id="clear-leads-btn" title="Clear all records"><i class="fas fa-trash"></i> Reset</button>
+                  <button class="cta-button" id="export-leads-btn" title="Export as CSV/Excel"><i class="fas fa-file-csv"></i> Export CSV</button>
+                </div>
+              </div>
+
+              <!-- Filter & Search Controls Bar -->
+              <div class="crm-controls-bar">
+                <div class="crm-search-box">
+                  <i class="fas fa-search" style="color: var(--muted);"></i>
+                  <input type="text" id="crmSearchInput" placeholder="Search by name, phone, project, email, or keywords..." />
+                </div>
+              </div>
+              
+              <!-- Leads Table -->
+              <div class="table-responsive" style="max-height: 480px; overflow-y: auto;">
+                <table class="leads-table">
+                  <thead>
+                    <tr>
+                      <th style="width: 140px;">Date &amp; Time</th>
+                      <th style="width: 190px;">Contact Info</th>
+                      <th style="width: 170px;">Project / Role</th>
+                      <th>Inquiry / Notes</th>
+                      <th style="width: 120px;">Status</th>
+                      <th style="width: 110px; text-align: center;">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="leads-table-body">
+                    <!-- Dynamic Rows -->
+                  </tbody>
+                </table>
+              </div>
+              <div id="no-leads-message" class="empty-leads-state" style="display: none;">
+                <i class="far fa-folder-open"></i>
+                <p>No matching leads or applications found.</p>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-  `;
-
-  document.body.insertAdjacentHTML('beforeend', modalHTML);
+    `;
+    document.body.insertAdjacentHTML('beforeend', modalHTML);
+  }
 
   const modal = document.getElementById('admin-leads-modal');
   const closeBtn = document.getElementById('close-leads-modal');
-  loginScreen = document.getElementById('admin-login-screen');
-  dashboardContent = document.getElementById('admin-dashboard-content');
+  const loginScreen = document.getElementById('admin-login-screen');
+  const dashboardContent = document.getElementById('admin-dashboard-content');
   const loginBtn = document.getElementById('admin-login-btn');
   const passInput = document.getElementById('admin-pass-input');
   const exportBtn = document.getElementById('export-leads-btn');
   const clearBtn = document.getElementById('clear-leads-btn');
+  const refreshBtn = document.getElementById('refresh-crm-btn');
+  const searchInput = document.getElementById('crmSearchInput');
+  const statCards = document.querySelectorAll('#crmStatsContainer .dashboard-stat-card');
 
   // Trigger modal display
   adminBtn.addEventListener('click', (e) => {
     e.preventDefault();
     modal.classList.add('active');
-    // Always prompt for login when opening
-    loginScreen.style.display = 'block';
-    dashboardContent.style.display = 'none';
-    passInput.value = '';
+    if (!activeAdminPin) {
+      loginScreen.style.display = 'block';
+      dashboardContent.style.display = 'none';
+      passInput.value = '';
+      setTimeout(() => passInput.focus(), 150);
+    } else {
+      loginScreen.style.display = 'none';
+      dashboardContent.style.display = 'block';
+      refreshLeadsTable();
+    }
   });
 
   // Close modal
@@ -362,35 +398,37 @@ function initLeadDashboard() {
 
   // Dashboard Login Check
   loginBtn.addEventListener('click', () => {
-    const pass = passInput.value;
+    const pass = passInput.value.trim();
+    if (!pass) {
+      showToast('PIN Required', 'Please enter your administrator PIN.', 'error');
+      return;
+    }
     
-    // Try fetching with the typed PIN to let the server verify it
+    // Authenticate with server
     fetch('/api/leads', {
       headers: { 'X-Admin-Pin': pass }
     })
     .then(res => {
       if (res.status === 401) {
-        showToast('Access Denied', 'Invalid administrator security pin.', 'error');
+        showToast('Access Denied', 'Invalid administrator security PIN.', 'error');
         throw new Error('Unauthorized');
       }
       if (!res.ok) throw new Error('Server error');
       return res.json();
     })
     .then(data => {
-      // Success! Save PIN for subsequent actions
       activeAdminPin = pass;
       loginScreen.style.display = 'none';
       dashboardContent.style.display = 'block';
-      // Cache leads and render
-      localStorage.setItem('r4realty_leads', JSON.stringify(data));
-      refreshLeadsTable();
+      crmAllLeads = Array.isArray(data) ? data : [];
+      localStorage.setItem('r4realty_leads', JSON.stringify(crmAllLeads));
+      renderCrmTable();
+      showToast('Authenticated', 'CRM Dashboard loaded successfully.', 'success');
     })
     .catch(err => {
       if (err.message === 'Unauthorized') return;
-
-      // Server unreachable or other error — do NOT accept a local fallback PIN
-      console.warn('Authentication server unreachable. Admin actions are disabled until the server is reachable.', err.message);
-      showToast('Server Unavailable', 'Authentication server unreachable. Admin actions are temporarily disabled.', 'error');
+      console.warn('Backend server unreachable. Checking local storage cache.', err.message);
+      showToast('Server Unavailable', 'Could not reach server. Please check your network.', 'error');
     });
   });
 
@@ -398,9 +436,34 @@ function initLeadDashboard() {
     if (e.key === 'Enter') loginBtn.click();
   });
 
+  // Search input live filter
+  if (searchInput) {
+    searchInput.addEventListener('input', (e) => {
+      crmCurrentSearch = e.target.value.toLowerCase().trim();
+      renderCrmTable();
+    });
+  }
+
+  // Stat card status filter tabs
+  statCards.forEach(card => {
+    card.addEventListener('click', () => {
+      statCards.forEach(c => c.classList.remove('active'));
+      card.classList.add('active');
+      crmCurrentFilter = card.getAttribute('data-status-filter') || 'ALL';
+      renderCrmTable();
+    });
+  });
+
+  // Refresh Sync Button
+  if (refreshBtn) {
+    refreshBtn.addEventListener('click', () => {
+      refreshLeadsTable();
+      showToast('Syncing', 'Fetching latest leads from database...', 'info');
+    });
+  }
+
   // Export Leads to CSV
   exportBtn.addEventListener('click', () => {
-    // Try server-side export first (preferred)
     if (activeAdminPin) {
       const url = '/api/leads/export';
       fetch(url, { headers: { 'X-Admin-Pin': activeAdminPin } })
@@ -415,76 +478,247 @@ function initLeadDashboard() {
           document.body.appendChild(link);
           link.click();
           document.body.removeChild(link);
-          showToast('Export Successful', 'Leads downloaded successfully as CSV.', 'success');
+          showToast('Export Successful', 'Leads downloaded as CSV.', 'success');
         })
         .catch(err => {
-          console.warn('Server export failed, falling back to local CSV export.', err.message);
+          console.warn('Server export failed, exporting from local state.', err.message);
           exportLeadsToCSV();
         });
     } else {
-      // If not authenticated, fall back to client-side export from localStorage
       exportLeadsToCSV();
     }
   });
 
-  // Clear Database
+  // Clear All Database Records
   clearBtn.addEventListener('click', () => {
-    if (confirm('Are you sure you want to delete all captured leads from both MySQL and Local Storage? This action cannot be undone.')) {
-      // 1. Try to clear MySQL leads
-      fetch('/api/leads', { 
-        method: 'DELETE',
-        headers: { 'X-Admin-Pin': activeAdminPin }
-      })
-      .then(res => {
-        if (!res.ok) console.warn('MySQL clear failed.');
-      })
-      .catch(err => {
-        console.warn('Backend offline, clearing local cache only. Error:', err.message);
-      });
+    if (confirm('Are you sure you want to delete ALL captured leads? This action cannot be undone.')) {
+      if (activeAdminPin) {
+        fetch('/api/leads', { 
+          method: 'DELETE',
+          headers: { 'X-Admin-Pin': activeAdminPin }
+        })
+        .then(res => {
+          if (!res.ok) console.warn('Server clear failed.');
+        })
+        .catch(err => {
+          console.warn('Server offline, clearing local cache.', err.message);
+        });
+      }
 
-      // 2. Clear Local Storage leads
       localStorage.removeItem('r4realty_leads');
-      refreshLeadsTable();
+      crmAllLeads = [];
+      renderCrmTable();
       showToast('Database Reset', 'All lead history has been cleared.', 'success');
     }
   });
 }
 
-function refreshLeadsTable() {
+function updateLeadStatus(leadId, newStatus) {
+  // Update local memory & storage
+  const targetLead = crmAllLeads.find(l => (l.id || l.timestamp) === leadId);
+  if (targetLead) {
+    targetLead.status = newStatus;
+    localStorage.setItem('r4realty_leads', JSON.stringify(crmAllLeads));
+  }
+
+  // Update server if authenticated
+  if (activeAdminPin) {
+    fetch('/api/leads', {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Admin-Pin': activeAdminPin
+      },
+      body: JSON.stringify({ id: leadId, status: newStatus })
+    })
+    .then(res => {
+      if (!res.ok) console.warn('Server status update failed.');
+    })
+    .catch(err => console.warn('Status update network error:', err));
+  }
+
+  updateCrmCounters();
+  showToast('Status Updated', `Lead status updated to ${newStatus}.`, 'success');
+}
+
+function deleteSingleLead(leadId) {
+  if (!confirm('Are you sure you want to remove this record?')) return;
+
+  crmAllLeads = crmAllLeads.filter(l => (l.id || l.timestamp) !== leadId);
+  localStorage.setItem('r4realty_leads', JSON.stringify(crmAllLeads));
+
+  if (activeAdminPin) {
+    fetch(`/api/leads?id=${encodeURIComponent(leadId)}`, {
+      method: 'DELETE',
+      headers: { 'X-Admin-Pin': activeAdminPin }
+    })
+    .then(res => {
+      if (!res.ok) console.warn('Server delete failed.');
+    })
+    .catch(err => console.warn('Delete error:', err));
+  }
+
+  renderCrmTable();
+  showToast('Deleted', 'Lead record removed.', 'success');
+}
+
+function updateCrmCounters() {
+  const totalCounter = document.getElementById('stat-total-leads');
+  const newCounter = document.getElementById('stat-new-leads');
+  const contactedCounter = document.getElementById('stat-contacted-leads');
+  const qualifiedCounter = document.getElementById('stat-qualified-leads');
+  const closedCounter = document.getElementById('stat-closed-leads');
+
+  if (!totalCounter) return;
+
+  const total = crmAllLeads.length;
+  const newCount = crmAllLeads.filter(l => (l.status || 'New') === 'New').length;
+  const contactedCount = crmAllLeads.filter(l => (l.status || '') === 'Contacted').length;
+  const qualifiedCount = crmAllLeads.filter(l => (l.status || '') === 'Qualified').length;
+  const closedCount = crmAllLeads.filter(l => (l.status || '') === 'Closed').length;
+
+  totalCounter.textContent = total;
+  if (newCounter) newCounter.textContent = newCount;
+  if (contactedCounter) contactedCounter.textContent = contactedCount;
+  if (qualifiedCounter) qualifiedCounter.textContent = qualifiedCount;
+  if (closedCounter) closedCounter.textContent = closedCount;
+}
+
+function renderCrmTable() {
   const tableBody = document.getElementById('leads-table-body');
   const noLeadsMsg = document.getElementById('no-leads-message');
-  const totalCounter = document.getElementById('stat-total-leads');
   
   if (!tableBody) return;
 
-  function renderLeads(leads) {
-    totalCounter.textContent = leads.length;
-    tableBody.innerHTML = '';
+  updateCrmCounters();
 
-    if (leads.length === 0) {
-      noLeadsMsg.style.display = 'block';
-      tableBody.closest('table').style.display = 'none';
-    } else {
-      noLeadsMsg.style.display = 'none';
-      tableBody.closest('table').style.display = 'table';
-
-      leads.forEach(lead => {
-        const row = document.createElement('tr');
-        row.innerHTML = `
-          <td><strong>${lead.timestamp}</strong></td>
-          <td>${escapeHTML(lead.name)}</td>
-          <td><a href="tel:${escapeHTML(lead.phone)}" style="color: var(--color-gold); text-decoration: underline;"><i class="fas fa-phone-alt" style="font-size:0.75rem;"></i> ${escapeHTML(lead.phone)}</a></td>
-          <td>${escapeHTML(lead.email)}</td>
-          <td><span class="badge-lead-status">${escapeHTML(lead.project)}</span></td>
-          <td><small>${escapeHTML(lead.message)}</small></td>
-          <td><span class="badge-lead-status" style="background: rgba(16, 185, 129, 0.1); color: var(--color-success); border-color: rgba(16, 185, 129, 0.2);">${lead.status || 'New'}</span></td>
-        `;
-        tableBody.appendChild(row);
-      });
+  let filtered = crmAllLeads.filter(lead => {
+    const status = lead.status || 'New';
+    if (crmCurrentFilter !== 'ALL' && status !== crmCurrentFilter) {
+      return false;
     }
+
+    if (crmCurrentSearch) {
+      const haystack = [
+        lead.name || '',
+        lead.phone || '',
+        lead.email || '',
+        lead.project || '',
+        lead.message || ''
+      ].join(' ').toLowerCase();
+
+      if (!haystack.includes(crmCurrentSearch)) {
+        return false;
+      }
+    }
+    return true;
+  });
+
+  tableBody.innerHTML = '';
+
+  if (filtered.length === 0) {
+    noLeadsMsg.style.display = 'block';
+    tableBody.closest('table').style.display = 'none';
+    return;
   }
 
-  // 1. Try to fetch leads from MySQL/JSON server API
+  noLeadsMsg.style.display = 'none';
+  tableBody.closest('table').style.display = 'table';
+
+  filtered.forEach(lead => {
+    const leadId = lead.id || lead.timestamp || `lead_${Date.now()}`;
+    const cleanPhone = (lead.phone || '').replace(/[^0-9]/g, '');
+    const formattedPhone = cleanPhone.startsWith('91') ? cleanPhone : (cleanPhone.length === 10 ? '91' + cleanPhone : cleanPhone);
+    const isCareer = (lead.project || '').toLowerCase().includes('career');
+
+    const waGreeting = isCareer
+      ? `Hi ${encodeURIComponent(lead.name || '')}, this is Rajveer Singh from R4Realty regarding your application for ${encodeURIComponent(lead.project || 'Career Role')}.`
+      : `Hi ${encodeURIComponent(lead.name || '')}, this is Rajveer Singh from R4Realty regarding your property inquiry for ${encodeURIComponent(lead.project || 'Project Details')}. How can I assist you?`;
+
+    const waUrl = formattedPhone ? `https://wa.me/${formattedPhone}?text=${waGreeting}` : '#';
+    const statusVal = lead.status || 'New';
+
+    const row = document.createElement('tr');
+    row.innerHTML = `
+      <td>
+        <strong style="font-family: var(--font-mono); font-size: 11px;">${escapeHTML(lead.timestamp || 'N/A')}</strong>
+      </td>
+      <td>
+        <div style="font-weight: 600; font-size: 13px; color: var(--ink);">${escapeHTML(lead.name || 'Anonymous')}</div>
+        <div style="font-size: 11px; color: var(--muted); font-family: var(--font-mono);">${escapeHTML(lead.email || 'N/A')}</div>
+        <div style="margin-top: 4px;">
+          <a href="tel:${escapeHTML(lead.phone || '')}" style="color: var(--accent); font-family: var(--font-mono); font-size: 11.5px; text-decoration: underline; font-weight: 600;">
+            <i class="fas fa-phone-alt" style="font-size: 10px;"></i> ${escapeHTML(lead.phone || 'N/A')}
+          </a>
+        </div>
+      </td>
+      <td>
+        <span class="badge-lead-status" style="${isCareer ? 'background: rgba(156, 39, 176, 0.1); color: #7b1fa2; border-color: rgba(156, 39, 176, 0.3); font-weight: 600;' : ''}">
+          ${isCareer ? '<i class="fas fa-user-tie"></i> ' : '<i class="fas fa-building"></i> '}${escapeHTML(lead.project || 'General Inquiry')}
+        </span>
+      </td>
+      <td>
+        <div class="crm-inquiry-preview" title="Click to view full message" onclick="alert('Inquiry Details from ${escapeHTML(lead.name)}:\\n\\nProject/Role: ${escapeHTML(lead.project)}\\nPhone: ${escapeHTML(lead.phone)}\\nEmail: ${escapeHTML(lead.email)}\\nTime: ${escapeHTML(lead.timestamp)}\\n\\nDetails:\\n${escapeHTML(lead.message || 'No details provided.')}')">
+          <small>${escapeHTML(lead.message || 'No additional details.')}</small>
+        </div>
+      </td>
+      <td>
+        <select class="crm-status-select status-${statusVal}" data-lead-id="${escapeHTML(leadId)}">
+          <option value="New" ${statusVal === 'New' ? 'selected' : ''}>New</option>
+          <option value="Contacted" ${statusVal === 'Contacted' ? 'selected' : ''}>Contacted</option>
+          <option value="Qualified" ${statusVal === 'Qualified' ? 'selected' : ''}>Qualified</option>
+          <option value="Closed" ${statusVal === 'Closed' ? 'selected' : ''}>Closed</option>
+        </select>
+      </td>
+      <td style="text-align: center;">
+        <div class="crm-actions-cell" style="justify-content: center;">
+          <a href="${waUrl}" target="_blank" class="crm-action-btn wa" title="Chat on WhatsApp">
+            <i class="fab fa-whatsapp"></i>
+          </a>
+          <a href="tel:${escapeHTML(lead.phone || '')}" class="crm-action-btn call" title="Call directly">
+            <i class="fas fa-phone-alt"></i>
+          </a>
+          <button class="crm-action-btn del" data-delete-id="${escapeHTML(leadId)}" title="Delete record">
+            <i class="fas fa-trash-alt"></i>
+          </button>
+        </div>
+      </td>
+    `;
+
+    // Attach Status Change Listener
+    const selectEl = row.querySelector('.crm-status-select');
+    if (selectEl) {
+      selectEl.addEventListener('change', (e) => {
+        const newStatus = e.target.value;
+        selectEl.className = `crm-status-select status-${newStatus}`;
+        updateLeadStatus(leadId, newStatus);
+      });
+    }
+
+    // Attach Single Delete Listener
+    const delBtn = row.querySelector('[data-delete-id]');
+    if (delBtn) {
+      delBtn.addEventListener('click', () => {
+        deleteSingleLead(leadId);
+      });
+    }
+
+    tableBody.appendChild(row);
+  });
+}
+
+function refreshLeadsTable() {
+  if (!activeAdminPin) {
+    let localLeads = [];
+    try {
+      const stored = localStorage.getItem('r4realty_leads');
+      if (stored) localLeads = JSON.parse(stored);
+    } catch (e) {}
+    crmAllLeads = Array.isArray(localLeads) ? localLeads : [];
+    renderCrmTable();
+    return;
+  }
+
   fetch('/api/leads', {
     headers: { 'X-Admin-Pin': activeAdminPin }
   })
@@ -494,30 +728,26 @@ function refreshLeadsTable() {
     return res.json();
   })
   .then(data => {
-    console.log('Fetched leads from server successfully.');
-    // Cache to localStorage to keep backups in sync
-    localStorage.setItem('r4realty_leads', JSON.stringify(data));
-    renderLeads(data);
+    crmAllLeads = Array.isArray(data) ? data : [];
+    localStorage.setItem('r4realty_leads', JSON.stringify(crmAllLeads));
+    renderCrmTable();
   })
   .catch(err => {
     if (err.message === 'Unauthorized') {
       showToast('Session Expired', 'Please log in again.', 'error');
-      loginScreen.style.display = 'block';
-      dashboardContent.style.display = 'none';
+      const loginScreen = document.getElementById('admin-login-screen');
+      const dashboardContent = document.getElementById('admin-dashboard-content');
+      if (loginScreen) loginScreen.style.display = 'block';
+      if (dashboardContent) dashboardContent.style.display = 'none';
       return;
     }
-    console.warn('Backend server offline. Fetching from Local Storage cache instead.', err.message);
-    // Fallback to local storage
     let localLeads = [];
     try {
       const stored = localStorage.getItem('r4realty_leads');
-      if (stored) {
-        localLeads = JSON.parse(stored);
-      }
-    } catch (e) {
-      console.error('Error fetching leads from local storage', e);
-    }
-    renderLeads(localLeads);
+      if (stored) localLeads = JSON.parse(stored);
+    } catch (e) {}
+    crmAllLeads = Array.isArray(localLeads) ? localLeads : [];
+    renderCrmTable();
   });
 }
 

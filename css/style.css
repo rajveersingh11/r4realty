@@ -1199,14 +1199,23 @@ section {
 
 .dashboard-stats {
   display: flex;
-  gap: 12px;
+  gap: 10px;
+  flex-wrap: wrap;
 }
 
 .dashboard-stat-card {
   background: var(--paper);
   border: var(--border-thin);
   padding: 6px 12px;
-  min-width: 100px;
+  min-width: 90px;
+  cursor: pointer;
+  transition: transform var(--transition-fast), border-color var(--transition-fast);
+}
+
+.dashboard-stat-card:hover,
+.dashboard-stat-card.active {
+  border-color: var(--accent);
+  background: var(--accent-soft);
 }
 
 .dashboard-stat-card span {
@@ -1223,6 +1232,39 @@ section {
   color: var(--ink);
 }
 
+.crm-controls-bar {
+  display: flex;
+  gap: 12px;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  margin: 12px 0 16px 0;
+  padding: 10px;
+  background: var(--paper);
+  border: var(--border-thin);
+}
+
+.crm-search-box {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--white);
+  border: var(--border-thin);
+  padding: 4px 10px;
+  flex: 1;
+  min-width: 200px;
+}
+
+.crm-search-box input {
+  border: none;
+  background: transparent;
+  outline: none;
+  width: 100%;
+  font-size: 12px;
+  font-family: var(--font-sans);
+  color: var(--ink);
+}
+
 .leads-table {
   width: 100%;
   border-collapse: collapse;
@@ -1231,10 +1273,11 @@ section {
 
 .leads-table th,
 .leads-table td {
-  padding: 8px 10px;
+  padding: 10px 12px;
   border: var(--border-thin);
   font-size: 12px;
   text-align: left;
+  vertical-align: middle;
 }
 
 .leads-table th {
@@ -1243,10 +1286,146 @@ section {
   font-size: 9.5px;
   color: var(--ink-soft);
   text-transform: uppercase;
+  letter-spacing: 0.05em;
+  position: sticky;
+  top: 0;
+  z-index: 2;
 }
 
 .leads-table tr:hover {
-  background-color: rgba(19, 43, 69, 0.02);
+  background-color: rgba(19, 43, 69, 0.03);
+}
+
+.crm-actions-cell {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.crm-action-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border: var(--border-thin);
+  background: var(--paper);
+  color: var(--ink);
+  cursor: pointer;
+  border-radius: 2px;
+  text-decoration: none;
+  font-size: 11px;
+  transition: all var(--transition-fast);
+}
+
+.crm-action-btn:hover {
+  transform: scale(1.08);
+}
+
+.crm-action-btn.wa {
+  color: #25D366;
+  border-color: #25D366;
+  background: rgba(37, 211, 102, 0.08);
+}
+
+.crm-action-btn.call {
+  color: var(--accent);
+  border-color: var(--accent);
+  background: var(--accent-soft);
+}
+
+.crm-action-btn.del {
+  color: #d32f2f;
+  border-color: #d32f2f;
+  background: rgba(211, 47, 47, 0.08);
+}
+
+.crm-status-select {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  padding: 3px 6px;
+  border: var(--border-thin);
+  background: var(--white);
+  color: var(--ink);
+  cursor: pointer;
+  border-radius: 2px;
+}
+
+.crm-status-select.status-New {
+  border-color: #2196f3;
+  color: #1976d2;
+  background: rgba(33, 150, 243, 0.08);
+}
+
+.crm-status-select.status-Contacted {
+  border-color: #ff9800;
+  color: #f57c00;
+  background: rgba(255, 152, 0, 0.08);
+}
+
+.crm-status-select.status-Qualified {
+  border-color: #9c27b0;
+  color: #7b1fa2;
+  background: rgba(156, 39, 176, 0.08);
+}
+
+.crm-status-select.status-Closed {
+  border-color: #4caf50;
+  color: #388e3c;
+  background: rgba(76, 175, 80, 0.08);
+}
+
+.crm-inquiry-preview {
+  max-width: 220px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: pointer;
+  color: var(--ink-soft);
+}
+
+.crm-inquiry-preview:hover {
+  color: var(--accent);
+  text-decoration: underline;
+}
+
+body.dark-theme .crm-controls-bar,
+body.dark-theme .crm-search-box {
+  background: #09121f;
+  border-color: #334e68;
+}
+
+body.dark-theme .crm-search-box input {
+  color: #ecf3fa;
+}
+
+body.dark-theme .leads-table {
+  background: #0d1a2c;
+}
+
+body.dark-theme .leads-table th {
+  background: #09121f;
+  color: #9fb3c8;
+  border-color: #334e68;
+}
+
+body.dark-theme .leads-table td {
+  border-color: #334e68;
+  color: #ecf3fa;
+}
+
+body.dark-theme .leads-table tr:hover {
+  background-color: #16263d;
+}
+
+body.dark-theme .crm-action-btn {
+  background: #09121f;
+  border-color: #334e68;
+  color: #ecf3fa;
+}
+
+body.dark-theme .crm-status-select {
+  background: #09121f;
 }
 
 .badge-lead-status {

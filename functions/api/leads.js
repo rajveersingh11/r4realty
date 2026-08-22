@@ -112,7 +112,62 @@ export async function onRequestGet(context) {
   }
 }
 
-// 3. Clear database (DELETE /api/leads - Admin Only)
+// 3. Update lead status/notes (PATCH /api/leads - Admin Only)
+export async function onRequestPatch(context) {
+  const { request, env } = context;
+
+  if (!checkAdminAuth(request, env)) {
+    return new Response(
+      JSON.stringify({ error: 'Unauthorized: Invalid Admin PIN' }),
+      { status: 401, headers: { 'Content-Type': 'application/json' } }
+    );
+  }
+
+  try {
+    const body = await request.json();
+    const { id, status, message } = body;
+
+    if (!id) {
+      return new Response(
+        JSON.stringify({ error: 'Lead ID is required for status updates.' }),
+        { status: 400, headers: { 'Content-Type': 'application/json' } }
+      );
+    }
+
+    if (env.DB) {
+      if (status && message) {
+        await env.DB.prepare(
+          'UPDATE leads SET status = ?, message = ? WHERE id = ?'
+        ).bind(status, message, id).run();
+      } else if (status) {
+        await env.DB.prepare(
+          'UPDATE leads SET status = ? WHERE id = ?'
+        ).bind(status, id).run();
+      } else if (message) {
+        await env.DB.prepare(
+          'UPDATE leads SET message = ? WHERE id = ?'
+        ).bind(message, id).run();
+      }
+
+      return new Response(
+        JSON.stringify({ success: true, message: 'Lead updated successfully.' }),
+        { status: 200, headers: { 'Content-Type': 'application/json' } }
+      );
+    }
+
+    return new Response(
+      JSON.stringify({ success: true, message: 'Updated locally (D1 binding not configured).' }),
+      { status: 200, headers: { 'Content-Type': 'application/json' } }
+    );
+  } catch (error) {
+    return new Response(
+      JSON.stringify({ error: 'Failed to update lead: ' + error.message }),
+      { status: 500, headers: { 'Content-Type': 'application/json' } }
+    );
+  }
+}
+
+// 4. Delete lead(s) (DELETE /api/leads or DELETE /api/leads?id=xyz - Admin Only)
 export async function onRequestDelete(context) {
   const { request, env } = context;
 
@@ -124,22 +179,34 @@ export async function onRequestDelete(context) {
   }
 
   try {
+    const url = new URL(request.url);
+    const leadId = url.searchParams.get('id');
+
     if (env.DB) {
-      await env.DB.prepare('DELETE FROM leads').run();
-      return new Response(
-        JSON.stringify({ success: true, message: 'Database records cleared successfully.' }),
-        { status: 200, headers: { 'Content-Type': 'application/json' } }
-      );
+      if (leadId) {
+        await env.DB.prepare('DELETE FROM leads WHERE id = ?').bind(leadId).run();
+        return new Response(
+          JSON.stringify({ success: true, message: `Lead ${leadId} deleted.` }),
+          { status: 200, headers: { 'Content-Type': 'application/json' } }
+        );
+      } else {
+        await env.DB.prepare('DELETE FROM leads').run();
+        return new Response(
+          JSON.stringify({ success: true, message: 'Database records cleared successfully.' }),
+          { status: 200, headers: { 'Content-Type': 'application/json' } }
+        );
+      }
     }
 
     return new Response(
-      JSON.stringify({ success: true, message: 'D1 binding not configured.' }),
+      JSON.stringify({ success: true, message: 'Action processed (D1 binding not configured).' }),
       { status: 200, headers: { 'Content-Type': 'application/json' } }
     );
   } catch (error) {
     return new Response(
-      JSON.stringify({ error: 'Database reset operation failed: ' + error.message }),
+      JSON.stringify({ error: 'Database delete operation failed: ' + error.message }),
       { status: 500, headers: { 'Content-Type': 'application/json' } }
     );
   }
 }
+
