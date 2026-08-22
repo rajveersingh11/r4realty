@@ -1961,6 +1961,25 @@ function initChatbot() {
       return;
     }
 
+    // Careers / Jobs / Hiring
+    if (q.includes('career') || q.includes('job') || q.includes('hiring') || q.includes('vacancy') || q.includes('work with') || q.includes('recruitment') || q.includes('interview') || q.includes('salary')) {
+      appendBotMessage(`
+        <strong>Careers at R4Realty:</strong><br>
+        We are actively expanding our real estate advisory team across Noida, Greater Noida, and Goa!<br>
+        <ul style="padding-left: 16px; margin: 6px 0;">
+          <li><strong>Senior Real Estate Portfolio Advisor:</strong> Noida Expressway &amp; Yamuna Expressway</li>
+          <li><strong>Commercial Real Estate &amp; Retail Strategist:</strong> Sector 140A / Greater Noida</li>
+          <li><strong>Luxury Vacation Homes Consultant:</strong> North Goa &amp; NCR Farmlands</li>
+          <li><strong>Digital Growth &amp; Content Strategist:</strong> Brand storytelling &amp; Lead funnels</li>
+        </ul>
+        <div class="r4-chat-btn-group">
+          <a class="r4-chat-btn" href="/careers"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block; vertical-align:middle; margin-right:4px;"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>View Open Roles &amp; Apply</a>
+          <a class="r4-chat-btn" href="https://wa.me/917838416570?text=Hi%20Rajveer,%20I%20am%20interested%20in%20career%20opportunities%20at%20R4Realty." target="_blank"><svg viewBox="0 0 24 24" width="12" height="12" fill="currentColor" style="display:inline-block; vertical-align:middle; margin-right:4px;"><path d="M12 2C6.5 2 2 6.5 2 12c0 1.8.5 3.6 1.4 5.1L2 22l5.1-1.3C8.5 21.5 10.2 22 12 22c5.5 0 10-4.5 10-10S17.5 2 12 2zm0 18c-1.6 0-3.1-.4-4.5-1.2l-.3-.2-3.3.9.9-3.2-.2-.3C3.8 14.4 3.3 13.2 3.3 12 3.3 7.2 7.2 3.3 12 3.3S20.7 7.2 20.7 12 16.8 20 12 20z"/></svg>WhatsApp CV</a>
+        </div>
+      `, true);
+      return;
+    }
+
     // Contact / Phone / Meeting / Site visit
     if (q.includes('contact') || q.includes('call') || q.includes('phone') || q.includes('whatsapp') || q.includes('number') || q.includes('talk') || q.includes('meet') || q.includes('visit') || q.includes('rajveer')) {
       appendBotMessage(`

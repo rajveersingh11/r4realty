@@ -2966,6 +2966,224 @@ body.dark-theme .cta-gold-outline:hover {
   }
 }
 
+/* ==========================================================================
+   Careers Page Styles
+   ========================================================================== */
+.career-matrix-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 20px;
+  margin-bottom: 40px;
+}
+
+.career-benefit-card {
+  border: var(--border-thick);
+  background: var(--white);
+  padding: 24px 20px;
+  box-shadow: var(--shadow-flat);
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.career-benefit-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 4px 4px 0 var(--accent);
+}
+
+.career-benefit-icon {
+  width: 42px;
+  height: 42px;
+  background: var(--accent-soft);
+  color: var(--accent);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  border: 1px solid var(--accent);
+  margin-bottom: 16px;
+}
+
+.career-benefit-title {
+  font-family: var(--font-heading);
+  font-size: 19px;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.career-benefit-desc {
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--ink-soft);
+}
+
+.job-card {
+  border: var(--border-thick);
+  background: var(--white);
+  padding: 28px;
+  margin-bottom: 24px;
+  box-shadow: var(--shadow-flat);
+  transition: transform var(--transition-fast);
+}
+
+.job-card:hover {
+  border-color: var(--accent);
+}
+
+.job-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 16px;
+  padding-bottom: 16px;
+  border-bottom: var(--border-thin);
+}
+
+.job-card-title {
+  font-family: var(--font-heading);
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 6px;
+}
+
+.job-card-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+}
+
+.job-pill {
+  padding: 3px 8px;
+  border: 1px solid var(--border-light);
+  background: var(--paper);
+  color: var(--ink-soft);
+}
+
+.job-pill.highlight {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.job-details-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin: 18px 0;
+  font-size: 13px;
+}
+
+.job-details-col h4 {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 10px;
+}
+
+.job-details-col ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.job-details-col ul li {
+  position: relative;
+  padding-left: 18px;
+  margin-bottom: 8px;
+  line-height: 1.5;
+  color: var(--ink-soft);
+}
+
+.job-details-col ul li::before {
+  content: "▹";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: bold;
+}
+
+.job-card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding-top: 16px;
+  border-top: var(--border-thin);
+  margin-top: 8px;
+}
+
+.career-apply-card {
+  border: var(--border-thick);
+  background: var(--white);
+  padding: 32px;
+  box-shadow: var(--shadow-flat);
+  margin-bottom: 40px;
+}
+
+.career-fasttrack-box {
+  border: 1.5px dashed var(--accent);
+  background: var(--accent-soft);
+  padding: 20px;
+  margin-bottom: 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+body.dark-theme .career-benefit-card,
+body.dark-theme .job-card,
+body.dark-theme .career-apply-card {
+  background: #0d1a2c;
+  border-color: #334e68;
+}
+
+body.dark-theme .career-benefit-title,
+body.dark-theme .job-card-title {
+  color: #ecf3fa;
+}
+
+body.dark-theme .career-benefit-desc,
+body.dark-theme .job-details-col ul li {
+  color: #9fb3c8;
+}
+
+body.dark-theme .job-pill {
+  background: #09121f;
+  border-color: #334e68;
+  color: #bcccdc;
+}
+
+body.dark-theme .job-pill.highlight {
+  background: #2b1f0c;
+  border-color: #d4a359;
+  color: #ffca28;
+}
+
+body.dark-theme .career-fasttrack-box {
+  background: #19273b;
+  border-color: #d4a359;
+}
+
+@media (max-width: 768px) {
+  .job-details-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+}
+
+
 
 
 
