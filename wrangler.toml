@@ -11,4 +11,4 @@ directory = "."
 [[d1_databases]]
 binding = "DB"
 database_name = "r4realty_db"
-database_id = "local-d1-id"
+database_id = "e53bbfdc-0c3c-464d-b349-4b6fb56594c7"
