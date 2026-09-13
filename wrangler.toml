@@ -2,10 +2,7 @@ name = "r4realty"
 compatibility_date = "2024-04-01"
 pages_build_output_dir = "."
 
-[assets]
-directory = "."
-
-# Cloudflare D1 Database binding for Pages Functions / Workers
+# Cloudflare D1 Database binding for Pages Functions
 # Run: npx wrangler d1 create r4realty_db
 # Then fill in database_id below and in Cloudflare Dashboard -> Settings -> Functions -> D1 Database bindings
 [[d1_databases]]
