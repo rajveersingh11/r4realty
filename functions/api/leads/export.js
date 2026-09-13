@@ -4,10 +4,26 @@
 function checkAdminAuth(request, env) {
   const adminPin = request.headers.get('x-admin-pin');
   const expectedPin = env.ADMIN_PIN;
-  if (!expectedPin || !adminPin || adminPin !== expectedPin) {
+  if (!expectedPin || !adminPin || typeof adminPin !== 'string') {
     return false;
   }
-  return true;
+  if (adminPin.length !== expectedPin.length) {
+    return false;
+  }
+  let result = 0;
+  for (let i = 0; i < adminPin.length; i++) {
+    result |= adminPin.charCodeAt(i) ^ expectedPin.charCodeAt(i);
+  }
+  return result === 0;
+}
+
+function csvSafeCell(val) {
+  if (val == null || val === undefined) return '""';
+  let s = val.toString();
+  if (/^[=+\-@\t\r]/.test(s)) {
+    s = "'" + s;
+  }
+  return `"${s.replace(/"/g, '""')}"`;
 }
 
 export async function onRequestGet(context) {
@@ -38,13 +54,13 @@ export async function onRequestGet(context) {
 
     for (const lead of leads) {
       const row = [
-        `"${(lead.timestamp || '').toString().replace(/"/g, '""')}"`,
-        `"${(lead.name || '').toString().replace(/"/g, '""')}"`,
-        `"${(lead.phone || '').toString().replace(/"/g, '""')}"`,
-        `"${(lead.email || '').toString().replace(/"/g, '""')}"`,
-        `"${(lead.project || '').toString().replace(/"/g, '""')}"`,
-        `"${(lead.message || '').toString().replace(/"/g, '""')}"`,
-        `"${(lead.status || 'New').toString().replace(/"/g, '""')}"`
+        csvSafeCell(lead.timestamp),
+        csvSafeCell(lead.name),
+        csvSafeCell(lead.phone),
+        csvSafeCell(lead.email),
+        csvSafeCell(lead.project),
+        csvSafeCell(lead.message),
+        csvSafeCell(lead.status || 'New')
       ];
       csvContent += row.join(',') + '\n';
     }

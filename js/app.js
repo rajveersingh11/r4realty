@@ -843,6 +843,174 @@ function initLeadDashboard() {
     }
   });
 
+  function refreshLeadsTable() {
+    if (activeAdminPin) {
+      fetch('/api/leads', {
+        headers: { 'X-Admin-Pin': activeAdminPin }
+      })
+      .then(res => {
+        if (!res.ok) throw new Error('Unauthorized');
+        return res.json();
+      })
+      .then(data => {
+        if (Array.isArray(data)) {
+          crmAllLeads = data;
+          try {
+            localStorage.setItem('r4realty_leads', JSON.stringify(crmAllLeads));
+          } catch (e) {}
+        }
+        renderCrmTable();
+      })
+      .catch(() => {
+        renderCrmTable();
+      });
+    } else {
+      try {
+        const stored = localStorage.getItem('r4realty_leads');
+        if (stored) crmAllLeads = JSON.parse(stored);
+      } catch (e) {}
+      renderCrmTable();
+    }
+  }
+
+  function renderCrmTable() {
+    const tableBody = document.getElementById('leads-table-body');
+    const emptyState = document.getElementById('no-leads-message');
+    const inboundCountEl = document.getElementById('tab-inbound-count');
+    const statTotalEl = document.getElementById('stat-total-leads');
+    const statNewEl = document.getElementById('stat-new-leads');
+    const statContactedEl = document.getElementById('stat-contacted-leads');
+    const statQualifiedEl = document.getElementById('stat-qualified-leads');
+    const statClosedEl = document.getElementById('stat-closed-leads');
+
+    if (!tableBody) return;
+
+    let filtered = Array.isArray(crmAllLeads) ? crmAllLeads.slice() : [];
+
+    let newCount = 0;
+    let contactedCount = 0;
+    let qualifiedCount = 0;
+    let closedCount = 0;
+
+    filtered.forEach(lead => {
+      const st = (lead.status || 'New').toLowerCase();
+      if (st === 'new') newCount++;
+      else if (st === 'contacted') contactedCount++;
+      else if (st === 'qualified') qualifiedCount++;
+      else if (st === 'closed') closedCount++;
+    });
+
+    const totalLeads = filtered.length;
+    if (inboundCountEl) inboundCountEl.textContent = totalLeads;
+    if (statTotalEl) statTotalEl.textContent = totalLeads;
+    if (statNewEl) statNewEl.textContent = newCount;
+    if (statContactedEl) statContactedEl.textContent = contactedCount;
+    if (statQualifiedEl) statQualifiedEl.textContent = qualifiedCount;
+    if (statClosedEl) statClosedEl.textContent = closedCount;
+
+    if (crmCurrentFilter && crmCurrentFilter !== 'ALL') {
+      filtered = filtered.filter(l => (l.status || 'New').toLowerCase() === crmCurrentFilter.toLowerCase());
+    }
+
+    if (crmCurrentSearch) {
+      filtered = filtered.filter(l => {
+        const searchStr = `${l.name || ''} ${l.phone || ''} ${l.email || ''} ${l.project || ''} ${l.message || ''}`.toLowerCase();
+        return searchStr.includes(crmCurrentSearch);
+      });
+    }
+
+    if (filtered.length === 0) {
+      tableBody.innerHTML = '';
+      if (emptyState) emptyState.style.display = 'block';
+      return;
+    }
+
+    if (emptyState) emptyState.style.display = 'none';
+
+    tableBody.innerHTML = filtered.map(lead => {
+      const leadId = lead.id || lead.timestamp || `lead_${Math.random()}`;
+      const status = lead.status || 'New';
+      const cleanPhone = (lead.phone || '').replace(/[^0-9+]/g, '');
+      const waLink = `https://wa.me/${cleanPhone.replace('+', '')}?text=Hi%20${encodeURIComponent(lead.name || 'there')},%20this%20is%20Rajveer%20Singh%20from%20R4Realty.`;
+
+      return `
+        <tr>
+          <td><small style="color: var(--muted); font-size: 11px;">${escapeHTML(lead.timestamp || 'N/A')}</small></td>
+          <td>
+            <strong>${escapeHTML(lead.name || 'Anonymous')}</strong><br/>
+            <small><a href="tel:${cleanPhone}" style="color: var(--primary);"><i class="fas fa-phone"></i> ${escapeHTML(lead.phone || '')}</a></small>
+            ${lead.email && lead.email !== 'N/A' ? `<br/><small><a href="mailto:${escapeHTML(lead.email)}" style="color: var(--muted);"><i class="fas fa-envelope"></i> ${escapeHTML(lead.email)}</a></small>` : ''}
+          </td>
+          <td><span class="badge badge-subtle">${escapeHTML(lead.project || 'General Inquiry')}</span></td>
+          <td><div style="font-size: 12.5px; max-width: 250px; word-break: break-word;">${escapeHTML(lead.message || 'No notes.')}</div></td>
+          <td>
+            <select class="form-select crm-lead-status-select" data-id="${escapeHTML(leadId)}" style="font-size: 12px; padding: 4px 8px;">
+              <option value="New" ${status === 'New' ? 'selected' : ''}>New</option>
+              <option value="Contacted" ${status === 'Contacted' ? 'selected' : ''}>Contacted</option>
+              <option value="Qualified" ${status === 'Qualified' ? 'selected' : ''}>Qualified</option>
+              <option value="Closed" ${status === 'Closed' ? 'selected' : ''}>Closed</option>
+            </select>
+          </td>
+          <td style="text-align: center;">
+            <div style="display: flex; gap: 6px; justify-content: center;">
+              <a href="${waLink}" target="_blank" rel="noopener noreferrer" class="action-icon-btn whatsapp" title="Chat on WhatsApp" style="display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 6px; background: #25D366; color: #fff;"><i class="fab fa-whatsapp"></i></a>
+              <a href="tel:${cleanPhone}" class="action-icon-btn call" title="Call Now" style="display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 6px; background: var(--primary); color: #fff;"><i class="fas fa-phone-alt"></i></a>
+              <button type="button" class="action-icon-btn delete crm-delete-lead-btn" data-id="${escapeHTML(leadId)}" title="Delete Lead" style="display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 6px; background: #ff4d4f; color: #fff; border: none; cursor: pointer;"><i class="fas fa-trash"></i></button>
+            </div>
+          </td>
+        </tr>
+      `;
+    }).join('');
+
+    // Attach status change listeners
+    tableBody.querySelectorAll('.crm-lead-status-select').forEach(sel => {
+      sel.addEventListener('change', (e) => {
+        const id = e.target.getAttribute('data-id');
+        const newStatus = e.target.value;
+        const target = crmAllLeads.find(l => (l.id || l.timestamp) === id);
+        if (target) {
+          target.status = newStatus;
+          try {
+            localStorage.setItem('r4realty_leads', JSON.stringify(crmAllLeads));
+          } catch (err) {}
+          if (activeAdminPin) {
+            fetch('/api/leads', {
+              method: 'PATCH',
+              headers: {
+                'Content-Type': 'application/json',
+                'X-Admin-Pin': activeAdminPin
+              },
+              body: JSON.stringify({ id, status: newStatus })
+            }).catch(() => {});
+          }
+          renderCrmTable();
+          showToast('Status Updated', `Lead marked as ${newStatus}.`, 'success');
+        }
+      });
+    });
+
+    // Attach delete listeners
+    tableBody.querySelectorAll('.crm-delete-lead-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const id = btn.getAttribute('data-id');
+        if (confirm('Delete this lead record permanently?')) {
+          crmAllLeads = crmAllLeads.filter(l => (l.id || l.timestamp) !== id);
+          try {
+            localStorage.setItem('r4realty_leads', JSON.stringify(crmAllLeads));
+          } catch (err) {}
+          if (activeAdminPin) {
+            fetch(`/api/leads?id=${encodeURIComponent(id)}`, {
+              method: 'DELETE',
+              headers: { 'X-Admin-Pin': activeAdminPin }
+            }).catch(() => {});
+          }
+          renderCrmTable();
+          showToast('Lead Deleted', 'Lead removed from database.', 'info');
+        }
+      });
+    });
+  }
+
   // =========================================================================
   // MODULE 2: OUTBOUND CALL CONSOLE & CSV IMPORTER LOGIC
   // =========================================================================

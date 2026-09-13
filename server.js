@@ -2,6 +2,7 @@ const express = require('express');
 const mysql = require('mysql2/promise');
 const path = require('path');
 const fs = require('fs/promises');
+const crypto = require('crypto');
 require('dotenv').config();
 
 // Security / rate-limiting and headers
@@ -154,10 +155,18 @@ const DB_NAME = process.env.DB_NAME || 'r4realty_db';
 
 let pool = null;
 
-// Security Authorization Middleware
+// Security Authorization Middleware with timing-safe comparison
 function authorizeAdmin(req, res, next) {
   const clientPin = req.headers['x-admin-pin'];
-  if (!clientPin || clientPin !== ADMIN_PIN) {
+  if (!clientPin || typeof clientPin !== 'string') {
+    console.warn(`Unauthorized admin attempt from IP ${req.ip} at ${new Date().toISOString()}`);
+    return res.status(401).json({ error: 'Unauthorized' });
+  }
+
+  const clientBuf = Buffer.from(clientPin, 'utf8');
+  const adminBuf = Buffer.from(ADMIN_PIN, 'utf8');
+
+  if (clientBuf.length !== adminBuf.length || !crypto.timingSafeEqual(clientBuf, adminBuf)) {
     console.warn(`Unauthorized admin attempt from IP ${req.ip} at ${new Date().toISOString()}`);
     return res.status(401).json({ error: 'Unauthorized' });
   }

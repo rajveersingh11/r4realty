@@ -7,10 +7,17 @@
 function checkAdminAuth(request, env) {
   const adminPin = request.headers.get('x-admin-pin');
   const expectedPin = env.ADMIN_PIN;
-  if (!expectedPin || !adminPin || adminPin !== expectedPin) {
+  if (!expectedPin || !adminPin || typeof adminPin !== 'string') {
     return false;
   }
-  return true;
+  if (adminPin.length !== expectedPin.length) {
+    return false;
+  }
+  let result = 0;
+  for (let i = 0; i < adminPin.length; i++) {
+    result |= adminPin.charCodeAt(i) ^ expectedPin.charCodeAt(i);
+  }
+  return result === 0;
 }
 
 // 1. Submit lead (POST /api/leads)

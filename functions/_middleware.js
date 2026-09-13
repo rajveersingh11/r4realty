@@ -1,4 +1,26 @@
 export async function onRequest(context) {
+  const url = new URL(context.request.url);
+  const pathname = url.pathname.toLowerCase();
+
+  // Route Firewall: Block direct access to protected resources and data files
+  if (
+    pathname.startsWith('/data') ||
+    pathname.startsWith('/.git') ||
+    pathname.startsWith('/.gemini') ||
+    pathname.endsWith('.json') ||
+    pathname.endsWith('.env') ||
+    pathname.endsWith('.yaml') ||
+    pathname.endsWith('.yml') ||
+    pathname.endsWith('.lock') ||
+    pathname === '/server.js' ||
+    pathname.includes('package')
+  ) {
+    return new Response(JSON.stringify({ error: 'Access Denied: Protected System Resource' }), {
+      status: 403,
+      headers: { 'Content-Type': 'application/json' }
+    });
+  }
+
   const response = await context.next();
   const headers = new Headers(response.headers);
 
